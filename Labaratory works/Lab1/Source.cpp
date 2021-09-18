@@ -17,7 +17,7 @@ template<typename T>
 
 
 class Print
-{ 
+{// ��������� ������ �� ���������� �������� �������� 
 public:
     void print_in_all_codes(vector<int> first, vector<int>second, vector<int>third, T figure) //function for input vectors
     {
@@ -106,13 +106,22 @@ public:
        endl
    }  
 
-   void print_deviding(deque<int> dq)
+   void print_deviding(deque<int> dq)   //�������� ��� �������
    {
        
        for (int i = 0; i < dq.size(); i++)
        {
-           if (i == 1) cout<<",";
+           //if (i == 1) cout<<",";
            cout << dq[i];
+       }
+       endl
+   }
+
+   void result_summation_floating_point_numbers(deque<string> deq) //�������� ��� �������
+   {
+       for (int i = 0; i < deq.size(); i++)
+       {
+           cout << deq[i];
        }
        endl
    }
@@ -121,6 +130,7 @@ public:
 
 class Numbers : public Print<int>
 { 
+//�������� ����������
 private:
     vector<int> direct;
     vector<int> backward;
@@ -135,6 +145,7 @@ private:
     deque<string> result_summation_FP;
     int numbr;
     int bit_depth;
+    const int DIVIDER = 2;
 public:
 
     Numbers();
@@ -196,6 +207,11 @@ public:
         return  result_division_direct;
     }
 
+    deque<string> get_result_summation_FP()
+    {
+        return result_summation_FP;
+    }
+
     int get_numbr()
     {
         return numbr;
@@ -205,8 +221,7 @@ public:
     {
         bool isPositiveNumber = true;   
         int Dec_number = number;  
-        stack<int> steck;  
-        const int DIVIDER = 2;         
+        stack<int> steck;          
 
         if (number < 0)
         {
@@ -649,10 +664,13 @@ public:
     const Numbers& operator/(const Numbers& num)
     {
         result_division_direct.clear();
-        const int DIVIDER = 2;
         int first_number = abs(numbr), num1 = abs(numbr);
         int second_numbr = abs(num.numbr), num2 = abs(num.numbr);
-        bool stop = false;
+        bool stop = true, first_more_second = false, second_more_first = false, equals = false,first_in=true, here_triger = false;
+        if (num1 - num2 > 0)  first_more_second = true;
+        else second_more_first = true;
+        static int  here=0;
+       
        
         deque<int> first_number_for_deviding, second_number_for_deviding;
         while (first_number >= 1)
@@ -667,51 +685,189 @@ public:
             second_numbr = second_numbr / DIVIDER;
         }
 
-        int count = 0;
-        while (count < 5)
+        //deviding when first > second
+       
+        if (first_more_second)//�������� �� ������� �������� ����������� ���� ���.(����������� ������ � (0-1)
         {
+            bool trigger=false;
+            int count = 0, iterator = 0;
             
-            if (first_number_for_deviding.size() < second_number_for_deviding.size())
-            {
-                result_division_direct.push_front(0);
-                first_number_for_deviding.push_back(0);
-                count++;
-                continue;
-            }
 
-            else if (first_number_for_deviding.size() == second_number_for_deviding.size())
+            while (true)
             {
-                result_division_direct.push_front(1);
+               
 
-                for (int i = 0; i < first_number_for_deviding.size(); i++)
+                if (first_number_for_deviding.size() < second_number_for_deviding.size()) break;
+                
+                else if (first_number_for_deviding.size() >= second_number_for_deviding.size() && first_in)
                 {
-                    if (second_number_for_deviding[i] == 1 && first_number_for_deviding[i] == 0 || second_number_for_deviding[i] == 0 && first_number_for_deviding[i] == 1)
+                    first_in = false;
+                   
+
+                    if (first_number_for_deviding[0] == 1 && second_number_for_deviding[0] == 1)
                     {
-                        first_number_for_deviding[i] = 1;
-                        stop = true;
+                        iterator = 0;
+                        result_division_direct.push_back(1);
                     }
 
-                    else if (!stop)
+                    else
                     {
+                        iterator = second_number_for_deviding.size();
                         first_number_for_deviding.pop_front();
                     }
+
+                    for (int i = 0; i < second_number_for_deviding.size(); i++)
+                    {
+
+                        if (iterator == second_number_for_deviding.size()) break;
+
+                        else if (first_number_for_deviding[i] == 0 && second_number_for_deviding[i] == 1 || first_number_for_deviding[i] == 1 && second_number_for_deviding[i] == 0)
+                        {
+
+                            first_number_for_deviding[i] = 1;
+                            if (first_number_for_deviding[i] == 0 && second_number_for_deviding[i] == 1) first_number_for_deviding[i - 1] = 0;
+                            stop = false;
+
+                        }
+
+                        
+                        else if (stop)
+                        {
+                            first_number_for_deviding.pop_front();
+                            i--;
+                        }
+                        iterator++;
+
+                    }
+
                 }
+
+                else if (first_number_for_deviding.size() >= second_number_for_deviding.size() && first_in == false)
+                {
+                    here_triger = false;
+                    stop = true;
+
+                    for (int i = 0; i < second_number_for_deviding.size() - 1; i++)//work here (here make error)
+                    {
+                        result_division_direct.push_back(0);
+                    }
+
+                    here = 0;
+
+                    if (first_number_for_deviding[0] == 1 && second_number_for_deviding[0] == 1)
+                    {
+                        iterator = 0;
+                        result_division_direct.push_back(1);
+                    }
+
+                    else
+                    {
+                        iterator = second_number_for_deviding.size();
+                        first_number_for_deviding.pop_front();
+                    }
+
+
+                    for (int i = 0; i < second_number_for_deviding.size(); i++)
+                    {
+
+                        if (iterator == second_number_for_deviding.size()) break;
+                        else if (first_number_for_deviding[i] == 0 && second_number_for_deviding[i] == 1 || first_number_for_deviding[i] == 1 && second_number_for_deviding[i] == 0)
+                        {
+                            here_triger = true;
+                            first_number_for_deviding[i] = 1;
+                            if (first_number_for_deviding[i] == 0 && second_number_for_deviding[i] == 1)
+                            {
+
+                                first_number_for_deviding[i - 1] = 0;
+                            }
+
+                            stop = false;
+
+                        }
+
+                        else if (stop)
+                        {
+                            first_number_for_deviding.pop_front();
+                            i--;
+                        }
+                        iterator++;
+                        if (here_triger) here++;
+                    }
+
+                    
+                    
+                }
+
+                else if (first_number_for_deviding.size() == 0) break;
             }
 
-            count++;
         }
 
-        if (num1/num2 < 1) result_division_direct.push_front(0);
+        else  if (second_more_first)
+        {
+
+        }
+
+        else
+        {
+            for (int i = 0; i < bit_depth; i++)
+            {
+                if(i==0) result_division_direct.push_front(1);
+                else result_division_direct.push_front(0);
+            }
+        }
+
+        if (result_division_direct.size() < bit_depth)
+        {
+            int bit_size= bit_depth - result_division_direct.size();
+            for (int i = 0; i < bit_size; i++)
+            {
+                result_division_direct.push_front(0);
+            }
+        }
+        
+
+
+        //deviding when second > first
         
         return *this;
     }
 
     const Numbers& summation_two_float_numbers(const Numbers& num)
     {
-        deque<bool> int_part1_in_binary, int_part2_in_binary, float_part1_in_binary, float_part2_in_binary;
-        float int_part1, float_part1, int_part2, float_part2;
-        float_part1 = modf(numbr, &int_part1);
-        float_part2 = modf(num.numbr, &int_part2);
+        result_summation_FP.clear();
+        deque<string> number_first(32), number_second(32);
+        int num1 = numbr, num2 = num.numbr;
+        int iterator = 8;
+        while (num1 >= 1)
+        {
+            iterator--;
+            if (num1 % 2 == 1) number_first[iterator] = '1';
+            else number_first[iterator] = '0';
+            
+            num1 = num1 / DIVIDER;
+        }
+
+        iterator = 8;
+        while (num2 >= 1)
+        {
+            iterator--;
+           if (num2 % 2 == 1) number_second[iterator] = '1';
+           else number_second[iterator] = '0';
+            num2 = num2 / DIVIDER;
+        }
+        result_summation_floating_point_numbers(number_first);
+        
+        result_summation_floating_point_numbers(number_second);
+
+        int degree1 = number_first.size() - 1, degree2 = number_second.size() - 1;
+
+        
+            
+
+        
+        
+
 
         return *this;
     }
@@ -722,7 +878,7 @@ public:
 void main()
 {
     char selector = 'NULL';
-    int num1 = 123, num2 = 3, bit = 16, choose;
+    int num1 = 9, num2 =22, bit = 16, choose;
     cout << "Input first & second numbers:\n";
     //cin >> num1 >> num2; 
     cout << "Input (Y) - if you want change bit_depth or (N) - defolt bit_depth = 16:\n";
@@ -832,10 +988,10 @@ void main()
                     out.print_result_deviding(x1.get_result_direct_deviding_vector(), x1.get_numbr(), x2.get_numbr());
                     x1 / x4;
                     out.print_result_deviding(x1.get_result_direct_deviding_vector(), x1.get_numbr(), x4.get_numbr());
-                    x3 / x4;
-                    out.print_result_deviding(x3.get_result_direct_deviding_vector(), x3.get_numbr(), x4.get_numbr());
                     x3 / x2;
-                    out.print_result_deviding(x3.get_result_direct_deviding_vector(), x3.get_numbr(), x2.get_numbr());                    
+                    out.print_result_deviding(x3.get_result_direct_deviding_vector(), x3.get_numbr(), x2.get_numbr());
+                    x3 / x4;     
+                    out.print_result_deviding(x3.get_result_direct_deviding_vector(), x3.get_numbr(), x4.get_numbr());
 
                 }
 
@@ -860,6 +1016,7 @@ void main()
             case 4:
             {
                 x1.summation_two_float_numbers(x2);
+               // out.result_summation_floating_point_numbers(x1.get_result_summation_FP());
                 break;
             }
 
