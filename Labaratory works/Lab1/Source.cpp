@@ -1,4 +1,3 @@
-```C++
 #include <iostream>
 #include <stack>
 #include <string>
@@ -7,14 +6,18 @@
 #include <sstream>
 #include <deque>
 #include <math.h>
+#include "windows.h"
 #define endl cout<<"\n";
 using namespace std;
 template<typename T>
-
+//unit tests(in develop)
+//teori(in develop)
+//summation float(in develop)
+//deviding float
 
 
 class Print
-{
+{ 
 public:
     void print_in_all_codes(vector<int> first, vector<int>second, vector<int>third, T figure) //function for input vectors
     {
@@ -113,6 +116,7 @@ public:
        }
        endl
    }
+
 };
 
 class Numbers : public Print<int>
@@ -130,13 +134,15 @@ private:
     deque<int> result_division_direct;
     deque<string> result_summation_FP;
     int numbr;
+    int bit_depth;
 public:
 
     Numbers();
-
-    Numbers(int num)
+    
+    Numbers(int num, int bit)
     {
         numbr = num;
+        bit_depth = bit;
         converting_to_binary(num);
     }
 
@@ -215,9 +221,9 @@ public:
 
         }
 
-        if (steck.size() < 16)               
+        if (steck.size() < bit_depth)
         {
-            for (int i = 0; i < 16 - steck.size(); i++)
+            for (int i = 0; i < bit_depth - steck.size(); i++)
             {
                 direct.push_back(0);
             }
@@ -240,7 +246,7 @@ public:
             backward = direct;         
             convertin_to_backward();
             additional = backward;    
-            convertin_to_additional(16);
+            convertin_to_additional(bit_depth);
         }
 
         endl
@@ -536,7 +542,7 @@ public:
         if (numbr < 0 || num.numbr < 0) one_negative_numbr = true;
         if (numbr < 0 && num.numbr < 0) one_negative_numbr = false;
 
-        for (int i = 0; i < 16; i++)
+        for (int i = 0; i < bit_depth; i++)
         {
             result_multiplication_direct.push_back(0);
         }
@@ -626,7 +632,7 @@ public:
             }
 
             result_multiplication_additional = result_multiplication_backward;
-            convertin_to_additional_multiplication(16);
+            convertin_to_additional_multiplication(bit_depth);
         }
 
         else
@@ -715,18 +721,24 @@ public:
 
 void main()
 {
-    setlocale(LC_ALL, "ru");
-    int choose; 
-    int num1= 123, num2=3;
+    char selector = 'NULL';
+    int num1 = 123, num2 = 3, bit = 16, choose;
     cout << "Input first & second numbers:\n";
     //cin >> num1 >> num2; 
-    Numbers x1(num1), x2(num2),x3(-num1),x4(-num2);
+    cout << "Input (Y) - if you want change bit_depth or (N) - defolt bit_depth = 16:\n";
+   // cin >> selector;
+    if (selector == 'Y' || selector == 'y')
+    {
+        cout << "Input bit_depth:\n";
+        cin >> bit;
+    }
+    Numbers x1(num1, bit), x2(num2, bit), x3(-num1, bit), x4(-num2, bit);
     Print<int> out;
     bool breaker = true;
     system("cls");
     while (breaker)
     { 
-    cout << "Select and tape key action| 1 - View binary code, 2 - Operations (+, - , * , /), 0 - out:\n";
+    cout << "Select and tape key action| 1 - View binary code, 2 - Operations (+, - , * , /), 3 - briefing, 0 - out:\n";
     cin >> choose;
     switch (choose)
     {
@@ -794,7 +806,11 @@ void main()
                 {
                     if (i == 3)
                     {
-                        deque<int> null_multiplication{ 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 };
+                        deque<int> null_multiplication;
+                        for (int i = 0; i < bit; i++)
+                        {
+                            null_multiplication.push_back(0);
+                        }
                         out.print_result_multiplications(null_multiplication, null_multiplication, null_multiplication, x1.get_numbr(), x2.get_numbr());
                         out.print_result_multiplications(null_multiplication, null_multiplication, null_multiplication, x2.get_numbr(), x3.get_numbr());
                         out.print_result_multiplications(null_multiplication, null_multiplication, null_multiplication, x3.get_numbr(), x4.get_numbr());
@@ -819,8 +835,7 @@ void main()
                     x3 / x4;
                     out.print_result_deviding(x3.get_result_direct_deviding_vector(), x3.get_numbr(), x4.get_numbr());
                     x3 / x2;
-                    out.print_result_deviding(x3.get_result_direct_deviding_vector(), x3.get_numbr(), x2.get_numbr());
-                    
+                    out.print_result_deviding(x3.get_result_direct_deviding_vector(), x3.get_numbr(), x2.get_numbr());                    
 
                 }
 
@@ -829,7 +844,11 @@ void main()
                     if (i == 1) cout << "ERROR!!! " << i << " - DEVISION BY ZERO!!!\n";
                     else 
                     {
-                        deque<int> null_deviding{ 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 };
+                        deque<int> null_deviding;
+                        for (int i = 0; i < bit; i++)
+                        {
+                            null_deviding.push_back(0);
+                        }
                         out.print_result_deviding(null_deviding, x1.get_numbr(), x2.get_numbr());
                         out.print_result_deviding(null_deviding, x1.get_numbr(), x4.get_numbr());
                         out.print_result_deviding(null_deviding, x3.get_numbr(), x4.get_numbr());
@@ -854,8 +873,20 @@ void main()
         }
         
         break;
-        
-        
+       
+    }
+
+    case 3:
+    {
+
+        cout << "*****************************************************************\n";
+        cout << "*           Welcome to my labaratory work 1 on AOIS!            *\n";
+        cout << "*    Next, you will have a few questions to clarify the task.   *\n";
+        cout << "*You can anytime call command (help) and read the program manual*\n";
+        cout << "*                         Good luck!                            *\n";
+        cout << "*****************************************************************\n";
+        break;
+
     }
      
     case 0:
@@ -874,12 +905,8 @@ void main()
 
   }
 
-  
-   
-
-
 }
-```
+
 
 
 
