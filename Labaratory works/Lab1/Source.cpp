@@ -19,7 +19,7 @@ template<typename T>
 class Print
 {// ��������� ������ �� ���������� �������� �������� 
 public:
-    void print_in_all_codes(vector<int> first, vector<int>second, vector<int>third, T figure) //function for input vectors
+    void print_in_all_codes(vector<bool> first, vector<bool>second, vector<bool>third, T figure) //function for input vectors
     {
         if (figure > 0)
         {
@@ -39,7 +39,7 @@ public:
         print_result(third);
     }
 
-    void print_result_operations(vector<int> first, vector<int> second, vector<int> third, T num1, T num2)
+    void print_result_operations(vector<bool> first, vector<bool> second, vector<bool> third, T num1, T num2)
     {
         cout << "Summation numbers " << num1 << " + " << num2 << " = " << num1 + num2 << "\n";
         cout << "In straight code: ";
@@ -53,7 +53,7 @@ public:
 
     }
 
-   void print_result(vector<int> vr)
+   void print_result(vector<bool> vr)
     {
         for (int i = 0; i < vr.size(); i++)
         {
@@ -63,7 +63,7 @@ public:
         endl
     }
 
-   void print_result_revers(vector<int> vr)
+   void print_result_revers(vector<bool> vr)
     {
         for (int i = vr.size() - 1; i >= 0; i--)
         {
@@ -73,7 +73,7 @@ public:
         endl
     }
 
-   void print_multiplications(deque<int> dq)
+   void print_multiplications(deque<bool> dq)
    {
        for (int i = 0; i < dq.size(); i++)
        {
@@ -82,7 +82,7 @@ public:
        endl
    }
 
-   void print_result_multiplications(deque<int> first, deque<int> second, deque<int> third, T num1, T num2)
+   void print_result_multiplications(deque<bool> first, deque<bool> second, deque<bool> third, T num1, T num2)
    {
        cout << "Multiplications numbers " << num1 << " * " << num2 << " = " << num1 * num2 << "\n";
        cout << "In straight code: ";
@@ -94,7 +94,7 @@ public:
        endl
    }
 
-   void print_result_deviding(deque<int> first, T num1, T num2)
+   void print_result_deviding(deque<bool> first, T num1, T num2)
    {
 
        cout << "Deviding numbers " << num1 << " / " << num2 << "\n";
@@ -106,7 +106,7 @@ public:
        endl
    }  
 
-   void print_deviding(deque<int> dq)   //�������� ��� �������
+   void print_deviding(deque<bool> dq)   //�������� ��� �������
    {
        
        for (int i = 0; i < dq.size(); i++)
@@ -129,80 +129,65 @@ public:
 };
 
 class Numbers : public Print<int>
-{ 
-//�������� ����������
-private:
-    vector<int> direct;
-    vector<int> backward;
-    vector<int> additional;
-    vector<int> result_direct;
-    vector<int> result_backward;
-    vector<int> result_additional;
-    deque<int> result_multiplication_direct;
-    deque<int> result_multiplication_backward;
-    deque<int> result_multiplication_additional;
-    deque<int> result_division_direct;
-    deque<string> result_summation_FP;
-    int numbr;
-    int bit_depth;
-    const int DIVIDER = 2;
+{
+    //�������� ����������
 public:
 
     Numbers();
-    
-    Numbers(int num, int bit)
+
+    explicit Numbers(int num, int bit)
     {
         numbr = num;
         bit_depth = bit;
         converting_to_binary(num);
     }
 
-    vector<int> get_direct_vector()
+    vector<bool> get_direct_vector()
     {
         return direct;
     }
 
-    vector<int> get_backward_vector()
+    vector<bool> get_backward_vector()
     {
         return backward;
     }
 
-    vector<int> get_additional_vector()
+    vector<bool> get_additional_vector()
     {
         return  additional;
     }
 
-    vector<int> get_result_direct_vector()
+    vector<bool> get_result_direct_vector()
     {
         return  result_direct;
     }
 
-    vector<int> get_result_backward_vector()
+    vector<bool> get_result_backward_vector()
     {
         return  result_backward;
     }
 
-    vector<int> get_result_additional_vector()
+    vector<bool> get_result_additional_vector()
     {
         return  result_additional;
     }
 
-    deque<int> get_result_direct_multiplication_vector()
+    deque<bool> get_result_direct_multiplication_vector()
     {
         return  result_multiplication_direct;
     }
 
-    deque<int> get_result_backward_multiplication_vector()
+    deque<bool> get_result_backward_multiplication_vector()
     {
         return  result_multiplication_backward;
     }
 
-    deque<int> get_result_additional_multiplication_vector()
+    deque<bool> get_result_additional_multiplication_vector()
     {
         return  result_multiplication_additional;
     }
 
-    deque<int> get_result_direct_deviding_vector()
+    deque<bool> get_result_direct_deviding_vector()
     {
         return  result_division_direct;
     }
@@ -217,21 +202,21 @@ public:
         return numbr;
     }
 
-    void converting_to_binary(int number)  
+    void converting_to_binary(int number)
     {
-        bool isPositiveNumber = true;   
-        int Dec_number = number;  
-        stack<int> steck;          
+        bool isPositiveNumber = true;
+        int Dec_number = number;
+        stack<int> steck;
 
         if (number < 0)
         {
-            number = abs(number);                  
+            number = abs(number);
             isPositiveNumber = false;
         }
 
         while (number >= 1)
         {
-            steck.push(number % 2);  
+            steck.push(number % 2);
             number = number / DIVIDER;
 
         }
@@ -246,8 +231,8 @@ public:
 
         while (!steck.empty())
         {
-            direct.push_back(steck.top());      
-            steck.pop();                       
+            direct.push_back(steck.top());
+            steck.pop();
         }
 
         if (isPositiveNumber)
@@ -258,9 +243,9 @@ public:
 
         else
         {
-            backward = direct;         
+            backward = direct;
             convertin_to_backward();
-            additional = backward;    
+            additional = backward;
             convertin_to_additional(bit_depth);
         }
 
@@ -271,8 +256,8 @@ public:
     void convertin_to_backward()
     {
         for (int i = 0; i < backward.size(); i++)
-        {       
-            if (backward[i] == 0) backward[i] = 1; 
+        {
+            if (backward[i] == 0) backward[i] = 1;
             else backward[i] = 0;
 
         }
@@ -356,19 +341,19 @@ public:
     void reverse_backward_for_direct()
     {
         for (int i = 0; i < result_direct.size(); i++)
-        {     
-            if (result_direct[i] == 0) result_direct[i] = 1;  
+        {
+            if (result_direct[i] == 0) result_direct[i] = 1;
             else result_direct[i] = 0;
 
         }
     }
 
-    const Numbers& operator+(const Numbers& num) 
+    const Numbers& operator+(const Numbers& num)
     {
         result_direct.clear();
         result_backward.clear();
         result_additional.clear();
-        bool two_positive_numbers = false, remains,two_negative_numbers=false,one_negative=false;
+        bool two_positive_numbers = false, remains, two_negative_numbers = false, one_negative = false;
         if (this->numbr > 0 && num.numbr > 0) two_positive_numbers = true;
         if (this->numbr < 0 && num.numbr < 0) two_negative_numbers = true;
         else one_negative = true;
@@ -421,10 +406,10 @@ public:
             }
             result_backward = result_direct;
             result_additional = result_direct;
-           
+
         }
 
-        else 
+        else
         {
             remains = true;
             for (int i = this->additional.size() - 1; i >= 0; i--)
@@ -469,10 +454,10 @@ public:
                     remains = false;
                     continue;
                 }
-                
+
             }
 
-           //backward
+            //backward
             remains = true;
             for (int i = this->backward.size() - 1; i >= 0; i--)
             {
@@ -489,7 +474,7 @@ public:
                     remains = false;
                     continue;
                 }
-                
+
                 else if (this->backward[i] == 0 && num.backward[i] == 0 && remains)
                 {
                     result_backward.push_back(0);
@@ -528,7 +513,7 @@ public:
                 }
                 else
                 {
-                   
+
                     result_direct = result_backward;
                     reverse_backward_for_direct();
                 }
@@ -549,11 +534,11 @@ public:
     {
         deque<int> first_sum;
         first_sum.clear();
-        int counter=0;
+        int counter = 0;
         result_multiplication_direct.clear();
         result_multiplication_backward.clear();
         result_multiplication_additional.clear();
-        bool remains,one_negative_numbr=false;
+        bool remains, one_negative_numbr = false;
         if (numbr < 0 || num.numbr < 0) one_negative_numbr = true;
         if (numbr < 0 && num.numbr < 0) one_negative_numbr = false;
 
@@ -568,18 +553,18 @@ public:
             if (num.direct[i] == 1)
             {
                 first_sum.clear();
-                
+
 
                 for (int j = direct.size() - 1; j >= 0; j--)
                 {
-                    
+
                     if (direct[j] == 1) first_sum.push_front(1);
                     else first_sum.push_front(0);
-                    
+
                 }
-                
+
                 for (int q = 0; q < counter; q++)
-                {              
+                {
                     first_sum.push_back(0);
                     first_sum.pop_front();
                 }
@@ -626,17 +611,17 @@ public:
                         remains = false;
                         continue;
                     }
-                     
+
                 }
                 counter++;
             }
-           
+
             else counter++;
         }
 
         if (one_negative_numbr)
         {
-            
+
             result_multiplication_backward = result_multiplication_direct;
 
             for (int i = 0; i < result_multiplication_backward.size(); i++)
@@ -652,7 +637,7 @@ public:
 
         else
         {
-            
+
             result_multiplication_backward = result_multiplication_direct;
             result_multiplication_additional = result_multiplication_backward;
         }
@@ -666,12 +651,12 @@ public:
         result_division_direct.clear();
         int first_number = abs(numbr), num1 = abs(numbr);
         int second_numbr = abs(num.numbr), num2 = abs(num.numbr);
-        bool stop = true, first_more_second = false, second_more_first = false, equals = false,first_in=true, here_triger = false;
+        bool stop = true, first_more_second = false, second_more_first = false, equals = false, first_in = true, here_triger = false;
         if (num1 - num2 > 0)  first_more_second = true;
         else second_more_first = true;
-        static int  here=0;
-       
-       
+        
+
+
         deque<int> first_number_for_deviding, second_number_for_deviding;
         while (first_number >= 1)
         {
@@ -686,22 +671,90 @@ public:
         }
 
         //deviding when first > second
-       
+
         if (first_more_second)//�������� �� ������� �������� ����������� ���� ���.(����������� ������ � (0-1)
         {
-            bool trigger=false;
-            int count = 0, iterator = 0;
-            
+            bool trigger = false, null;
+            int iterator = 0, count ,place;
+
 
             while (true)
             {
-               
+                null = false;
+                count = 0;
+                place = 0;
+
+                for (int i = 0; i < first_number_for_deviding.size(); i++)  //������� ���� �������� ������ ���� � ������ ������ ���������� � ���������
+                {
+                    if (first_number_for_deviding[i] == 0) count++;
+                }
+
+                if (count == first_number_for_deviding.size()) null=true;
+
+                if (null)//������� ����� ����
+                {
+                    while (count != 0)
+                    {
+                        result_division_direct.push_back(0);
+                        count--;
+                    }
+
+                    break;
+                }  
 
                 if (first_number_for_deviding.size() < second_number_for_deviding.size()) break;
-                
-                else if (first_number_for_deviding.size() >= second_number_for_deviding.size() && first_in)
+
+                if (first_number_for_deviding.size() >= second_number_for_deviding.size() && first_in)  //������ ����� ���������� ����� ��� ����������� �� ����������
                 {
                     first_in = false;
+
+                    if (first_number_for_deviding[0] == 1 && second_number_for_deviding[0] == 1)
+                    {
+                        iterator = 0;
+                        result_division_direct.push_back(1);
+                    }
+                  
+                    while (iterator < second_number_for_deviding.size())//��� �� ��� ����� ������� �������� ���� ��� ���������� �.� �� ������� �������������
+                    {
+                        if (first_number_for_deviding[0] == 1 && second_number_for_deviding[iterator] == 1 || first_number_for_deviding[0] == 0 && second_number_for_deviding[iterator] == 0 )
+                        {
+                            first_number_for_deviding.pop_front();
+                            iterator++;
+                        }
+                        else
+                        {
+                            for (int i = 0; i < second_number_for_deviding.size()-iterator; i++) //����� ��������� �������� ���� ������ �� ����������
+                            {
+                                place++;//��� ������ �� ������������ ����� ����� �������� ������ ����
+                                if (first_number_for_deviding[i] == 1 && second_number_for_deviding[iterator + i] == 0)
+                                {
+                                    first_number_for_deviding[i] = 1;
+
+                                }
+
+                                else if (first_number_for_deviding[i] == 0 && second_number_for_deviding[iterator + i] == 1)
+                                {
+                                    first_number_for_deviding[i] = 1;
+                                    first_number_for_deviding[i - 1] = 0;
+                                    place--;
+
+                                }
+                                
+                            }
+                            for (int j = 0; j < second_number_for_deviding.size() - (place+1); j++)
+                            {
+                                result_division_direct.push_back(0);
+                            }
+                            iterator = second_number_for_deviding.size();
+                            
+                        }
+                    }
+                    
+
+                }
+
+                if (first_number_for_deviding.size() >= second_number_for_deviding.size() && first_in==false)
+                {
                    
 
                     if (first_number_for_deviding[0] == 1 && second_number_for_deviding[0] == 1)
@@ -712,93 +765,53 @@ public:
 
                     else
                     {
-                        iterator = second_number_for_deviding.size();
                         first_number_for_deviding.pop_front();
+                        iterator = second_number_for_deviding.size();
                     }
 
-                    for (int i = 0; i < second_number_for_deviding.size(); i++)
+                    while (iterator < second_number_for_deviding.size())
                     {
-
-                        if (iterator == second_number_for_deviding.size()) break;
-
-                        else if (first_number_for_deviding[i] == 0 && second_number_for_deviding[i] == 1 || first_number_for_deviding[i] == 1 && second_number_for_deviding[i] == 0)
-                        {
-
-                            first_number_for_deviding[i] = 1;
-                            if (first_number_for_deviding[i] == 0 && second_number_for_deviding[i] == 1) first_number_for_deviding[i - 1] = 0;
-                            stop = false;
-
-                        }
-
-                        
-                        else if (stop)
+                        if (first_number_for_deviding[0] == 1 && second_number_for_deviding[iterator] == 1 || first_number_for_deviding[0] == 0 && second_number_for_deviding[iterator] == 0)
                         {
                             first_number_for_deviding.pop_front();
-                            i--;
+                            iterator++;
                         }
-                        iterator++;
-
-                    }
-
-                }
-
-                else if (first_number_for_deviding.size() >= second_number_for_deviding.size() && first_in == false)
-                {
-                    here_triger = false;
-                    stop = true;
-
-                    for (int i = 0; i < second_number_for_deviding.size() - 1; i++)//work here (here make error)
-                    {
-                        result_division_direct.push_back(0);
-                    }
-
-                    here = 0;
-
-                    if (first_number_for_deviding[0] == 1 && second_number_for_deviding[0] == 1)
-                    {
-                        iterator = 0;
-                        result_division_direct.push_back(1);
-                    }
-
-                    else
-                    {
-                        iterator = second_number_for_deviding.size();
-                        first_number_for_deviding.pop_front();
-                    }
-
-
-                    for (int i = 0; i < second_number_for_deviding.size(); i++)
-                    {
-
-                        if (iterator == second_number_for_deviding.size()) break;
-                        else if (first_number_for_deviding[i] == 0 && second_number_for_deviding[i] == 1 || first_number_for_deviding[i] == 1 && second_number_for_deviding[i] == 0)
+                        else
                         {
-                            here_triger = true;
-                            first_number_for_deviding[i] = 1;
-                            if (first_number_for_deviding[i] == 0 && second_number_for_deviding[i] == 1)
+                            for (int i = 0; i < second_number_for_deviding.size() - iterator; i++)
                             {
+                                place++;
+                                if (first_number_for_deviding[i] == 1 && second_number_for_deviding[iterator + i] == 0)
+                                {
+                                    first_number_for_deviding[i] = 1;
 
-                                first_number_for_deviding[i - 1] = 0;
+                                }
+
+                                else if (first_number_for_deviding[i] == 0 && second_number_for_deviding[iterator + i] == 1)
+                                {
+                                    first_number_for_deviding[i] = 1;
+                                    first_number_for_deviding[i - 1] = 0;
+                                    place--;
+
+                                }
+
+
                             }
 
-                            stop = false;
+                            for (int j = 0; j < second_number_for_deviding.size() - (place + 1); j++)
+                            {
+                                result_division_direct.push_back(0);
+                            }
+                            iterator = second_number_for_deviding.size();
 
                         }
-
-                        else if (stop)
-                        {
-                            first_number_for_deviding.pop_front();
-                            i--;
-                        }
-                        iterator++;
-                        if (here_triger) here++;
                     }
 
-                    
-                    
+
                 }
 
-                else if (first_number_for_deviding.size() == 0) break;
+                if (first_number_for_deviding.size() == 0) break;
+    
             }
 
         }
@@ -812,14 +825,14 @@ public:
         {
             for (int i = 0; i < bit_depth; i++)
             {
-                if(i==0) result_division_direct.push_front(1);
+                if (i == 0) result_division_direct.push_front(1);
                 else result_division_direct.push_front(0);
             }
         }
 
-        if (result_division_direct.size() < bit_depth)
+       if (result_division_direct.size() < bit_depth)
         {
-            int bit_size= bit_depth - result_division_direct.size();
+            int bit_size = bit_depth - result_division_direct.size();
             for (int i = 0; i < bit_size; i++)
             {
                 result_division_direct.push_front(0);
@@ -829,7 +842,7 @@ public:
 
 
         //deviding when second > first
-        
+
         return *this;
     }
 
@@ -844,7 +857,7 @@ public:
             iterator--;
             if (num1 % 2 == 1) number_first[iterator] = '1';
             else number_first[iterator] = '0';
-            
+
             num1 = num1 / DIVIDER;
         }
 
@@ -852,25 +865,41 @@ public:
         while (num2 >= 1)
         {
             iterator--;
-           if (num2 % 2 == 1) number_second[iterator] = '1';
-           else number_second[iterator] = '0';
+            if (num2 % 2 == 1) number_second[iterator] = '1';
+            else number_second[iterator] = '0';
             num2 = num2 / DIVIDER;
         }
         result_summation_floating_point_numbers(number_first);
-        
+
         result_summation_floating_point_numbers(number_second);
 
         int degree1 = number_first.size() - 1, degree2 = number_second.size() - 1;
 
-        
-            
 
-        
-        
+
+
+
+
 
 
         return *this;
     }
+
+private:
+    vector<bool> direct;
+    vector<bool> backward;
+    vector<bool> additional;
+    vector<bool> result_direct;
+    vector<bool> result_backward;
+    vector<bool> result_additional;
+    deque<bool> result_multiplication_direct;
+    deque<bool> result_multiplication_backward;
+    deque<bool> result_multiplication_additional;
+    deque<bool> result_division_direct;
+    deque<string> result_summation_FP;
+    int numbr;
+    int bit_depth;
+    const int DIVIDER = 2;
 };
 
 
@@ -878,7 +907,7 @@ public:
 void main()
 {
     char selector = 'NULL';
-    int num1 = 9, num2 =22, bit = 16, choose;
+    int num1 =200, num2 =10, bit = 16, choose;
     cout << "Input first & second numbers:\n";
     //cin >> num1 >> num2; 
     cout << "Input (Y) - if you want change bit_depth or (N) - defolt bit_depth = 16:\n";
@@ -888,10 +917,12 @@ void main()
         cout << "Input bit_depth:\n";
         cin >> bit;
     }
+
     Numbers x1(num1, bit), x2(num2, bit), x3(-num1, bit), x4(-num2, bit);
     Print<int> out;
     bool breaker = true;
     system("cls");
+
     while (breaker)
     { 
     cout << "Select and tape key action| 1 - View binary code, 2 - Operations (+, - , * , /), 3 - briefing, 0 - out:\n";
@@ -912,6 +943,7 @@ void main()
             break;
 
     }
+
     case 2:
     {
         int chooce;
@@ -962,7 +994,7 @@ void main()
                 {
                     if (i == 3)
                     {
-                        deque<int> null_multiplication;
+                        deque<bool> null_multiplication;
                         for (int i = 0; i < bit; i++)
                         {
                             null_multiplication.push_back(0);
@@ -1000,7 +1032,7 @@ void main()
                     if (i == 1) cout << "ERROR!!! " << i << " - DEVISION BY ZERO!!!\n";
                     else 
                     {
-                        deque<int> null_deviding;
+                        deque<bool> null_deviding;
                         for (int i = 0; i < bit; i++)
                         {
                             null_deviding.push_back(0);
@@ -1013,6 +1045,7 @@ void main()
                 }
                 break;
             }
+
             case 4:
             {
                 x1.summation_two_float_numbers(x2);
@@ -1039,7 +1072,6 @@ void main()
         cout << "*****************************************************************\n";
         cout << "*           Welcome to my labaratory work 1 on AOIS!            *\n";
         cout << "*    Next, you will have a few questions to clarify the task.   *\n";
-        cout << "*You can anytime call command (help) and read the program manual*\n";
         cout << "*                         Good luck!                            *\n";
         cout << "*****************************************************************\n";
         break;
