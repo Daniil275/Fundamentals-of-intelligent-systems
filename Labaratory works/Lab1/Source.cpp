@@ -10,16 +10,13 @@
 #define endl cout<<"\n";
 using namespace std;
 template<typename T>
-//unit tests(in develop)
-//teori(in develop)
-//summation float(in develop)
-//deviding float
+
 
 
 class Print
-{// ��������� ������ �� ���������� �������� �������� 
+{
 public:
-    void print_in_all_codes(vector<bool> first, vector<bool>second, vector<bool>third, T figure) //function for input vectors
+    void print_in_all_codes(vector<bool> first, vector<bool>second, vector<bool>third, T figure) 
     {
         if (figure > 0)
         {
@@ -94,7 +91,7 @@ public:
        endl
    }
 
-   void print_result_deviding(deque<bool> first, T num1, T num2)
+   void print_result_deviding(deque<bool> first, deque<bool> second, T num1, T num2)
    {
 
        cout << "Deviding numbers " << num1 << " / " << num2 << "\n";
@@ -102,27 +99,31 @@ public:
        
        
            print_deviding(first);
+           cout << ",";
+           print_deviding(second);
       
        endl
    }  
 
-   void print_deviding(deque<bool> dq)   //�������� ��� �������
+   void print_deviding(deque<bool> dq)
    {
        
        for (int i = 0; i < dq.size(); i++)
        {
-           //if (i == 1) cout<<",";
+          
            cout << dq[i];
        }
-       endl
+      
    }
 
-   void result_summation_floating_point_numbers(deque<string> deq) //�������� ��� �������
+   void result_summation_floating_point_numbers(deque<bool> deq, int num)
    {
        for (int i = 0; i < deq.size(); i++)
        {
            cout << deq[i];
        }
+
+       cout << " * 2^" << num;
        endl
    }
 
@@ -130,7 +131,6 @@ public:
 
 class Numbers : public Print<int>
 {
-    //�������� ����������
 public:
 
     Numbers();
@@ -189,12 +189,22 @@ public:
 
     deque<bool> get_result_direct_deviding_vector()
     {
-        return  result_division_direct;
+        return  result_division_int;
     }
 
-    deque<string> get_result_summation_FP()
+    deque<bool> get_result_direct_deviding_vector_FP()
+    {
+        return  result_division_float;
+    }
+
+    deque<bool> get_result_summation_FP()
     {
         return result_summation_FP;
+    }
+
+    int Get_deqree_numbers()
+    {
+        return deqree_numbers;
     }
 
     int get_numbr()
@@ -259,6 +269,16 @@ public:
         {
             if (backward[i] == 0) backward[i] = 1;
             else backward[i] = 0;
+
+        }
+    }
+
+   void  conveting_to_backward_division()
+    {
+        for (int i = 0; i < second_number_dividing_additional.size(); i++)
+        {
+            if (second_number_dividing_additional[i] == 0) second_number_dividing_additional[i] = 1;
+            else second_number_dividing_additional[i] = 0;
 
         }
     }
@@ -344,6 +364,31 @@ public:
         {
             if (result_direct[i] == 0) result_direct[i] = 1;
             else result_direct[i] = 0;
+
+        }
+    }
+
+    int convertin_to_additional_deviding(int n)
+    {
+        n--;
+        if (n == 0)
+        {
+            if (second_number_dividing_additional[0] == 0) second_number_dividing_additional[0] = 1;
+            else
+            {
+                second_number_dividing_additional[0] = 0;
+                second_number_dividing_additional[7] = 1;
+            }
+        }
+        if (second_number_dividing_additional[n] == 0)
+        {
+            second_number_dividing_additional[n] = 1;
+            return NULL;
+        }
+        else
+        {
+            second_number_dividing_additional[n] = 0;
+            return convertin_to_additional_deviding(n);
 
         }
     }
@@ -648,16 +693,15 @@ public:
 
     const Numbers& operator/(const Numbers& num)
     {
-        result_division_direct.clear();
+        
+        result_division_int.clear();
         int first_number = abs(numbr), num1 = abs(numbr);
         int second_numbr = abs(num.numbr), num2 = abs(num.numbr);
-        bool stop = true, first_more_second = false, second_more_first = false, equals = false, first_in = true, here_triger = false;
-        if (num1 - num2 > 0)  first_more_second = true;
-        else second_more_first = true;
-        
+        bool stop = true, equals = false;
+        if (num1 == num2)  equals = true;
+       
 
-
-        deque<int> first_number_for_deviding, second_number_for_deviding;
+        deque<bool> first_number_for_deviding, second_number_for_deviding;
         while (first_number >= 1)
         {
             first_number_for_deviding.push_front(first_number % 2);
@@ -670,178 +714,166 @@ public:
             second_numbr = second_numbr / DIVIDER;
         }
 
-        //deviding when first > second
+        second_number_dividing_additional = second_number_for_deviding;
+        conveting_to_backward_division();
+        convertin_to_additional_deviding(second_number_dividing_additional.size());
 
-        if (first_more_second)//�������� �� ������� �������� ����������� ���� ���.(����������� ������ � (0-1)
-        {
-            bool trigger = false, null;
-            int iterator = 0, count ,place;
-
-
-            while (true)
+          
+            bool trigger = false, null,remains, surplace=false;
+            int iterator = 0, count;
+            
+            if (equals)
             {
-                null = false;
-                count = 0;
-                place = 0;
-
-                for (int i = 0; i < first_number_for_deviding.size(); i++)  //������� ���� �������� ������ ���� � ������ ������ ���������� � ���������
+                for (int i = 0; i < bit_depth; i++)
                 {
-                    if (first_number_for_deviding[i] == 0) count++;
+                    if (i == 0) result_division_int.push_front(1);
+                    else result_division_int.push_front(0);
                 }
-
-                if (count == first_number_for_deviding.size()) null=true;
-
-                if (null)//������� ����� ����
+            }
+            else
+            {
+                while (true)
                 {
-                    while (count != 0)
+                    null = false;
+                    count = 0;
+
+                    for (int i = 0; i < first_number_for_deviding.size(); i++)  //������� ���� �������� ������ ���� � ������ ������ ���������� � ���������
                     {
-                        result_division_direct.push_back(0);
-                        count--;
+                        if (first_number_for_deviding[i] == 0) count++;
                     }
 
-                    break;
-                }  
+                    if (count == first_number_for_deviding.size()) null = true;
 
-                if (first_number_for_deviding.size() < second_number_for_deviding.size()) break;
-
-                if (first_number_for_deviding.size() >= second_number_for_deviding.size() && first_in)  //������ ����� ���������� ����� ��� ����������� �� ����������
-                {
-                    first_in = false;
-
-                    if (first_number_for_deviding[0] == 1 && second_number_for_deviding[0] == 1)
+                    if (null)//������� ����� �����
                     {
-                        iterator = 0;
-                        result_division_direct.push_back(1);
-                    }
-                  
-                    while (iterator < second_number_for_deviding.size())//��� �� ��� ����� ������� �������� ���� ��� ���������� �.� �� ������� �������������
-                    {
-                        if (first_number_for_deviding[0] == 1 && second_number_for_deviding[iterator] == 1 || first_number_for_deviding[0] == 0 && second_number_for_deviding[iterator] == 0 )
+                        while (count != 0)
                         {
-                            first_number_for_deviding.pop_front();
-                            iterator++;
+                            result_division_int.push_back(0);
+                            count--;
                         }
-                        else
+
+                        break;
+                    }
+
+                    if (first_number_for_deviding.size() < second_number_for_deviding.size()) //�������� � ����������� �������� && surplace
+                    {
+                        int stopper = 0;
+                        result_division_float.clear();
+                        for (int i = 0; i < second_number_for_deviding.size() - first_number_for_deviding.size(); i++)
                         {
-                            for (int i = 0; i < second_number_for_deviding.size()-iterator; i++) //����� ��������� �������� ���� ������ �� ����������
+                            result_division_float.push_back(0);
+                        }
+                       
+                            for (int i = 0; i < first_number_for_deviding.size(); i++)
                             {
-                                place++;//��� ������ �� ������������ ����� ����� �������� ������ ����
-                                if (first_number_for_deviding[i] == 1 && second_number_for_deviding[iterator + i] == 0)
-                                {
-                                    first_number_for_deviding[i] = 1;
-
-                                }
-
-                                else if (first_number_for_deviding[i] == 0 && second_number_for_deviding[iterator + i] == 1)
-                                {
-                                    first_number_for_deviding[i] = 1;
-                                    first_number_for_deviding[i - 1] = 0;
-                                    place--;
-
-                                }
-                                
+                                if (first_number_for_deviding[i] == 1) stopper++;
+                                if (stopper == 2) break;
+                                result_division_float.push_back(first_number_for_deviding[i]);
                             }
-                            for (int j = 0; j < second_number_for_deviding.size() - (place+1); j++)
-                            {
-                                result_division_direct.push_back(0);
-                            }
-                            iterator = second_number_for_deviding.size();
                             
-                        }
-                    }
-                    
-
-                }
-
-                if (first_number_for_deviding.size() >= second_number_for_deviding.size() && first_in==false)
-                {
-                   
-
-                    if (first_number_for_deviding[0] == 1 && second_number_for_deviding[0] == 1)
-                    {
-                        iterator = 0;
-                        result_division_direct.push_back(1);
-                    }
-
-                    else
-                    {
-                        first_number_for_deviding.pop_front();
-                        iterator = second_number_for_deviding.size();
-                    }
-
-                    while (iterator < second_number_for_deviding.size())
-                    {
-                        if (first_number_for_deviding[0] == 1 && second_number_for_deviding[iterator] == 1 || first_number_for_deviding[0] == 0 && second_number_for_deviding[iterator] == 0)
-                        {
-                            first_number_for_deviding.pop_front();
-                            iterator++;
-                        }
-                        else
-                        {
-                            for (int i = 0; i < second_number_for_deviding.size() - iterator; i++)
+                            if (result_division_float.size() < 5)
                             {
-                                place++;
-                                if (first_number_for_deviding[i] == 1 && second_number_for_deviding[iterator + i] == 0)
+                                for (int i = 0; i < result_division_float.size() - 5; i++)
                                 {
-                                    first_number_for_deviding[i] = 1;
-
+                                    result_division_float.push_back(0);
                                 }
-
-                                else if (first_number_for_deviding[i] == 0 && second_number_for_deviding[iterator + i] == 1)
+                            }
+                            else
+                            {
+                              
+                                
+                                for ( int i = 0; i < result_division_float.size() - 5; i++)
                                 {
-                                    first_number_for_deviding[i] = 1;
-                                    first_number_for_deviding[i - 1] = 0;
-                                    place--;
-
+                                    result_division_float.pop_back();
                                 }
+                            }
+                        
+                        break;
+                    }
 
-
+                    if (first_number_for_deviding.size() >= second_number_for_deviding.size())  //������ ����� ���������� ����� ��� ����������� �� ����������&& first_in
+                    {
+                        //first_in = false;
+                        surplace = true;
+                        result_division_int.push_back(1);
+                        remains = true;
+                        for (int i = second_number_for_deviding.size() - 1; i >= 0; i--)
+                        {
+                            if (first_number_for_deviding[i] == 0 && second_number_dividing_additional[i] == 1 && remains || first_number_for_deviding[i] == 1 && second_number_dividing_additional[i] == 0 && remains)
+                            {
+                                first_number_for_deviding[i] = 1;
+                                continue;
                             }
 
-                            for (int j = 0; j < second_number_for_deviding.size() - (place + 1); j++)
+                            else if (first_number_for_deviding[i] == 0 && second_number_dividing_additional[i] == 1 && remains == false || first_number_for_deviding[i] == 1 && second_number_dividing_additional[i] == 0 && remains == false)
                             {
-                                result_division_direct.push_back(0);
+                                first_number_for_deviding[i] = 0;
+                                remains = false;
+                                continue;
                             }
-                            iterator = second_number_for_deviding.size();
+
+                            else if (first_number_for_deviding[i] == 0 && second_number_dividing_additional[i] == 0 && remains)
+                            {
+                                first_number_for_deviding[i] = 0;
+                                continue;
+                            }
+
+                            else if (first_number_for_deviding[i] == 0 && second_number_dividing_additional[i] == 0 && remains == false)
+                            {
+                                first_number_for_deviding[i] = 1;
+                                remains = true;
+                                continue;
+                            }
+
+                            else if (first_number_for_deviding[i] == 1 && second_number_dividing_additional[i] == 1 && remains)
+                            {
+                                first_number_for_deviding[i] = 0;
+                                remains = false;
+                                continue;
+                            }
+
+                            else
+                            {
+                                first_number_for_deviding[i] = 1;
+                                remains = false;
+                                continue;
+                            }
 
                         }
+
+                        count = 0;
+                        for (int i = 0; i < second_number_dividing_additional.size(); i++)
+                        {
+
+                            if (first_number_for_deviding[0] == 0) first_number_for_deviding.pop_front();
+                            else break;
+                            count++;
+                        }
+
+                        count = second_number_dividing_additional.size() - (count + 1);
+                        if (count >= 0)
+                        {
+                            for (int i = 0; i < count; i++)
+                            {
+                                result_division_int.push_back(0);
+                            }
+                        }
+
                     }
 
-
                 }
-
-                if (first_number_for_deviding.size() == 0) break;
-    
             }
+       
 
-        }
-
-        else  if (second_more_first)
+       if (result_division_int.size() < bit_depth)
         {
-
-        }
-
-        else
-        {
-            for (int i = 0; i < bit_depth; i++)
-            {
-                if (i == 0) result_division_direct.push_front(1);
-                else result_division_direct.push_front(0);
-            }
-        }
-
-       if (result_division_direct.size() < bit_depth)
-        {
-            int bit_size = bit_depth - result_division_direct.size();
+            int bit_size = bit_depth - result_division_int.size();
             for (int i = 0; i < bit_size; i++)
             {
-                result_division_direct.push_front(0);
+                result_division_int.push_front(0);
             }
         }
         
-
-
-        //deviding when second > first
 
         return *this;
     }
@@ -849,38 +881,76 @@ public:
     const Numbers& summation_two_float_numbers(const Numbers& num)
     {
         result_summation_FP.clear();
-        deque<string> number_first(32), number_second(32);
+        deque<bool> number_first, number_second;
         int num1 = numbr, num2 = num.numbr;
-        int iterator = 8;
+        bool remains;
         while (num1 >= 1)
         {
-            iterator--;
-            if (num1 % 2 == 1) number_first[iterator] = '1';
-            else number_first[iterator] = '0';
-
+            number_first.push_front(num1 % 2);
             num1 = num1 / DIVIDER;
         }
 
-        iterator = 8;
+        number_first.pop_back();
+        
+
         while (num2 >= 1)
         {
-            iterator--;
-            if (num2 % 2 == 1) number_second[iterator] = '1';
-            else number_second[iterator] = '0';
+            number_second.push_front(num2 % 2);
             num2 = num2 / DIVIDER;
         }
-        result_summation_floating_point_numbers(number_first);
 
-        result_summation_floating_point_numbers(number_second);
+        while (number_first.size() != number_second.size())
+        {
+            number_first.push_front(0);
+        }
 
-        int degree1 = number_first.size() - 1, degree2 = number_second.size() - 1;
+        
+        deqree_numbers = number_second.size();
+        remains = true;
+        for (int i = number_first.size() - 1; i >= 0; i--)
+        {
 
+            if (number_first[i] == 0 && number_second[i] == 1 && remains || number_first[i] == 1 && number_second[i] == 0 && remains)
+            {
+                result_summation_FP.push_front(1);
+                continue;
+            }
 
+            else if (number_first[i] == 0 && number_second[i] == 1 && remains == false || number_first[i] == 1 && number_second[i] == 0 && remains == false)
+            {
+                result_summation_FP.push_front(0);
+                remains = false;
+                continue;
+            }
 
+            else if (number_first[i] == 0 && number_second[i] == 0 && remains)
+            {
+                result_summation_FP.push_front(0);
+                continue;
+            }
 
+            else if (number_first[i] == 0 && number_second[i] == 0 && remains == false)
+            {
+                result_summation_FP.push_front(1);
+                remains = true;
+                continue;
+            }
 
+            else if (number_first[i] == 1 && number_second[i] == 1 && remains)
+            {
+                result_summation_FP.push_front(0);
+                remains = false;
+                continue;
+            }
 
+            else
+            {
+                result_summation_FP.push_front(1);
+                remains = false;
+                continue;
+            }
 
+        }
 
         return *this;
     }
@@ -895,23 +965,24 @@ private:
     deque<bool> result_multiplication_direct;
     deque<bool> result_multiplication_backward;
     deque<bool> result_multiplication_additional;
-    deque<bool> result_division_direct;
-    deque<string> result_summation_FP;
+    deque<bool> result_division_int;
+    deque<bool>  result_division_float{ 0,0,0,0,0 };
+    deque<bool> second_number_dividing_additional;
+    deque<bool> result_summation_FP;
     int numbr;
     int bit_depth;
+    int deqree_numbers;
     const int DIVIDER = 2;
 };
-
-
 
 void main()
 {
     char selector = 'NULL';
-    int num1 =200, num2 =10, bit = 16, choose;
+    int num1 = 9, num2 = 22, bit = 16, choose;
     cout << "Input first & second numbers:\n";
-    //cin >> num1 >> num2; 
+    cin >> num1 >> num2; 
     cout << "Input (Y) - if you want change bit_depth or (N) - defolt bit_depth = 16:\n";
-   // cin >> selector;
+    cin >> selector;
     if (selector == 'Y' || selector == 'y')
     {
         cout << "Input bit_depth:\n";
@@ -1013,18 +1084,16 @@ void main()
             {
                 try
                 {
-
                     if (num1 !=0 && num2 == 0) throw 1;
                     else if (num1 == 0) throw 2;
                     x1 / x2;
-                    out.print_result_deviding(x1.get_result_direct_deviding_vector(), x1.get_numbr(), x2.get_numbr());
+                    out.print_result_deviding(x1.get_result_direct_deviding_vector(), x1.get_result_direct_deviding_vector_FP(), x1.get_numbr(), x2.get_numbr());
                     x1 / x4;
-                    out.print_result_deviding(x1.get_result_direct_deviding_vector(), x1.get_numbr(), x4.get_numbr());
+                    out.print_result_deviding(x1.get_result_direct_deviding_vector(), x1.get_result_direct_deviding_vector_FP(), x1.get_numbr(), x4.get_numbr());
                     x3 / x2;
-                    out.print_result_deviding(x3.get_result_direct_deviding_vector(), x3.get_numbr(), x2.get_numbr());
+                    out.print_result_deviding(x3.get_result_direct_deviding_vector(), x3.get_result_direct_deviding_vector_FP(), x3.get_numbr(), x2.get_numbr());
                     x3 / x4;     
-                    out.print_result_deviding(x3.get_result_direct_deviding_vector(), x3.get_numbr(), x4.get_numbr());
-
+                    out.print_result_deviding(x3.get_result_direct_deviding_vector(), x3.get_result_direct_deviding_vector_FP(), x3.get_numbr(), x4.get_numbr());
                 }
 
                 catch (int i)
@@ -1037,10 +1106,10 @@ void main()
                         {
                             null_deviding.push_back(0);
                         }
-                        out.print_result_deviding(null_deviding, x1.get_numbr(), x2.get_numbr());
-                        out.print_result_deviding(null_deviding, x1.get_numbr(), x4.get_numbr());
-                        out.print_result_deviding(null_deviding, x3.get_numbr(), x4.get_numbr());
-                        out.print_result_deviding(null_deviding, x3.get_numbr(), x2.get_numbr());
+                        out.print_result_deviding(null_deviding, null_deviding, x1.get_numbr(), x2.get_numbr());
+                        out.print_result_deviding(null_deviding, null_deviding, x1.get_numbr(), x4.get_numbr());
+                        out.print_result_deviding(null_deviding, null_deviding, x3.get_numbr(), x4.get_numbr());
+                        out.print_result_deviding(null_deviding, null_deviding, x3.get_numbr(), x2.get_numbr());
                     }
                 }
                 break;
@@ -1049,7 +1118,7 @@ void main()
             case 4:
             {
                 x1.summation_two_float_numbers(x2);
-               // out.result_summation_floating_point_numbers(x1.get_result_summation_FP());
+                out.result_summation_floating_point_numbers(x1.get_result_summation_FP(), x1.Get_deqree_numbers());
                 break;
             }
 
