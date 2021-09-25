@@ -216,7 +216,7 @@ namespace UnittestforAOIS1
 		{
 			Numbers x1(10, bit_depth), x2(20, bit_depth);
 			x1.summation_two_float_numbers(x2);
-			deque<bool> result_FP{ 1,1,0,0,1 };
+			deque<bool> result_FP{ 1,1,1,1,0 };
 			Assert::IsTrue(x1.get_result_summation_FP()==result_FP && x1.Get_deqree_numbers()==5);
 		}
 
