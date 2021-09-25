@@ -135,11 +135,11 @@ public:
 
     Numbers();
 
-    explicit Numbers(int num, int bit)
+    explicit Numbers(float num, int bit)
     {
         numbr = num;
         bit_depth = bit;
-        converting_to_binary(num);
+        converting_to_binary((int)num);
     }
 
     vector<bool> get_direct_vector()
@@ -884,15 +884,15 @@ public:
         deque<bool> number_first, number_second;
         int num1 = numbr, num2 = num.numbr;
         bool remains;
+
         while (num1 >= 1)
         {
             number_first.push_front(num1 % 2);
             num1 = num1 / DIVIDER;
         }
 
-        number_first.pop_back();
-        
-
+       // number_first.pop_back();
+     
         while (num2 >= 1)
         {
             number_second.push_front(num2 % 2);
@@ -903,9 +903,9 @@ public:
         {
             number_first.push_front(0);
         }
-
-        
+  
         deqree_numbers = number_second.size();
+
         remains = true;
         for (int i = number_first.size() - 1; i >= 0; i--)
         {
@@ -969,7 +969,7 @@ private:
     deque<bool>  result_division_float{ 0,0,0,0,0 };
     deque<bool> second_number_dividing_additional;
     deque<bool> result_summation_FP;
-    int numbr;
+    float numbr;
     int bit_depth;
     int deqree_numbers;
     const int DIVIDER = 2;
@@ -978,7 +978,8 @@ private:
 void main()
 {
     char selector = 'NULL';
-    int num1 = 9, num2 = 22, bit = 16, choose;
+    float num1, num2, bit = 16;
+    int choose;
     cout << "Input first & second numbers:\n";
     cin >> num1 >> num2; 
     cout << "Input (Y) - if you want change bit_depth or (N) - defolt bit_depth = 16:\n";
