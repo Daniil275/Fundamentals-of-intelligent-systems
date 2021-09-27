@@ -207,7 +207,7 @@ namespace UnittestforAOIS1
 			Assert::IsTrue(x5.get_result_direct_deviding_vector() == result_deviding2 && x5.get_result_direct_deviding_vector_FP()== result_deviding3);
 			Numbers x7(9, bit_depth), x8(22, bit_depth);
 			deque<bool> result_deviding4{ 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 };
-			deque<bool> result_deviding5{ 0,1,0,0,0 };
+			deque<bool> result_deviding5{ 0,1,0,0,1 };
 			x7 / x8;
 			Assert::IsTrue(x7.get_result_direct_deviding_vector() == result_deviding4 && x7.get_result_direct_deviding_vector_FP() == result_deviding5);
 		}
@@ -216,8 +216,13 @@ namespace UnittestforAOIS1
 		{
 			Numbers x1(10, bit_depth), x2(20, bit_depth);
 			x1.summation_two_float_numbers(x2);
-			deque<bool> result_FP{ 1,1,1,1,0 };
-			Assert::IsTrue(x1.get_result_summation_FP()==result_FP && x1.Get_deqree_numbers()==5);
+			deque<bool> result_FP{ 0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,0 };
+			Assert::IsTrue(x1.get_result_summation_FP()==result_FP);
+			Numbers x3(7.25, bit_depth), x4(3.25, bit_depth);
+			x3.summation_two_float_numbers(x4);
+			deque<bool> result_FP1{ 0,0,0,0,0,0,0,0,0,0,1,0,1,0,1,0 };
+			Assert::IsTrue(x3.get_result_summation_FP() == result_FP1);
+
 		}
 
 
