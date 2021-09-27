@@ -10,14 +10,14 @@
 #include "windows.h"
 #define endl cout<<"\n";
 using namespace std;
-template<typename T>
+
 
 
 
 class Print
 {
 public:
-    void print_in_all_codes(vector<bool> first, vector<bool>second, vector<bool>third, T figure) 
+    static void print_in_all_codes(vector<bool> first, vector<bool>second, vector<bool>third, int figure)
     {
         if (figure > 0)
         {
@@ -37,7 +37,7 @@ public:
         print_result(third);
     }
 
-    void print_result_operations(vector<bool> first, vector<bool> second, vector<bool> third, T num1, T num2)
+    static void print_result_operations(vector<bool> first, vector<bool> second, vector<bool> third, int num1, int num2)
     {
         cout << "Summation numbers " << num1 << " + " << num2 << " = " << num1 + num2 << "\n";
         cout << "In straight code: ";
@@ -51,7 +51,7 @@ public:
 
     }
 
-   void print_result(vector<bool> vr)
+    static void print_result(vector<bool> vr)
     {
         for (int i = 0; i < vr.size(); i++)
         {
@@ -61,7 +61,7 @@ public:
         endl
     }
 
-   void print_result_revers(vector<bool> vr)
+    static void print_result_revers(vector<bool> vr)
     {
         for (int i = vr.size() - 1; i >= 0; i--)
         {
@@ -71,71 +71,74 @@ public:
         endl
     }
 
-   void print_multiplications(deque<bool> dq)
-   {
-       for (int i = 0; i < dq.size(); i++)
-       {
-           cout << dq[i];
-       }
-       endl
-   }
+    static void print_multiplications(deque<bool> dq)
+    {
+        for (int i = 0; i < dq.size(); i++)
+        {
+            cout << dq[i];
+        }
+        endl
+    }
 
-   void print_result_multiplications(deque<bool> first, deque<bool> second, deque<bool> third, T num1, T num2)
-   {
-       cout << "Multiplications numbers " << num1 << " * " << num2 << " = " << num1 * num2 << "\n";
-       cout << "In straight code: ";
-       print_multiplications(first);
-       cout << "In backward code: ";
-       print_multiplications(second);
-       cout << "In addition code: ";
-       print_multiplications(third);
-       endl
-   }
+    static void print_result_multiplications(deque<bool> first, deque<bool> second, deque<bool> third, int num1, int num2)
+    {
+        cout << "Multiplications numbers " << num1 << " * " << num2 << " = " << num1 * num2 << "\n";
+        cout << "In straight code: ";
+        print_multiplications(first);
+        cout << "In backward code: ";
+        print_multiplications(second);
+        cout << "In addition code: ";
+        print_multiplications(third);
+        endl
+    }
 
-   void print_result_deviding(deque<bool> first, deque<bool> second, T num1, T num2)
-   {
+    static void print_result_deviding(deque<bool> first, deque<bool> second, int num1, int num2)
+    {
 
-       cout << "Deviding numbers " << num1 << " / " << num2 << "\n";
-       if (num1 < 0 && num2 > 0  || num1 > 0 && num2 < 0) cout << "-";
-       
-       
-           print_deviding(first);
-           cout << ",";
-           print_deviding(second);
-      
-       endl
+        cout << "Deviding numbers " << num1 << " / " << num2 << "\n";
+        if (num1 < 0 && num2 > 0 || num1 > 0 && num2 < 0) cout << "-";
 
-           endl
-   }  
 
-   void print_deviding(deque<bool> dq)
-   {
-       
-       for (int i = 0; i < dq.size(); i++)
-       {
-          
-           cout << dq[i];
-       }
-      
-   }
+        print_deviding(first);
+        cout << ",";
+        print_deviding(second);
 
-   void result_summation_floating_point_numbers(deque<bool> deq,int point)
-   {
-       for (int i = 0; i < deq.size(); i++)
-       {
-           if (i == deq.size() - point && point!=0) cout << ",";
-           cout << deq[i];
-       }
+        endl
 
-       
-      
-       endl
-   }
+            endl
+    }
+
+    static void print_deviding(deque<bool> dq)
+    {
+
+        for (int i = 0; i < dq.size(); i++)
+        {
+
+            cout << dq[i];
+        }
+
+    }
+
+    static void result_summation_floating_point_numbers(deque<bool> deq, int point, float num1, float num2)
+    {
+        cout << "Summation floating numbers " << num1 << " + " << num2 << " = " << num1 + num2 << "\n";
+
+        for (int i = 0; i < deq.size(); i++)
+        {
+            if (i == deq.size() - point && point != 0) cout << ",";
+            cout << deq[i];
+        }
+
+
+
+        endl
+    }
 
 };
 
-class Numbers : public Print<int>
+class Numbers 
 {
+    friend class Print;
 public:
 
     Numbers();
@@ -212,7 +215,7 @@ public:
         return deqree_numbers;
     }
 
-    int get_numbr()
+    float get_numbr()
     {
         return numbr;
     }
@@ -1045,7 +1048,7 @@ void main()
     }
 
     Numbers x1(num1, bit), x2(num2, bit), x3(-num1, bit), x4(-num2, bit);
-    Print<int> out;
+    //Print out;
     bool breaker = true;
     system("cls");
 
@@ -1058,13 +1061,13 @@ void main()
 
     case 1:
     {
-        out.print_in_all_codes(x1.get_direct_vector(), x1.get_backward_vector(), x1.get_additional_vector(), x1.get_numbr());
+            Print::print_in_all_codes(x1.get_direct_vector(), x1.get_backward_vector(), x1.get_additional_vector(), x1.get_numbr());
         endl
-            out.print_in_all_codes(x2.get_direct_vector(), x2.get_backward_vector(), x2.get_additional_vector(), x2.get_numbr());
+            Print::print_in_all_codes(x2.get_direct_vector(), x2.get_backward_vector(), x2.get_additional_vector(), x2.get_numbr());
         endl
-            out.print_in_all_codes(x3.get_direct_vector(), x3.get_backward_vector(), x3.get_additional_vector(), x3.get_numbr());
+            Print::print_in_all_codes(x3.get_direct_vector(), x3.get_backward_vector(), x3.get_additional_vector(), x3.get_numbr());
         endl
-            out.print_in_all_codes(x4.get_direct_vector(), x4.get_backward_vector(), x4.get_additional_vector(), x4.get_numbr());
+            Print::print_in_all_codes(x4.get_direct_vector(), x4.get_backward_vector(), x4.get_additional_vector(), x4.get_numbr());
         endl
             break;
 
@@ -1089,13 +1092,13 @@ void main()
             case 1:
             {
                 x1 + x2;
-                out.print_result_operations(x1.get_result_direct_vector(), x1.get_result_backward_vector(), x1.get_result_additional_vector(), x1.get_numbr(), x2.get_numbr());
+                Print::print_result_operations(x1.get_result_direct_vector(), x1.get_result_backward_vector(), x1.get_result_additional_vector(), x1.get_numbr(), x2.get_numbr());
                 x2 + x3;
-                out.print_result_operations(x2.get_result_direct_vector(), x2.get_result_backward_vector(), x2.get_result_additional_vector(), x2.get_numbr(), x3.get_numbr());
+                Print::print_result_operations(x2.get_result_direct_vector(), x2.get_result_backward_vector(), x2.get_result_additional_vector(), x2.get_numbr(), x3.get_numbr());
                 x3 + x4;
-                out.print_result_operations(x3.get_result_direct_vector(), x3.get_result_backward_vector(), x3.get_result_additional_vector(), x3.get_numbr(), x4.get_numbr());
+                Print::print_result_operations(x3.get_result_direct_vector(), x3.get_result_backward_vector(), x3.get_result_additional_vector(), x3.get_numbr(), x4.get_numbr());
                 x4 + x1;
-                out.print_result_operations(x4.get_result_direct_vector(), x4.get_result_backward_vector(), x4.get_result_additional_vector(), x4.get_numbr(), x1.get_numbr());
+                Print::print_result_operations(x4.get_result_direct_vector(), x4.get_result_backward_vector(), x4.get_result_additional_vector(), x4.get_numbr(), x1.get_numbr());
                 break;
             }
 
@@ -1106,13 +1109,13 @@ void main()
 
                     if (num1 == 0 || num2 == 0) throw 3;
                     x1 * x2;
-                    out.print_result_multiplications(x1.get_result_direct_multiplication_vector(), x1.get_result_backward_multiplication_vector(), x1.get_result_additional_multiplication_vector(), x1.get_numbr(), x2.get_numbr());
+                    Print::print_result_multiplications(x1.get_result_direct_multiplication_vector(), x1.get_result_backward_multiplication_vector(), x1.get_result_additional_multiplication_vector(), x1.get_numbr(), x2.get_numbr());
                     x2 * x3;
-                    out.print_result_multiplications(x2.get_result_direct_multiplication_vector(), x2.get_result_backward_multiplication_vector(), x2.get_result_additional_multiplication_vector(), x2.get_numbr(), x3.get_numbr());
+                    Print::print_result_multiplications(x2.get_result_direct_multiplication_vector(), x2.get_result_backward_multiplication_vector(), x2.get_result_additional_multiplication_vector(), x2.get_numbr(), x3.get_numbr());
                     x3 * x4;
-                    out.print_result_multiplications(x3.get_result_direct_multiplication_vector(), x3.get_result_backward_multiplication_vector(), x3.get_result_additional_multiplication_vector(), x3.get_numbr(), x4.get_numbr());
+                    Print::print_result_multiplications(x3.get_result_direct_multiplication_vector(), x3.get_result_backward_multiplication_vector(), x3.get_result_additional_multiplication_vector(), x3.get_numbr(), x4.get_numbr());
                     x4 * x1;
-                    out.print_result_multiplications(x4.get_result_direct_multiplication_vector(), x4.get_result_backward_multiplication_vector(), x4.get_result_additional_multiplication_vector(), x4.get_numbr(), x1.get_numbr());
+                    Print::print_result_multiplications(x4.get_result_direct_multiplication_vector(), x4.get_result_backward_multiplication_vector(), x4.get_result_additional_multiplication_vector(), x4.get_numbr(), x1.get_numbr());
                   
                    
                 }
@@ -1126,10 +1129,10 @@ void main()
                         {
                             null_multiplication.push_back(0);
                         }
-                        out.print_result_multiplications(null_multiplication, null_multiplication, null_multiplication, x1.get_numbr(), x2.get_numbr());
-                        out.print_result_multiplications(null_multiplication, null_multiplication, null_multiplication, x2.get_numbr(), x3.get_numbr());
-                        out.print_result_multiplications(null_multiplication, null_multiplication, null_multiplication, x3.get_numbr(), x4.get_numbr());
-                        out.print_result_multiplications(null_multiplication, null_multiplication, null_multiplication, x4.get_numbr(), x1.get_numbr());
+                        Print::print_result_multiplications(null_multiplication, null_multiplication, null_multiplication, x1.get_numbr(), x2.get_numbr());
+                        Print::print_result_multiplications(null_multiplication, null_multiplication, null_multiplication, x2.get_numbr(), x3.get_numbr());
+                        Print::print_result_multiplications(null_multiplication, null_multiplication, null_multiplication, x3.get_numbr(), x4.get_numbr());
+                        Print::print_result_multiplications(null_multiplication, null_multiplication, null_multiplication, x4.get_numbr(), x1.get_numbr());
                     }
                 }
                 
@@ -1143,13 +1146,13 @@ void main()
                     if (num1 !=0 && num2 == 0) throw 1;
                     else if (num1 == 0) throw 2;
                     x1 / x2;
-                    out.print_result_deviding(x1.get_result_direct_deviding_vector(), x1.get_result_direct_deviding_vector_FP(), x1.get_numbr(), x2.get_numbr());
+                    Print::print_result_deviding(x1.get_result_direct_deviding_vector(), x1.get_result_direct_deviding_vector_FP(), x1.get_numbr(), x2.get_numbr());
                     x1 / x4;
-                    out.print_result_deviding(x1.get_result_direct_deviding_vector(), x1.get_result_direct_deviding_vector_FP(), x1.get_numbr(), x4.get_numbr());
+                    Print::print_result_deviding(x1.get_result_direct_deviding_vector(), x1.get_result_direct_deviding_vector_FP(), x1.get_numbr(), x4.get_numbr());
                     x3 / x2;
-                    out.print_result_deviding(x3.get_result_direct_deviding_vector(), x3.get_result_direct_deviding_vector_FP(), x3.get_numbr(), x2.get_numbr());
+                    Print::print_result_deviding(x3.get_result_direct_deviding_vector(), x3.get_result_direct_deviding_vector_FP(), x3.get_numbr(), x2.get_numbr());
                     x3 / x4;     
-                    out.print_result_deviding(x3.get_result_direct_deviding_vector(), x3.get_result_direct_deviding_vector_FP(), x3.get_numbr(), x4.get_numbr());
+                    Print::print_result_deviding(x3.get_result_direct_deviding_vector(), x3.get_result_direct_deviding_vector_FP(), x3.get_numbr(), x4.get_numbr());
                 }
 
                 catch (int i)
@@ -1162,10 +1165,10 @@ void main()
                         {
                             null_deviding.push_back(0);
                         }
-                        out.print_result_deviding(null_deviding, null_deviding, x1.get_numbr(), x2.get_numbr());
-                        out.print_result_deviding(null_deviding, null_deviding, x1.get_numbr(), x4.get_numbr());
-                        out.print_result_deviding(null_deviding, null_deviding, x3.get_numbr(), x4.get_numbr());
-                        out.print_result_deviding(null_deviding, null_deviding, x3.get_numbr(), x2.get_numbr());
+                        Print::print_result_deviding(null_deviding, null_deviding, x1.get_numbr(), x2.get_numbr());
+                        Print::print_result_deviding(null_deviding, null_deviding, x1.get_numbr(), x4.get_numbr());
+                        Print::print_result_deviding(null_deviding, null_deviding, x3.get_numbr(), x4.get_numbr());
+                        Print::print_result_deviding(null_deviding, null_deviding, x3.get_numbr(), x2.get_numbr());
                     }
                 }
                 break;
@@ -1174,7 +1177,7 @@ void main()
             case 4:
             {
                 x1.summation_two_float_numbers(x2);
-                out.result_summation_floating_point_numbers(x1.get_result_summation_FP(),x1.get_point());
+                Print::result_summation_floating_point_numbers(x1.get_result_summation_FP(),x1.get_point(), x1.get_numbr(), x2.get_numbr());
                 break;
             }
 
