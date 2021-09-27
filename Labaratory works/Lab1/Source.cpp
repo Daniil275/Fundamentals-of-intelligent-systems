@@ -6,6 +6,7 @@
 #include <sstream>
 #include <deque>
 #include <math.h>
+#include <cmath>
 #include "windows.h"
 #define endl cout<<"\n";
 using namespace std;
@@ -103,6 +104,8 @@ public:
            print_deviding(second);
       
        endl
+
+           endl
    }  
 
    void print_deviding(deque<bool> dq)
@@ -116,14 +119,16 @@ public:
       
    }
 
-   void result_summation_floating_point_numbers(deque<bool> deq, int num)
+   void result_summation_floating_point_numbers(deque<bool> deq,int point)
    {
        for (int i = 0; i < deq.size(); i++)
        {
+           if (i == deq.size() - point && point!=0) cout << ",";
            cout << deq[i];
        }
 
-       cout << " * 2^" << num;
+       
+      
        endl
    }
 
@@ -210,6 +215,11 @@ public:
     int get_numbr()
     {
         return numbr;
+    }
+
+    int get_point()
+    {
+        return point;
     }
 
     void converting_to_binary(int number)
@@ -766,8 +776,7 @@ public:
                        
                             for (int i = 0; i < first_number_for_deviding.size(); i++)
                             {
-                                if (first_number_for_deviding[i] == 1) stopper++;
-                                if (stopper == 2) break;
+                              
                                 result_division_float.push_back(first_number_for_deviding[i]);
                             }
                             
@@ -882,29 +891,63 @@ public:
     {
         result_summation_FP.clear();
         deque<bool> number_first, number_second;
-        int num1 = numbr, num2 = num.numbr;
+        float num1 = numbr, num2 = num.numbr , num1_int, num2_int, num1_float, num2_float;
         bool remains;
+        num1_float = modf(num1, &num1_int);
+        num2_float = modf(num2, &num2_int);
 
-        while (num1 >= 1)
+        
+        while (num1_int >= 1)
         {
-            number_first.push_front(num1 % 2);
-            num1 = num1 / DIVIDER;
+            number_first.push_front((int)num1_int % 2);
+            num1_int = num1_int / DIVIDER;
         }
 
-       // number_first.pop_back();
+        if (num1_float != 0)
+        {
+            while (num1_float < 1)
+            {
+                number_first.push_back((int)(num1_float * 2));
+                num1_float = num1_float * DIVIDER;
+                point++;
+            }
+        }
      
-        while (num2 >= 1)
+        while (num2_int >= 1)
         {
-            number_second.push_front(num2 % 2);
-            num2 = num2 / DIVIDER;
+            number_second.push_front((int)num2_int % 2);
+            num2_int = num2_int / DIVIDER;
         }
 
-        while (number_first.size() != number_second.size())
-        {
-            number_first.push_front(0);
-        }
-  
         deqree_numbers = number_second.size();
+        if (num2_float != 0)
+        {
+            while (num2_float < 1)
+            {
+                number_second.push_back((int)(num2_float * 2));
+                num2_float = num2_float * DIVIDER;
+                point++;
+            }
+        }
+
+        if (number_first.size() < bit_depth)
+        {
+             
+            while (number_first.size() != bit_depth)
+            {
+                number_first.push_front(0);
+            }
+        }
+
+        if ( number_second.size() < bit_depth)
+        {
+            while (number_second.size() != bit_depth)
+            {
+                number_second.push_front(0);
+            }
+        }
+
+        point = point / DIVIDER;
 
         remains = true;
         for (int i = number_first.size() - 1; i >= 0; i--)
@@ -952,6 +995,16 @@ public:
 
         }
 
+        if (result_summation_FP.size() < bit_depth)
+        {
+            int size = 0;
+            size = result_summation_FP.size();
+            for (int i = 0; i < bit_depth - size; i++)
+            {
+                result_summation_FP.push_front(0);
+            }
+        }
+
         return *this;
     }
 
@@ -972,6 +1025,7 @@ private:
     float numbr;
     int bit_depth;
     int deqree_numbers;
+    int point;
     const int DIVIDER = 2;
 };
 
@@ -1059,6 +1113,7 @@ void main()
                     out.print_result_multiplications(x3.get_result_direct_multiplication_vector(), x3.get_result_backward_multiplication_vector(), x3.get_result_additional_multiplication_vector(), x3.get_numbr(), x4.get_numbr());
                     x4 * x1;
                     out.print_result_multiplications(x4.get_result_direct_multiplication_vector(), x4.get_result_backward_multiplication_vector(), x4.get_result_additional_multiplication_vector(), x4.get_numbr(), x1.get_numbr());
+                  
                    
                 }
 
@@ -1119,7 +1174,7 @@ void main()
             case 4:
             {
                 x1.summation_two_float_numbers(x2);
-                out.result_summation_floating_point_numbers(x1.get_result_summation_FP(), x1.Get_deqree_numbers());
+                out.result_summation_floating_point_numbers(x1.get_result_summation_FP(),x1.get_point());
                 break;
             }
 
