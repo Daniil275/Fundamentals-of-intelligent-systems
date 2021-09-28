@@ -15,7 +15,7 @@ using namespace std;
 class Print
 {
 public:
-    static void print_in_all_codes(vector<bool> first, vector<bool>second, vector<bool>third, int figure)
+    static void print_in_all_codes(deque<bool> first, deque<bool>second, deque<bool>third, int figure)
     {
         if (figure > 0)
         {
@@ -35,35 +35,25 @@ public:
         print_result(third);
     }
 
-    static void print_result_operations(vector<bool> first, vector<bool> second, vector<bool> third, int num1, int num2)
+    static void print_result_operations(deque<bool> first, deque<bool> second, deque<bool> third, int num1, int num2)
     {
         cout << "Summation numbers " << num1 << " + " << num2 << " = " << num1 + num2 << "\n";
         cout << "In straight code: ";
-        print_result_revers(first);
+        print_result(first);
         cout << "In backward code: ";
-        print_result_revers(second);
+        print_result(second);
         cout << "In addition code: ";
-        print_result_revers(third);
+        print_result(third);
 
         endl
 
     }
 
-    static void print_result(const vector<bool>& vr)
+    static void print_result(const deque<bool>& vr)
     {
         for (auto i : vr)
         {
             cout << i;
-        }
-
-        endl
-    }
-
-    static void print_result_revers(vector<bool> vr)
-    {
-        for (int i = vr.size() - 1; i >= 0; i--)
-        {
-            cout << vr[i];
         }
 
         endl
@@ -147,32 +137,32 @@ public:
         converting_to_binary((int)num);
     }
 
-    vector<bool> get_direct_vector()
+    deque<bool> get_direct_vector()
     {
         return direct;
     }
 
-    vector<bool> get_backward_vector()
+    deque<bool> get_backward_vector()
     {
         return backward;
     }
 
-    vector<bool> get_additional_vector()
+    deque<bool> get_additional_vector()
     {
         return  additional;
     }
 
-    vector<bool> get_result_direct_vector()
+    deque<bool> get_result_direct_vector()
     {
         return  result_direct;
     }
 
-    vector<bool> get_result_backward_vector()
+    deque<bool> get_result_backward_vector()
     {
         return  result_backward;
     }
 
-    vector<bool> get_result_additional_vector()
+    deque<bool> get_result_additional_vector()
     {
         return  result_additional;
     }
@@ -345,12 +335,13 @@ public:
 
     int backward_for_summ(int n)
     {
-        n++;
-        if (n == 7)
+        n--;
+        if (n == 0)
         {
-            if (result_backward[7] == 0) result_backward[0] = 1;
+            if (result_backward[0] == 0) result_backward[0] = 1;
             else
             {
+                result_backward[0] = 1;
                 result_backward[7] = 0;
 
             }
@@ -406,45 +397,45 @@ public:
     void summation_algorithm(deque<bool>& first, deque<bool>& second , deque<bool>& result_summation)
     {
         bool remains = true;
-        for (int i = first.size() - 1; i >= 0; i--)
+        for (int i = second.size() - 1; i >= 0; i--)
         {
 
             if (first[i] == 0 && second[i] == 1 && remains || first[i] == 1 && second[i] == 0 && remains)
             {
-                result_summation.push_back(1);
+                result_summation.push_front(1);
                 continue;
             }
 
             else if (first[i] == 0 && second[i] == 1 && remains == false || first[i] == 1 && second[i] == 0 && remains == false)
             {
-                result_summation.push_back(0);
+                result_summation.push_front(0);
                 remains = false;
                 continue;
             }
 
             else if (first[i] == 0 && second[i] == 0 && remains)
             {
-                result_summation.push_back(0);
+                result_summation.push_front(0);
                 continue;
             }
 
             else if (first[i] == 0 && second[i] == 0 && remains == false)
             {
-                result_summation.push_back(1);
+                result_summation.push_front(1);
                 remains = true;
                 continue;
             }
 
             else if (first[i] == 1 && second[i] == 1 && remains)
             {
-                result_summation.push_back(0);
+                result_summation.push_front(0);
                 remains = false;
                 continue;
             }
 
             else
             {
-                result_summation.push_back(1);
+                result_summation.push_front(1);
                 remains = false;
                 continue;
             }
@@ -457,57 +448,16 @@ public:
         result_direct.clear();
         result_backward.clear();
         result_additional.clear();
+        deque<bool> box;
         bool two_positive_numbers = false, remains, two_negative_numbers = false, one_negative = false;
         if (this->numbr > 0 && num.numbr > 0) two_positive_numbers = true;
         if (this->numbr < 0 && num.numbr < 0) two_negative_numbers = true;
         else one_negative = true;
+
         if (two_positive_numbers)
-        {
-            remains = true;
-            for (int i = this->direct.size() - 1; i >= 0; i--)
-            {
-
-                if (this->direct[i] == 0 && num.direct[i] == 1 && remains || this->direct[i] == 1 && num.direct[i] == 0 && remains)
-                {
-                    result_direct.push_back(1);
-                    continue;
-                }
-
-                else if (this->direct[i] == 0 && num.direct[i] == 1 && remains == false || this->direct[i] == 1 && num.direct[i] == 0 && remains == false)
-                {
-                    result_direct.push_back(0);
-                    remains = false;
-                    continue;
-                }
-
-                else if (this->direct[i] == 0 && num.direct[i] == 0 && remains)
-                {
-                    result_direct.push_back(0);
-                    continue;
-                }
-
-                else if (this->direct[i] == 0 && num.direct[i] == 0 && remains == false)
-                {
-                    result_direct.push_back(1);
-                    remains = true;
-                    continue;
-                }
-
-                else if (this->direct[i] == 1 && num.direct[i] == 1 && remains)
-                {
-                    result_direct.push_back(0);
-                    remains = false;
-                    continue;
-                }
-
-                else
-                {
-                    result_direct.push_back(1);
-                    remains = false;
-                    continue;
-                }
-
-            }
+        {// direct and direct
+            deque<bool> box(num.direct);
+            summation_algorithm(direct, box, result_direct);
             result_backward = result_direct;
             result_additional = result_direct;
 
@@ -515,98 +465,13 @@ public:
 
         else
         {
-            remains = true;
-            for (int i = this->additional.size() - 1; i >= 0; i--)
-            {
-
-                if (this->additional[i] == 0 && num.additional[i] == 1 && remains || this->additional[i] == 1 && num.additional[i] == 0 && remains)
-                {
-                    result_additional.push_back(1);
-                    continue;
-                }
-
-                else if (this->additional[i] == 0 && num.additional[i] == 1 && remains == false || this->additional[i] == 1 && num.additional[i] == 0 && remains == false)
-                {
-                    result_additional.push_back(0);
-                    remains = false;
-                    continue;
-                }
-
-                else if (this->additional[i] == 0 && num.additional[i] == 0 && remains)
-                {
-                    result_additional.push_back(0);
-                    continue;
-                }
-
-                else if (this->additional[i] == 0 && num.additional[i] == 0 && remains == false)
-                {
-                    result_additional.push_back(1);
-                    remains = true;
-                    continue;
-                }
-
-                else if (this->additional[i] == 1 && num.additional[i] == 1 && remains)
-                {
-                    result_additional.push_back(0);
-                    remains = false;
-                    continue;
-                }
-
-                else
-                {
-                    result_additional.push_back(1);
-                    remains = false;
-                    continue;
-                }
-
-            }
+            //additional & additional
+            deque<bool> box(num.additional);
+            summation_algorithm(additional, box, result_additional);
 
             //backward
-            remains = true;
-            for (int i = this->backward.size() - 1; i >= 0; i--)
-            {
-
-                if (this->backward[i] == 0 && num.backward[i] == 1 && remains || this->backward[i] == 1 && num.backward[i] == 0 && remains)
-                {
-                    result_backward.push_back(1);
-                    continue;
-                }
-
-                else if (this->backward[i] == 0 && num.backward[i] == 1 && remains == false || this->backward[i] == 1 && num.backward[i] == 0 && remains == false)
-                {
-                    result_backward.push_back(0);
-                    remains = false;
-                    continue;
-                }
-
-                else if (this->backward[i] == 0 && num.backward[i] == 0 && remains)
-                {
-                    result_backward.push_back(0);
-                    continue;
-                }
-
-                else if (this->backward[i] == 0 && num.backward[i] == 0 && remains == false)
-                {
-                    result_backward.push_back(1);
-                    remains = true;
-                    continue;
-                }
-
-                else if (this->backward[i] == 1 && num.backward[i] == 1 && remains)
-                {
-                    result_backward.push_back(0);
-                    remains = false;
-                    continue;
-                }
-
-                else
-                {
-                    result_backward.push_back(1);
-                    remains = false;
-                    continue;
-                }
-
-            }
+            deque<bool> box1(num.backward);
+            summation_algorithm(backward, box1, result_backward);
 
             if (one_negative)
             {
@@ -624,7 +489,7 @@ public:
             }
             else
             {
-                backward_for_summ(-1);
+                backward_for_summ(bit_depth);
                 result_direct = result_backward;
                 reverse_backward_for_direct();
                 //direct
@@ -672,6 +537,8 @@ public:
                     first_sum.push_back(0);
                     first_sum.pop_front();
                 }
+
+              
                 remains = true;
                 for (int i = first_sum.size() - 1; i >= 0; i--)
                 {
@@ -849,11 +716,12 @@ public:
                         break;
                     }
 
-                    if (first_number_for_deviding.size() >= second_number_for_deviding.size())  //������ ����� ���������� ����� ��� ����������� �� ����������&& first_in
+                    if (first_number_for_deviding.size() >= second_number_for_deviding.size())  
                     {
-                        //first_in = false;
+                       
                         surplace = true;
                         result_division_int.push_back(1);
+
                         remains = true;
                         for (int i = second_number_for_deviding.size() - 1; i >= 0; i--)
                         {
@@ -1058,12 +926,12 @@ public:
     }
 
 private:
-    vector<bool> direct;
-    vector<bool> backward;
-    vector<bool> additional;
-    vector<bool> result_direct;
-    vector<bool> result_backward;
-    vector<bool> result_additional;
+    deque<bool> direct;
+    deque<bool> backward;
+    deque<bool> additional;
+    deque<bool> result_direct;
+    deque<bool> result_backward;
+    deque<bool> result_additional;
     deque<bool> result_multiplication_direct;
     deque<bool> result_multiplication_backward;
     deque<bool> result_multiplication_additional;
@@ -1081,12 +949,12 @@ private:
 void main()
 {
     char selector = 'NULL';
-    float num1, num2, bit = 16;
+    float num1=9, num2=22, bit = 16;
     int choose;
     cout << "Input first & second numbers:\n";
-    cin >> num1 >> num2; 
+  //  cin >> num1 >> num2; 
     cout << "Input (Y) - if you want change bit_depth or (N) - defolt bit_depth = 16:\n";
-    cin >> selector;
+   // cin >> selector;
     if (selector == 'Y' || selector == 'y')
     {
         cout << "Input bit_depth:\n";
@@ -1094,7 +962,6 @@ void main()
     }
 
     Numbers x1(num1, bit), x2(num2, bit), x3(-num1, bit), x4(-num2, bit);
-    //Print out;
     bool breaker = true;
     system("cls");
 
