@@ -15,8 +15,8 @@ namespace UnittestforAOIS1
 		TEST_METHOD(TestMethod1)//test converting
 		{
 			Numbers x1(9, bit_depth), x2(22, bit_depth);
-			vector<bool> nine_in_binary      { 0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1 };
-			vector<bool> twenty_two_in_binary{ 0,0,0,0,0,0,0,0,0,0,0,1,0,1,1,0 };
+			deque<bool> nine_in_binary      { 0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1 };
+			deque<bool> twenty_two_in_binary{ 0,0,0,0,0,0,0,0,0,0,0,1,0,1,1,0 };
 			Assert::IsTrue(x1.get_numbr() == 9 && x2.get_numbr() == 22);
 			Assert::IsTrue(x1.get_direct_vector() == nine_in_binary && x2.get_direct_vector() == twenty_two_in_binary);
 			Assert::IsTrue(x1.get_backward_vector() == nine_in_binary && x2.get_backward_vector() == twenty_two_in_binary);
@@ -26,12 +26,12 @@ namespace UnittestforAOIS1
 		TEST_METHOD(TestMethod2)//test converting
 		{
 			Numbers x3(-9, bit_depth), x4(-22, bit_depth);
-			vector<bool> negative_nine_in_binary  { 0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1 };
-			vector<bool> negative_nine_revers     { 1,1,1,1,1,1,1,1,1,1,1,1,0,1,1,0 };
-			vector<bool> negative_nine_additional { 1,1,1,1,1,1,1,1,1,1,1,1,0,1,1,1 };
-			vector<bool> negative_twenty_two_in_binary    { 0,0,0,0,0,0,0,0,0,0,0,1,0,1,1,0 };
-			vector<bool> negative_twenty_two_in_reverse   { 1,1,1,1,1,1,1,1,1,1,1,0,1,0,0,1 };
-			vector<bool> negative_twenty_two_in_additional{ 1,1,1,1,1,1,1,1,1,1,1,0,1,0,1,0 };
+			deque<bool> negative_nine_in_binary  { 0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1 };
+			deque<bool> negative_nine_revers     { 1,1,1,1,1,1,1,1,1,1,1,1,0,1,1,0 };
+			deque<bool> negative_nine_additional { 1,1,1,1,1,1,1,1,1,1,1,1,0,1,1,1 };
+			deque<bool> negative_twenty_two_in_binary    { 0,0,0,0,0,0,0,0,0,0,0,1,0,1,1,0 };
+			deque<bool> negative_twenty_two_in_reverse   { 1,1,1,1,1,1,1,1,1,1,1,0,1,0,0,1 };
+			deque<bool> negative_twenty_two_in_additional{ 1,1,1,1,1,1,1,1,1,1,1,0,1,0,1,0 };
 			Assert::IsTrue(x3.get_numbr() == -9 && x4.get_numbr() == -22);
 			Assert::IsTrue(x3.get_direct_vector() == negative_nine_in_binary && x3.get_backward_vector() == negative_nine_revers && x3.get_additional_vector() == negative_nine_additional, L"cheking -9");
 			Assert::IsTrue(x4.get_direct_vector() == negative_twenty_two_in_binary && x4.get_backward_vector() == negative_twenty_two_in_reverse && x4.get_additional_vector() == negative_twenty_two_in_additional);
@@ -42,50 +42,50 @@ namespace UnittestforAOIS1
 		{
 			Numbers x1(10, bit_depth), x2(15, bit_depth), x3(-12, bit_depth), x4(-14, bit_depth);
 			x1 + x2;                             
-			vector<bool> ressult_summation_direct   { 1,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0 };//reverse code 'case i so represent
-			vector<bool> ressult_summation_backward { 1,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0 };
-			vector<bool> ressult_summation_additonal{ 1,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0 };
+			deque<bool> ressult_summation_direct   { 0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,1 };//reverse code 'case i so represent
+			deque<bool> ressult_summation_backward { 0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,1 };
+			deque<bool> ressult_summation_additonal{ 0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,1 };
 			Assert::IsTrue(x1.get_result_direct_vector() == ressult_summation_direct && x1.get_result_backward_vector() == ressult_summation_backward && x1.get_result_additional_vector() == ressult_summation_additonal);
 			x2 + x3;
-			vector<bool> ressult_summation_direct1   { 1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0 };//reverse code 'case i so represent
-			vector<bool> ressult_summation_backward1 { 1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0 };
-			vector<bool> ressult_summation_additonal1{ 1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0 };
+			deque<bool> ressult_summation_direct1   { 0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1 };//reverse code 'case i so represent
+			deque<bool> ressult_summation_backward1 { 0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1 };
+			deque<bool> ressult_summation_additonal1{ 0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1 };
 			Assert::IsTrue(x2.get_result_direct_vector() == ressult_summation_direct1 && x2.get_result_backward_vector() == ressult_summation_backward1 && x2.get_result_additional_vector() == ressult_summation_additonal1);
 			x3 + x4;
-			vector<bool> ressult_summation_direct2   { 0,1,0,1,1,0,0,0,0,0,0,0,0,0,0,0 };//reverse code 'case i so represent
-			vector<bool> ressult_summation_backward2 { 1,0,1,0,0,1,1,1,1,1,1,1,1,1,1,1 };
-			vector<bool> ressult_summation_additonal2{ 0,1,1,0,0,1,1,1,1,1,1,1,1,1,1,1 };
+			deque<bool> ressult_summation_direct2   { 0,0,0,0,0,0,0,0,0,0,0,1,1,0,1,0 };//reverse code 'case i so represent
+			deque<bool> ressult_summation_backward2 { 1,1,1,1,1,1,1,1,1,1,1,0,0,1,0,1 };
+			deque<bool> ressult_summation_additonal2{ 1,1,1,1,1,1,1,1,1,1,1,0,0,1,1,0 };
 			Assert::IsTrue(x3.get_result_direct_vector() == ressult_summation_direct2 && x3.get_result_backward_vector() == ressult_summation_backward2 && x3.get_result_additional_vector() == ressult_summation_additonal2);
 			x4 + x1;
-			vector<bool> ressult_summation_direct3   { 0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0 };//reverse code 'case i so represent
-			vector<bool> ressult_summation_backward3 { 1,1,0,1,1,1,1,1,1,1,1,1,1,1,1,1};
-			vector<bool> ressult_summation_additonal3{ 0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1 };
+			deque<bool> ressult_summation_direct3   { 0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0 };//reverse code 'case i so represent
+			deque<bool> ressult_summation_backward3 { 1,1,1,1,1,1,1,1,1,1,1,1,1,0,1,1 };
+			deque<bool> ressult_summation_additonal3{ 1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0 };
 			Assert::IsTrue(x4.get_result_direct_vector() == ressult_summation_direct3 && x4.get_result_backward_vector() == ressult_summation_backward3 && x4.get_result_additional_vector() == ressult_summation_additonal3);
 		
 		}
 
 		TEST_METHOD(TestMethod4)//test operation +
 		{
-			Numbers x1(10, bit_depth), x2(15, bit_depth), x3(-12, bit_depth), x4(-14, bit_depth);
+			Numbers x1(44, bit_depth), x2(28, bit_depth), x3(-18, bit_depth), x4(-58, bit_depth);
 			x1 + x2;
-			vector<bool> ressult_summation_direct{ 1,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0 };//reverse code 'case i so represent
-			vector<bool> ressult_summation_backward{ 1,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0 };
-			vector<bool> ressult_summation_additonal{ 1,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0 };
+			deque<bool> ressult_summation_direct   { 0,0,0,0,0,0,0,0,0,1,0,0,1,0,0,0 };//reverse code 'case i so represent
+			deque<bool> ressult_summation_backward { 0,0,0,0,0,0,0,0,0,1,0,0,1,0,0,0 };
+			deque<bool> ressult_summation_additonal{ 0,0,0,0,0,0,0,0,0,1,0,0,1,0,0,0 };
 			Assert::IsTrue(x1.get_result_direct_vector() == ressult_summation_direct && x1.get_result_backward_vector() == ressult_summation_backward && x1.get_result_additional_vector() == ressult_summation_additonal);
 			x2 + x3;
-			vector<bool> ressult_summation_direct1{ 1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0 };//reverse code 'case i so represent
-			vector<bool> ressult_summation_backward1{ 1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0 };
-			vector<bool> ressult_summation_additonal1{ 1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0 };
+			deque<bool> ressult_summation_direct1   { 0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,0 };//reverse code 'case i so represent
+			deque<bool> ressult_summation_backward1 { 0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,0 };
+			deque<bool> ressult_summation_additonal1{ 0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,0 };
 			Assert::IsTrue(x2.get_result_direct_vector() == ressult_summation_direct1 && x2.get_result_backward_vector() == ressult_summation_backward1 && x2.get_result_additional_vector() == ressult_summation_additonal1);
 			x3 + x4;
-			vector<bool> ressult_summation_direct2{ 0,1,0,1,1,0,0,0,0,0,0,0,0,0,0,0 };//reverse code 'case i so represent
-			vector<bool> ressult_summation_backward2{ 1,0,1,0,0,1,1,1,1,1,1,1,1,1,1,1 };
-			vector<bool> ressult_summation_additonal2{ 0,1,1,0,0,1,1,1,1,1,1,1,1,1,1,1 };
+			deque<bool> ressult_summation_direct2   { 0,0,0,0,0,0,0,0,0,1,0,0,1,1,0,0 };//reverse code 'case i so represent
+			deque<bool> ressult_summation_backward2 { 1,1,1,1,1,1,1,1,1,0,1,1,0,0,1,1 };
+			deque<bool> ressult_summation_additonal2{ 1,1,1,1,1,1,1,1,1,0,1,1,0,1,0,0 };
 			Assert::IsTrue(x3.get_result_direct_vector() == ressult_summation_direct2 && x3.get_result_backward_vector() == ressult_summation_backward2 && x3.get_result_additional_vector() == ressult_summation_additonal2);
 			x4 + x1;
-			vector<bool> ressult_summation_direct3{ 0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0 };//reverse code 'case i so represent
-			vector<bool> ressult_summation_backward3{ 1,1,0,1,1,1,1,1,1,1,1,1,1,1,1,1 };
-			vector<bool> ressult_summation_additonal3{ 0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1 };
+			deque<bool> ressult_summation_direct3   { 0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,0 };//reverse code 'case i so represent
+			deque<bool> ressult_summation_backward3 { 1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,1 };
+			deque<bool> ressult_summation_additonal3{ 1,1,1,1,1,1,1,1,1,1,1,1,0,0,1,0 };
 			Assert::IsTrue(x4.get_result_direct_vector() == ressult_summation_direct3 && x4.get_result_backward_vector() == ressult_summation_backward3 && x4.get_result_additional_vector() == ressult_summation_additonal3);
 
 		}
@@ -94,24 +94,24 @@ namespace UnittestforAOIS1
 		{
 			Numbers x1(5, bit_depth), x2(10, bit_depth), x3(-5, bit_depth), x4(-10, bit_depth);
 			x1 + x2;
-			vector<bool> ressult_summation_direct   { 1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0 };//reverse code 'case i so represent
-			vector<bool> ressult_summation_backward { 1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0 };
-			vector<bool> ressult_summation_additonal{ 1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0 };
+			deque<bool> ressult_summation_direct   { 0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1 };//reverse code 'case i so represent
+			deque<bool> ressult_summation_backward { 0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1 };
+			deque<bool> ressult_summation_additonal{ 0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1 };
 			Assert::IsTrue(x1.get_result_direct_vector() == ressult_summation_direct && x1.get_result_backward_vector() == ressult_summation_backward && x1.get_result_additional_vector() == ressult_summation_additonal);
 			x2 + x3;
-			vector<bool> ressult_summation_direct1   { 1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0 };//reverse code 'case i so represent
-			vector<bool> ressult_summation_backward1 { 1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0 };
-			vector<bool> ressult_summation_additonal1{ 1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0 };
+			deque<bool> ressult_summation_direct1   { 0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1 };//reverse code 'case i so represent
+			deque<bool> ressult_summation_backward1 { 0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1 };
+			deque<bool> ressult_summation_additonal1{ 0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1 };
 			Assert::IsTrue(x2.get_result_direct_vector() == ressult_summation_direct1 && x2.get_result_backward_vector() == ressult_summation_backward1 && x2.get_result_additional_vector() == ressult_summation_additonal1);
 			x3 + x4;
-			vector<bool> ressult_summation_direct2   { 1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0 };//reverse code 'case i so represent
-			vector<bool> ressult_summation_backward2 { 0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1 };
-			vector<bool> ressult_summation_additonal2{ 1,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1 };
+			deque<bool> ressult_summation_direct2   { 0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1 };//reverse code 'case i so represent
+			deque<bool> ressult_summation_backward2 { 1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0 };
+			deque<bool> ressult_summation_additonal2{ 1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,1 };
 			Assert::IsTrue(x3.get_result_direct_vector() == ressult_summation_direct2 && x3.get_result_backward_vector() == ressult_summation_backward2 && x3.get_result_additional_vector() == ressult_summation_additonal2);
 			x4 + x1;
-			vector<bool> ressult_summation_direct3   { 1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0 };//reverse code 'case i so represent
-			vector<bool> ressult_summation_backward3 { 0,1,0,1,1,1,1,1,1,1,1,1,1,1,1,1 };
-			vector<bool> ressult_summation_additonal3{ 1,1,0,1,1,1,1,1,1,1,1,1,1,1,1,1 };
+			deque<bool> ressult_summation_direct3   { 0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1 };//reverse code 'case i so represent
+			deque<bool> ressult_summation_backward3 { 1,1,1,1,1,1,1,1,1,1,1,1,1,0,1,0 };
+			deque<bool> ressult_summation_additonal3{ 1,1,1,1,1,1,1,1,1,1,1,1,1,0,1,1 };
 			Assert::IsTrue(x4.get_result_direct_vector() == ressult_summation_direct3 && x4.get_result_backward_vector() == ressult_summation_backward3 && x4.get_result_additional_vector() == ressult_summation_additonal3);
 		}
 
