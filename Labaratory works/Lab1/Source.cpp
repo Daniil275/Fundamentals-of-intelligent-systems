@@ -12,8 +12,6 @@
 using namespace std;
 
 
-
-
 class Print
 {
 public:
@@ -51,11 +49,11 @@ public:
 
     }
 
-    static void print_result(vector<bool> vr)
+    static void print_result(const vector<bool>& vr)
     {
-        for (int i = 0; i < vr.size(); i++)
+        for (auto i : vr)
         {
-            cout << vr[i];
+            cout << i;
         }
 
         endl
@@ -71,11 +69,11 @@ public:
         endl
     }
 
-    static void print_multiplications(deque<bool> dq)
+    static void print_multiplications(const deque<bool>& dq)
     {
-        for (int i = 0; i < dq.size(); i++)
+        for (auto i : dq)
         {
-            cout << dq[i];
+            cout << i;
         }
         endl
     }
@@ -108,13 +106,12 @@ public:
             endl
     }
 
-    static void print_deviding(deque<bool> dq)
+    static void print_deviding(const deque<bool>& dq)
     {
 
-        for (int i = 0; i < dq.size(); i++)
+        for (auto i : dq)
         {
-
-            cout << dq[i];
+            cout << i;
         }
 
     }
@@ -143,7 +140,7 @@ public:
 
     Numbers();
 
-    explicit Numbers(float num, int bit)
+    Numbers(float num, int bit)
     {
         numbr = num;
         bit_depth = bit;
@@ -402,6 +399,55 @@ public:
         {
             second_number_dividing_additional[n] = 0;
             return convertin_to_additional_deviding(n);
+
+        }
+    }
+
+    void summation_algorithm(deque<bool>& first, deque<bool>& second , deque<bool>& result_summation)
+    {
+        bool remains = true;
+        for (int i = first.size() - 1; i >= 0; i--)
+        {
+
+            if (first[i] == 0 && second[i] == 1 && remains || first[i] == 1 && second[i] == 0 && remains)
+            {
+                result_summation.push_back(1);
+                continue;
+            }
+
+            else if (first[i] == 0 && second[i] == 1 && remains == false || first[i] == 1 && second[i] == 0 && remains == false)
+            {
+                result_summation.push_back(0);
+                remains = false;
+                continue;
+            }
+
+            else if (first[i] == 0 && second[i] == 0 && remains)
+            {
+                result_summation.push_back(0);
+                continue;
+            }
+
+            else if (first[i] == 0 && second[i] == 0 && remains == false)
+            {
+                result_summation.push_back(1);
+                remains = true;
+                continue;
+            }
+
+            else if (first[i] == 1 && second[i] == 1 && remains)
+            {
+                result_summation.push_back(0);
+                remains = false;
+                continue;
+            }
+
+            else
+            {
+                result_summation.push_back(1);
+                remains = false;
+                continue;
+            }
 
         }
     }
