@@ -207,10 +207,38 @@ namespace UnittestforAOIS1
 			Assert::IsTrue(x5.get_result_direct_deviding_vector() == result_deviding2 && x5.get_result_direct_deviding_vector_FP()== result_deviding3);
 			Numbers x7(9, bit_depth), x8(22, bit_depth);
 			deque<bool> result_deviding4{ 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 };
-			deque<bool> result_deviding5{ 0,1,0,0,1 };
+			deque<bool> result_deviding5{ 0,1,0,0,0 };
 			x7 / x8;
 			Assert::IsTrue(x7.get_result_direct_deviding_vector() == result_deviding4 && x7.get_result_direct_deviding_vector_FP() == result_deviding5);
+			Numbers x9(27, bit_depth), x10(3, bit_depth);
+			deque<bool> result_deviding6{ 0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1 };
+			x9 / x10;
+			Assert::IsTrue(x9.get_result_direct_deviding_vector() == result_deviding6);
+			Numbers x11(15, bit_depth), x12(5, bit_depth);
+			deque<bool> result_deviding7{ 0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1 };
+			x11 / x12;
+			Assert::IsTrue(x11.get_result_direct_deviding_vector() == result_deviding7);
+			Numbers x13(125, bit_depth), x14(5, bit_depth);
+			deque<bool> result_deviding8{ 0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,1 };
+			x13 / x14;
+			Assert::IsTrue(x13.get_result_direct_deviding_vector() == result_deviding8);
+			Numbers x15(1, bit_depth), x16(10, bit_depth);
+			deque<bool> result_deviding9{ 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 };
+			deque<bool> result_deviding15{ 0,0,0,1,0 };
+			x15 / x16;
+			Assert::IsTrue(x15.get_result_direct_deviding_vector() == result_deviding9 && x15.get_result_direct_deviding_vector_FP() == result_deviding15);
+			Numbers x17(126, bit_depth), x18(3, bit_depth);
+			deque<bool> result_deviding22{ 0,0,0,0,0,0,0,0,0,0,1,0,1,0,1,0 };
+			x17 / x18;
+			Assert::IsTrue(x17.get_result_direct_deviding_vector() == result_deviding22);
+			Numbers x19(24, bit_depth), x20(6, bit_depth);
+			deque<bool> result_deviding20{ 0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0 };
+			x19 / x20;
+			Assert::IsTrue(x19.get_result_direct_deviding_vector() == result_deviding20);
+
 		}
+
+
 
 		TEST_METHOD(TestMethod10)//test operation +float
 		{
