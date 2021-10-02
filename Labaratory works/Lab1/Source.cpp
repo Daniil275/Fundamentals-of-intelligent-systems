@@ -116,7 +116,7 @@ public:
             cout << deq[i];
         }
 
-        cout << " * E^" << digree;
+        cout << " * 2^" << digree-1;
 
 
 
@@ -833,7 +833,8 @@ public:
         bool remains;
         num1_float = modf(num1, &num1_int);
         num2_float = modf(num2, &num2_int);
-
+        bool one_float_first = false, one_float_second = true;
+        int fp_point = 0;
 
         while (num1_int >= 1)
         {
@@ -843,12 +844,15 @@ public:
 
         if (num1_float != 0)
         {
+            one_float_first = true;
             while (num1_float < 1)
             {
                 number_first.push_back((int)(num1_float * 2));
                 num1_float = num1_float * DIVIDER;
                 point++;
+                fp_point++;
             }
+
         }
 
         while (num2_int >= 1)
@@ -860,14 +864,35 @@ public:
         else deqree_numbers = number_second.size();
         if (num2_float != 0)
         {
+            one_float_second = true;
             while (num2_float < 1)
             {
                 number_second.push_back((int)(num2_float * 2));
                 num2_float = num2_float * DIVIDER;
                 point++;
+                fp_point++;
             }
         }
+        if (one_float_first != one_float_second)
+        {
 
+
+            if (one_float_first)
+            {
+                for (int i = 0; i < fp_point; i++)
+                {
+                    number_second.push_back(0);
+                }
+            }
+
+            if (one_float_second)
+            {
+                for (int i = 0; i < fp_point; i++)
+                {
+                    number_first.push_back(0);
+                }
+            }
+        }
         if (number_first.size() < bit_depth)
         {
 
@@ -885,7 +910,8 @@ public:
             }
         }
 
-        point = point / DIVIDER;
+        if(!one_float_first && !one_float_second)point = point / DIVIDER;
+       
 
         remains = true;
         for (int i = number_first.size() - 1; i >= 0; i--)
@@ -1081,7 +1107,7 @@ void main()
                 {
                     if (num1 != 0 && num2 == 0) throw 1;
                     else if (num1 == 0) throw 2;
-                    else if (num2 == 1) throw 3;
+                    else if ((int)num2 == 1) throw 3;
                     x1 / x2;
                     Print::print_result_deviding(x1.get_result_direct_deviding_vector(), x1.get_result_direct_deviding_vector_FP(), x1.get_numbr(), x2.get_numbr());
                     x1 / x4;
