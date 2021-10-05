@@ -1,11 +1,11 @@
 #include <iostream>
 #include <deque>
-#include<string>
+#include <string>
+#include <algorithm>
 using namespace std;
 #define endl cout << "\n";
 //������� ��� ��������� ��������
 /*
-
 1) ����������(�,&,^,*) "���� ���������"
   | A | B | A * B |                            
   | 1 | 1 |   1   |
@@ -40,17 +40,16 @@ using namespace std;
   | 0 |  1  |   
  
  (0,1,3,7,8,9,11,15) 
-
 */
-class Print
+class Logic_function
 {
 public:
 
-	static void print_array(const bool (&Array)[4][8])
+	static void print_array(const bool(&Array)[5][16])
 	{
-		for (int i = 0; i < 4; i++)
+		for (int i = 0; i < 5; i++)
 		{
-			for (int j = 0; j < 8; j++)
+			for (int j = 0; j < 16; j++)
 			{
 				cout << Array[i][j];
 			}
@@ -58,86 +57,108 @@ public:
 		}
 	}
 
-	static void print_char_deque(deque<char>& dq)
+	static void print_deque(const deque<char>& dq)
 	{
-		for (auto i: dq)
+		for (auto i : dq)
 		{
 			cout << i;
 		}
 		endl
 	}
-};
 
-class Logic_function
-{
-	friend class Print;
-public:
-
-	void analysis_input_first(const deque<int>& function)
+	void analysis_input(const deque<int>& function, bool second_task, int numbr)
 	{
 		SDNF_rez = "";
 		SKNF_rez = "";
 		deque<bool> container;
-		int max_num = function[function.size() - 1], num, count = 0;
-		number_of_terms_SDNF = function.size();
+		int j = -1, num = 0, count = 0;
 		bool num_have_in_column = false;
 		container.clear();
-	
-		for (int i = 0; i < 4; i++)
+		for (int i = 0; i < 5; i++)
 		{
-			for (int j = 0; j < 8; j++)               //������������� �������
+			for (int j = 0; j < 16; j++)               //������������� �������
 			{
 				spreadsheet_truth[i][j] = false;
 			}
 		}
-		
-		while (max_num >= 1)
+
+		if (second_task)
 		{
-			bit_depth++;                     //convert max number to know how many colmn and sityations
-			max_num = max_num / 2;
+			int position = 8;
+			numbr_of_column = 8;
+			bit_depth = 3;
+			while (numbr >= 1)  //convert max number to know how many colmn and sityations
+			{
+				position--;
+				if (numbr % 2 == 1) count++;
+				spreadsheet_truth[3][position] = (numbr % 2);
+				numbr /= 2;
+
+			}
+			number_of_terms_SDNF = count;
 		}
 
-		numbr_of_column = pow(2, bit_depth);
-		
-		int j = -1;
-		for (int i = 0; i < numbr_of_column; i++)
+		else
 		{
-			j++;
-			num_have_in_column = false;
-			num = i;
-
-			for(int q = 0 ; q < function.size(); q++)
+			int max_num = 0;
+			for (auto i : function)
 			{
-				if (function[q] == num) num_have_in_column = true; //���� ����� ����� ���� � ����� ������� ������ ��� ��� � �������� ������
-				
+				if (max_num < i) max_num = i;
 			}
-			          
-			while (num >= 1)
+			number_of_terms_SDNF = function.size();
+
+			while (max_num >= 1)
 			{
-				container.push_front(num % 2);                       //������������ ��� ����� � �������� ���� ���� �� ����� �� ���������� � �������
-				num /= 2;
+				bit_depth++;                     //convert max number to know how many colmn and sityations
+				max_num /= 2;
 			}
 
-			if(container.size() < bit_depth)
+			numbr_of_column = pow(2, bit_depth);
+		}
+
+			for (int i = 0; i < numbr_of_column; i++)
 			{
-				while(container.size() != bit_depth)
+				j++;
+				num_have_in_column = false;
+				num = i;
+
+				if (!second_task)
 				{
-					container.push_front(0);                      //���������� �.� ����� �� ������� �����
+					for (int q = 0; q < function.size(); q++)
+					{
+						if (function[q] == num) num_have_in_column = true; //���� ����� ����� ���� � ����� ������� ������ ��� ��� � �������� ������
+					}
 				}
-			} 
 
-			for (int s = 0; s < bit_depth ; s++)
-			{
-				spreadsheet_truth[s][j] = container[s];
-				if (num_have_in_column) spreadsheet_truth[bit_depth][j] = true;
+				while (num >= 1)
+				{
+					container.push_front(num % 2);                       //������������ ��� ����� � �������� ���� ���� �� ����� �� ���������� � �������
+					num /= 2;
+				}
+
+				if (container.size() < bit_depth)
+				{
+					while (container.size() != bit_depth)
+					{
+						container.push_front(0);                      //���������� �.� ����� �� ������� �����
+					}
+				}
+
+				for (int s = 0; s < bit_depth; s++)
+				{
+					spreadsheet_truth[s][j] = container[s];
+					if (num_have_in_column) spreadsheet_truth[bit_depth][j] = true;
+				}
+				container.clear();
 			}
-			container.clear();
-		}
-
-		number_of_terms_SKNF = abs(numbr_of_column - number_of_terms_SDNF);
-		Print::print_array(spreadsheet_truth);
-		endl
+			number_of_terms_SKNF = abs(numbr_of_column - number_of_terms_SDNF);
+			Logic_function::print_array(spreadsheet_truth);
+			endl
 		SDNF_and_SKNF();
+	}
+
+	void analysis_input_formal_function(const deque<char>& function)
+	{
 
 	}
 
@@ -154,10 +175,8 @@ public:
 
 			for (int i = 0; i < bit_depth; i++)
 			{
-
 				if (SDNF_trigger)
 				{
-
 					if (i == 0) SDNF_rez += " (";
 					if (i == 0 && spreadsheet_truth[i][j] == 0) SDNF_rez += "!X1 *";
 					else if (i == 1 && spreadsheet_truth[i][j] == 0) SDNF_rez += " !X2 *";
@@ -177,7 +196,6 @@ public:
 
 				else
 				{
-
 					if (i == 0) SKNF_rez += " (";
 					if (i == 0 && spreadsheet_truth[i][j] == 1) SKNF_rez += "!X1 + ";
 					else if (i == 1 && spreadsheet_truth[i][j] == 1) SKNF_rez += "!X2 + ";
@@ -200,57 +218,12 @@ public:
 		cout << "SKNF form: " << SKNF_rez << "\n";
 	}
 
-	string priority(char input)
-	{
-		switch (input)
-		{
+	string get_SDNF_rez() { return SDNF_rez; }
 
-		case '-':
-		{
+	string get_SKNF_rez(){ return SKNF_rez; }
 
-			break;
-		}
-
-		case '*':
-		{
-			break;
-		}
-
-		case '+':
-		{
-			break;
-		}
-
-		case '!':
-		{
-			break;
-		}
-
-		default:
-			cout << "No such operator!\n";
-			break;
-		}
-	}
-
-			
-	
 private:
-	const string Array_combination[9][3]
-	{
-
-	{ "X" , "Y" , "Z" },
-	{ "0" , "0" , "0" },
-	{ "0" , "0" , "1" },
-	{ "0" , "1" , "0" },
-	{ "0" , "1" , "1" },
-	{ "1" , "0" , "0" },
-	{ "1" , "0" , "1" },
-	{ "1" , "1" , "0" },
-	{ "1" , "1" , "1" },
-
-	};
-
-	bool spreadsheet_truth[4][8];
+	bool spreadsheet_truth[5][16];
 	int bit_depth = 0;
 	int numbr_of_column = 0;
 	int number_of_terms_SDNF = 0;
@@ -261,19 +234,25 @@ private:
 
 void main()
 {
-	//string function;
+	deque<char> analyzing_function;
 	int choose;
 	deque<int> function;
-	bool reset = true;
+	bool reset = true, checker = false, second_task = false;
 	Logic_function exmpl;
 	while (reset)
-	{
+	{	
+		second_task = false;
 		cout << "Input function one from 3 forms:\n";
 		cout << "1: F(0,1,3,7,8,9,11,15)\n";
 		cout << "2: F(X1, X2, X3, Xn)\n";
 		cout << "3: F(!X1 + X2 * X3)\n";
 		cout << "0: Complete program\n";
 		cin >> choose;
+		if (choose == 2)
+		{
+			choose--;
+			second_task = true;
+		}
 		switch (choose)
 		{
 		case 0:
@@ -283,26 +262,42 @@ void main()
 		}
 		case 1:
 		{
-			int num, size;
-			cout << "Input size function: ";
-			cin >> size;
-			cout << "Input function: ";
-			for (int i = 0; i < size; i++)
+			checker = false;
+			int num = 0;
+			if (second_task)
 			{
-				
+				checker = true;
+				cout << "Input i function: ";
 				cin >> num;
-				function.push_back(num);
 			}
-			exmpl.analysis_input_first(function);
-			break;
-		}
-		case 2:
-		{
-
+			else
+			{
+				function.clear();
+				int num, size = 0;
+				cout << "Input size function: ";
+				cin >> size;
+				cout << "Input function: ";
+				for (int i = 0; i < size; i++)
+				{
+					cin >> num;
+					function.push_back(num);
+				}
+			}
+			exmpl.analysis_input(function, checker, num);
 			break;
 		}
 		case 3:
 		{
+			
+			char symbol = 0;
+			cout << "Input function: ";
+			for (int i = 0; i < 100; i++)
+			{
+				cin >> symbol;
+				analyzing_function.push_back(symbol);
+			}
+			Logic_function::print_deque(analyzing_function);
+			//exmpl.analysis_input(function, checker, symbol);
 			break;
 		}
 
@@ -312,11 +307,7 @@ void main()
 			break;
 		}
 		}
-
 		system("pause");
 		system("cls");
-
 	}
-	
-	
 }
