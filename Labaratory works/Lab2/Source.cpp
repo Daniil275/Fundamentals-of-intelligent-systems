@@ -1,7 +1,6 @@
 #include <iostream>
 #include <deque>
 #include <string>
-#include <algorithm>
 using namespace std;
 #define endl cout << "\n";
 //������� ��� ��������� ��������
@@ -34,7 +33,7 @@ using namespace std;
   | 0 | 1 |   1   |
   | 0 | 0 |   0   |
 
-  4) ������������(=,<->) "���� ��� �����������(==)"
+  4) ���������(!=� ��) "���� ��������������"
   | A | -A  |
   | 1 |  0  |   
   | 0 |  1  |   
@@ -66,7 +65,7 @@ public:
 		endl
 	}
 
-	void analysis_input(const deque<int>& function, bool second_task, int numbr)
+	int analysis_input(const deque<int>& function, const deque<char>& logical_function, bool second_task, int numbr)
 	{
 		SDNF_rez = "";
 		SKNF_rez = "";
@@ -82,40 +81,53 @@ public:
 			}
 		}
 
-		if (second_task)
+		if (logical_function.size() == 0)
 		{
-			int position = 8;
+			if (second_task)
+			{
+				int position = 8;
+				numbr_of_column = 8;
+				bit_depth = 3;
+				while (numbr >= 1)  //convert max number to know how many colmn and sityations
+				{
+					position--;
+					if (numbr % 2 == 1) count++;
+					spreadsheet_truth[3][position] = (numbr % 2);
+					numbr /= 2;
+
+				}
+				number_of_terms_SDNF = count;
+			}
+
+			else
+			{
+				int max_num = 0;
+				for (auto i : function)
+				{
+					if (max_num < i) max_num = i;
+				}
+				number_of_terms_SDNF = function.size();
+
+				while (max_num >= 1)
+				{
+					bit_depth++;                     //convert max number to know how many colmn and sityations
+					max_num /= 2;
+				}
+				numbr_of_column = pow(2, bit_depth);
+			}
+		}
+
+		else 
+		{/////////////////work here
+			deque<char> polish;
+			print_deque(logical_function);
 			numbr_of_column = 8;
 			bit_depth = 3;
-			while (numbr >= 1)  //convert max number to know how many colmn and sityations
-			{
-				position--;
-				if (numbr % 2 == 1) count++;
-				spreadsheet_truth[3][position] = (numbr % 2);
-				numbr /= 2;
 
-			}
-			number_of_terms_SDNF = count;
+
+			print_deque(polish);
+			return 0;
 		}
-
-		else
-		{
-			int max_num = 0;
-			for (auto i : function)
-			{
-				if (max_num < i) max_num = i;
-			}
-			number_of_terms_SDNF = function.size();
-
-			while (max_num >= 1)
-			{
-				bit_depth++;                     //convert max number to know how many colmn and sityations
-				max_num /= 2;
-			}
-
-			numbr_of_column = pow(2, bit_depth);
-		}
-
 			for (int i = 0; i < numbr_of_column; i++)
 			{
 				j++;
@@ -155,11 +167,7 @@ public:
 			Logic_function::print_array(spreadsheet_truth);
 			endl
 		SDNF_and_SKNF();
-	}
-
-	void analysis_input_formal_function(const deque<char>& function)
-	{
-
+			return 0;
 	}
 
 	void SDNF_and_SKNF()
@@ -245,7 +253,7 @@ void main()
 		cout << "Input function one from 3 forms:\n";
 		cout << "1: F(0,1,3,7,8,9,11,15)\n";
 		cout << "2: F(X1, X2, X3, Xn)\n";
-		cout << "3: F(!X1 + X2 * X3)\n";
+		cout << "3: F(!X + Y * Z)\n";
 		cout << "0: Complete program\n";
 		cin >> choose;
 		if (choose == 2)
@@ -283,21 +291,21 @@ void main()
 					function.push_back(num);
 				}
 			}
-			exmpl.analysis_input(function, checker, num);
+			exmpl.analysis_input(function, analyzing_function, checker, num);
 			break;
 		}
 		case 3:
 		{
-			
+			analyzing_function.clear();
 			char symbol = 0;
-			cout << "Input function: ";
+			cout << "Input function, for stopping input tape (#): ";
 			for (int i = 0; i < 100; i++)
 			{
 				cin >> symbol;
+				if (symbol == '#') break;
 				analyzing_function.push_back(symbol);
 			}
-			Logic_function::print_deque(analyzing_function);
-			//exmpl.analysis_input(function, checker, symbol);
+			exmpl.analysis_input(function, analyzing_function, false, 0);
 			break;
 		}
 
