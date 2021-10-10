@@ -94,10 +94,27 @@ namespace UnitTestforAOISlab2
 		{
 			Logic_function exmpl;
 			bool SDNF = false, SKNF = false;
-			deque<int> input;
-			string result_SDNF1 = " (!X1 * X2 * !X3)  +  (X1 * !X2 * !X3)  +  (X1 * !X2 * X3)  +  (X1 * X2 * !X3) ";
-			string result_SKNF1 = " (X1 + X2 + X3)  *  (X1 + X2 + !X3)  *  (X1 + !X2 + !X3)  *  (!X1 + !X2 + !X3) ";
-			exmpl.analysis_input(input, true, 46);
+			//"!(!(X*Z)*(X+!Y))"
+			deque<char> input_char;
+			input_char.push_back('!');
+			input_char.push_back('(');
+			input_char.push_back('!');
+			input_char.push_back('(');
+			input_char.push_back('X');
+			input_char.push_back('*');
+			input_char.push_back('Z');
+			input_char.push_back(')');
+			input_char.push_back('*');
+			input_char.push_back('(');
+			input_char.push_back('X');
+			input_char.push_back('+');
+			input_char.push_back('!');
+			input_char.push_back('Y');
+			input_char.push_back(')');
+			input_char.push_back(')');
+			string result_SDNF1 = " (X1 * !X2 * X3)  +  (X1 * X2 * X3) ";
+			string result_SKNF1 = " (X1 + X2 + X3)  *  (X1 + X2 + !X3)  *  (X1 + !X2 + X3)  *  (X1 + !X2 + !X3)  *  (!X1 + X2 + X3)  *  (!X1 + !X2 + X3) ";
+			exmpl.analysis_input_logical_form(input_char);
 			if (exmpl.get_SDNF_rez() == result_SDNF1) SDNF = true;
 			if (exmpl.get_SKNF_rez() == result_SKNF1) SKNF = true;
 			Assert::IsTrue(SDNF && SKNF);
@@ -107,10 +124,16 @@ namespace UnitTestforAOISlab2
 		{
 			Logic_function exmpl;
 			bool SDNF = false, SKNF = false;
-			deque<int> input;
-			string result_SDNF1 = " (!X1 * X2 * !X3)  +  (X1 * !X2 * !X3)  +  (X1 * !X2 * X3)  +  (X1 * X2 * !X3) ";
-			string result_SKNF1 = " (X1 + X2 + X3)  *  (X1 + X2 + !X3)  *  (X1 + !X2 + !X3)  *  (!X1 + !X2 + !X3) ";
-			exmpl.analysis_input(input, true, 46);
+			//"X+Y+Z"
+			deque<char> input_char;
+			input_char.push_back('X');
+			input_char.push_back('+');
+			input_char.push_back('Y');
+			input_char.push_back('+');
+			input_char.push_back('Z');
+			string result_SDNF1 = " (!X1 * !X2 * X3)  +  (!X1 * X2 * !X3)  +  (!X1 * X2 * X3)  +  (X1 * !X2 * !X3)  +  (X1 * !X2 * X3)  +  (X1 * X2 * !X3)  +  (X1 * X2 * X3) ";
+			string result_SKNF1 = " (X1 + X2 + X3) ";
+			exmpl.analysis_input_logical_form(input_char);
 			if (exmpl.get_SDNF_rez() == result_SDNF1) SDNF = true;
 			if (exmpl.get_SKNF_rez() == result_SKNF1) SKNF = true;
 			Assert::IsTrue(SDNF && SKNF);
@@ -119,23 +142,176 @@ namespace UnitTestforAOISlab2
 		{
 			Logic_function exmpl;
 			bool SDNF = false, SKNF = false;
-			deque<int> input;
-			string result_SDNF1 = " (!X1 * X2 * !X3)  +  (X1 * !X2 * !X3)  +  (X1 * !X2 * X3)  +  (X1 * X2 * !X3) ";
-			string result_SKNF1 = " (X1 + X2 + X3)  *  (X1 + X2 + !X3)  *  (X1 + !X2 + !X3)  *  (!X1 + !X2 + !X3) ";
-			exmpl.analysis_input(input, true, 46);
+			//"!(X+Y+Z)"
+			deque<char> input_char;
+			input_char.push_back('!');
+			input_char.push_back('(');
+			input_char.push_back('X');
+			input_char.push_back('+');
+			input_char.push_back('Y');
+			input_char.push_back('+');
+			input_char.push_back('Z');
+			input_char.push_back(')');
+			string result_SDNF1 = " (!X1 * !X2 * !X3) ";
+			string result_SKNF1 = " (X1 + X2 + !X3)  *  (X1 + !X2 + X3)  *  (X1 + !X2 + !X3)  *  (!X1 + X2 + X3)  *  (!X1 + X2 + !X3)  *  (!X1 + !X2 + X3)  *  (!X1 + !X2 + !X3) ";
+			exmpl.analysis_input_logical_form(input_char);
 			if (exmpl.get_SDNF_rez() == result_SDNF1) SDNF = true;
 			if (exmpl.get_SKNF_rez() == result_SKNF1) SKNF = true;
 			Assert::IsTrue(SDNF && SKNF);
 		}
 
-		TEST_METHOD(TestMethod10) //task 3
+		TEST_METHOD(TestMethod10) //task 3 
 		{
 			Logic_function exmpl;
 			bool SDNF = false, SKNF = false;
-			deque<int> input;
-			string result_SDNF1 = " (!X1 * X2 * !X3)  +  (X1 * !X2 * !X3)  +  (X1 * !X2 * X3)  +  (X1 * X2 * !X3) ";
-			string result_SKNF1 = " (X1 + X2 + X3)  *  (X1 + X2 + !X3)  *  (X1 + !X2 + !X3)  *  (!X1 + !X2 + !X3) ";
-			exmpl.analysis_input(input, true, 46);
+			//"!(X+Y)+!Z#"
+			deque<char> input_char;
+			input_char.push_back('!');
+			input_char.push_back('(');
+			input_char.push_back('X');
+			input_char.push_back('+');
+			input_char.push_back('Y');
+			input_char.push_back(')');
+			input_char.push_back('+');
+			input_char.push_back('!');
+			input_char.push_back('Z');
+			string result_SDNF1 = " (!X1 * !X2 * !X3)  +  (!X1 * !X2 * X3)  +  (!X1 * X2 * !X3) ";
+			string result_SKNF1 = " (X1 + !X2 + !X3)  *  (!X1 + X2 + X3)  *  (!X1 + X2 + !X3)  *  (!X1 + !X2 + X3)  *  (!X1 + !X2 + !X3) ";
+			exmpl.analysis_input_logical_form(input_char);
+			if (exmpl.get_SDNF_rez() == result_SDNF1) SDNF = true;
+			if (exmpl.get_SKNF_rez() == result_SKNF1) SKNF = true;
+			Assert::IsTrue(SDNF && SKNF);
+		}
+
+		TEST_METHOD(TestMethod11) //task 3 
+		{
+			Logic_function exmpl;
+			bool SDNF = false, SKNF = false;
+			//"(!X+!Y)+!Z#"
+			deque<char> input_char;
+			input_char.push_back('(');
+			input_char.push_back('!');
+			input_char.push_back('X');
+			input_char.push_back('+');
+			input_char.push_back('!');
+			input_char.push_back('Y');
+			input_char.push_back(')');
+			input_char.push_back('+');
+			input_char.push_back('!');
+			input_char.push_back('Z');
+			string result_SDNF1 = " (!X1 * !X2 * !X3)  +  (!X1 * !X2 * X3)  +  (!X1 * X2 * !X3)  +  (!X1 * X2 * X3)  +  (X1 * !X2 * !X3)  +  (X1 * !X2 * X3) ";
+			string result_SKNF1 = " (!X1 + !X2 + X3)  *  (!X1 + !X2 + !X3) ";
+			exmpl.analysis_input_logical_form(input_char);
+			if (exmpl.get_SDNF_rez() == result_SDNF1) SDNF = true;
+			if (exmpl.get_SKNF_rez() == result_SKNF1) SKNF = true;
+			Assert::IsTrue(SDNF && SKNF);
+		}
+
+		TEST_METHOD(TestMethod12) //task 3 
+		{
+			Logic_function exmpl;
+			bool SDNF = false, SKNF = false;
+			//"!((X+Y)*!(X*Z))"
+			deque<char> input_char;
+			input_char.push_back('!');
+			input_char.push_back('(');
+			input_char.push_back('(');
+			input_char.push_back('X');
+			input_char.push_back('+');
+			input_char.push_back('Y');
+			input_char.push_back(')');
+			input_char.push_back('*');
+			input_char.push_back('!');
+			input_char.push_back('(');
+			input_char.push_back('X');
+			input_char.push_back('*');
+			input_char.push_back('Z');
+			input_char.push_back(')');
+			input_char.push_back(')');
+			string result_SDNF1 = " (!X1 * !X2 * X3) ";
+			string result_SKNF1 = " (X1 + X2 + X3)  *  (X1 + !X2 + X3)  *  (X1 + !X2 + !X3)  *  (!X1 + X2 + X3)  *  (!X1 + X2 + !X3)  *  (!X1 + !X2 + X3)  *  (!X1 + !X2 + !X3) ";
+			exmpl.analysis_input_logical_form(input_char);
+			if (exmpl.get_SDNF_rez() == result_SDNF1) SDNF = true;
+			if (exmpl.get_SKNF_rez() == result_SKNF1) SKNF = true;
+			Assert::IsTrue(SDNF && SKNF);
+		}
+
+		TEST_METHOD(TestMethod13) //task 3 
+		{
+			Logic_function exmpl;
+			bool SDNF = false, SKNF = false;
+			//"!X+!(Y+Z)#"
+			deque<char> input_char;
+			input_char.push_back('!');
+			input_char.push_back('X');
+			input_char.push_back('+');
+			input_char.push_back('!');
+			input_char.push_back('(');
+			input_char.push_back('Y');
+			input_char.push_back('+');
+			input_char.push_back('Z');
+			input_char.push_back(')');
+			string result_SDNF1 = " (!X1 * !X2 * !X3)  +  (!X1 * X2 * !X3)  +  (!X1 * X2 * X3)  +  (X1 * !X2 * !X3)  +  (X1 * !X2 * X3) ";
+			string result_SKNF1 = " (X1 + X2 + !X3)  *  (!X1 + !X2 + X3)  *  (!X1 + !X2 + !X3) ";
+			exmpl.analysis_input_logical_form(input_char);
+			if (exmpl.get_SDNF_rez() == result_SDNF1) SDNF = true;
+			if (exmpl.get_SKNF_rez() == result_SKNF1) SKNF = true;
+			Assert::IsTrue(SDNF && SKNF);
+		}
+
+		TEST_METHOD(TestMethod14) //task 3 
+		{
+			Logic_function exmpl;
+			bool SDNF = false, SKNF = false;
+			//"!X+!(Y+Z)+(!X+Y)#"
+			deque<char> input_char;
+			input_char.push_back('!');
+			input_char.push_back('X');
+			input_char.push_back('+');
+			input_char.push_back('!');
+			input_char.push_back('(');
+			input_char.push_back('Y');
+			input_char.push_back('+');
+			input_char.push_back('Z');
+			input_char.push_back(')');
+			input_char.push_back('+');
+			input_char.push_back('(');
+			input_char.push_back('!');
+			input_char.push_back('X');
+			input_char.push_back('+');
+			input_char.push_back('Y');
+			input_char.push_back(')');
+			string result_SDNF1 = " (!X1 * !X2 * !X3)  +  (!X1 * X2 * !X3)  +  (!X1 * X2 * X3)  +  (X1 * !X2 * !X3)  +  (X1 * !X2 * X3) ";
+			string result_SKNF1 = " (X1 + X2 + !X3)  *  (!X1 + !X2 + X3)  *  (!X1 + !X2 + !X3) ";
+			exmpl.analysis_input_logical_form(input_char);
+			if (exmpl.get_SDNF_rez() == result_SDNF1) SDNF = true;
+			if (exmpl.get_SKNF_rez() == result_SKNF1) SKNF = true;
+			Assert::IsTrue(SDNF && SKNF);
+		}
+
+		TEST_METHOD(TestMethod15) //task 3 
+		{
+			Logic_function exmpl;
+			bool SDNF = false, SKNF = false;
+			//"!X+!Y*!(X+Y+Z)#"
+			deque<char> input_char;
+			input_char.push_back('!');
+			input_char.push_back('X');
+			input_char.push_back('+');
+			input_char.push_back('!');
+			input_char.push_back('Y');
+			input_char.push_back('*');
+			input_char.push_back('!');
+			input_char.push_back('(');
+			input_char.push_back('X');
+			input_char.push_back('+');
+			input_char.push_back('Y');
+			input_char.push_back('+');
+			input_char.push_back('Z');
+			input_char.push_back(')');
+			string result_SDNF1 = " (!X1 * !X2 * !X3)  +  (!X1 * X2 * X3)  +  (X1 * !X2 * !X3)  +  (X1 * !X2 * X3) ";
+			string result_SKNF1 = " (X1 + X2 + !X3)  *  (X1 + !X2 + X3)  *  (!X1 + !X2 + X3)  *  (!X1 + !X2 + !X3) ";
+			exmpl.analysis_input_logical_form(input_char);
 			if (exmpl.get_SDNF_rez() == result_SDNF1) SDNF = true;
 			if (exmpl.get_SKNF_rez() == result_SKNF1) SKNF = true;
 			Assert::IsTrue(SDNF && SKNF);
