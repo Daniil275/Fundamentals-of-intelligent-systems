@@ -13,6 +13,7 @@ public:
 		for (int i = 0; i < 5; i++)
 		{
 			cout << "X" << i << ": ";
+			
 			for (int j = 0; j < 16; j++)
 			{
 				cout << Array[i][j];
@@ -124,15 +125,14 @@ public:
 
 	int analysis_input_logical_form(deque<char>& logical_fucntion)//work here
 	{
-		//  !(!(X*Z)*(X+!Y))       //references !X = R !Y = F !Z = L   !(!(X*Z)*(X+!Y))#
-		int X = 0, Y = 0, Z = 0;
+		int X = 0, Y = 0, Z = 0, num_i=0;
 		deque<char> preparing_function;
 		bool reverse = false;
 		SDNF_rez = "";
 		SKNF_rez = "";
 		deque<bool> container, container_result;
 		int j = -1, num = 0, count = 0;
-		bool num_1_in_column = false;
+		bool num_1_in_column = false, note_reversive=false;
 		container.clear();
 		int number_of_brackets = 0;
 		preparing_function.clear();
@@ -141,11 +141,13 @@ public:
 
 		for (int i = 0; i < logical_fucntion.size(); i++)
 		{
+		
 			if (logical_fucntion[i] == '!' && logical_fucntion[i + 1] == '(')
 			{
+				
 				for (int j = i; j < logical_fucntion.size(); j++)
 				{
-					if (logical_fucntion[j] == '!' && logical_fucntion[j + 1] == '(' && j != 0)
+					if (logical_fucntion[j] == '!' && logical_fucntion[j + 1] == '(' && j!=0 && logical_fucntion[0] == '!' && logical_fucntion[1] == '(')
 					{
 						number_of_brackets++;
 						preparing_function.push_back(logical_fucntion[j + 2]);
@@ -163,10 +165,15 @@ public:
 					}
 					else if (logical_fucntion[j] == '+') preparing_function.push_back('*');
 					else if (logical_fucntion[j] == '*') preparing_function.push_back('+');
-					if (logical_fucntion[j] == ')' && number_of_brackets == 0) break;
-					else if (logical_fucntion[j] == ')') number_of_brackets--;
+					if (logical_fucntion[j] == ')' && number_of_brackets == 0)
+					{
+						count = j;
+						break;
+					}
+					else if (logical_fucntion[j+1] == ')') number_of_brackets--;
+					
 				}
-				break;
+				i = count;//break;
 			}
 
 			else if (logical_fucntion[i] == '(')
@@ -183,10 +190,14 @@ public:
 					}
 					else if (logical_fucntion[j] == 'X' || logical_fucntion[j] == 'Y' || logical_fucntion[j] == 'Z') preparing_function.push_back(logical_fucntion[j]);
 					else if (logical_fucntion[j] == '+' || logical_fucntion[j] == '*') preparing_function.push_back(logical_fucntion[j]);
-					if (logical_fucntion[j] == ')' && number_of_brackets == 0) break;
-					else if (logical_fucntion[j] == ')') number_of_brackets--;
+					if (logical_fucntion[j] == ')' && number_of_brackets == 0)
+					{
+						count = j;
+						break;
+					}
+					else if (logical_fucntion[j+1] == ')') number_of_brackets--;
 				}
-				break;
+				i = count;//break;
 			}
 
 			else if (logical_fucntion[i] == '!')
@@ -202,8 +213,6 @@ public:
 			}
 			else preparing_function.push_back(logical_fucntion[i]);
 		}
-
-
 
 		print_deque(preparing_function);
 
@@ -243,17 +252,21 @@ public:
 			container.clear();
 		}
 
-		//number_of_terms_SKNF = abs(numbr_of_column - number_of_terms_SDNF);
-		//можно пропарсить это всё в строке
+		
 		container_result = processing(preparing_function);
-		for (int i = 0; i < container_result.size(); i++)
+		for (int i = 0; i < 8; i++)
 		{
+			if (container_result[i] == 1) num_i += pow(2, 8 - (i+1));
 			spreadsheet_truth[bit_depth][i] = container_result[i];
+
 		}
 
 		Logic_function::print_array(spreadsheet_truth);
 		endl
 			SDNF_and_SKNF();
+		endl
+			cout << "Index = " << num_i;
+		endl
 		return 0;
 	}
 
@@ -370,7 +383,7 @@ public:
 					result_container.push_back(X * Z);
 				}
 			}
-			///////////////////////////////
+			
 			
 			else if (dq[i] == '+' && dq[i + 1] == 'X' ||  dq[i] == '+'  && dq[i + 1] == 'R')
 			{
