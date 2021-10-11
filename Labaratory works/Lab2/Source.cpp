@@ -335,10 +335,31 @@ public:
 	{
 		deque<bool>  result_container;
 		bool X, Y, Z, reverse = false;
-		int str=0;
+		int str = 0;
 		for (int i = 0; i < dq.size(); i++)
 		{
-			if (dq[i] == 'X' && dq[i + 1] == '+' && dq[i + 2] == 'Y' || dq[i] == 'R' && dq[i + 1] == '+' && dq[i + 2] == 'Y' || dq[i] == 'R' && dq[i + 1] == '+' && dq[i + 2] == 'F')
+			if (dq[i] == 'X' && dq[i + 1] == '+' && dq[i + 2] == 'X' || dq[i] == 'R' && dq[i + 1] == '+' && dq[i + 2] == 'X' || dq[i] == 'R' && dq[i + 1] == '+' && dq[i + 2] == 'R' || dq[i] == 'X' && dq[i + 1] == '+' && dq[i + 2] == 'R')
+			{
+				for (int column = 0; column < numbr_of_column; column++)
+				{
+					X = spreadsheet_truth[str][column];
+					if (dq[i] == 'R') X = !X;
+					result_container.push_back(X + X);
+				}
+				i +=2;
+			}
+
+			else if (dq[i] == 'X' && dq[i + 1] == '*' && dq[i + 2] == 'X' || dq[i] == 'R' && dq[i + 1] == '*' && dq[i + 2] == 'X' || dq[i] == 'R' && dq[i + 1] == '*' && dq[i + 2] == 'R' || dq[i] == 'X' && dq[i + 1] == '*' && dq[i + 2] == 'R')
+			{
+				for (int column = 0; column < numbr_of_column; column++)
+				{
+					X = spreadsheet_truth[str][column];
+					if (dq[i] == 'R') X = !X;
+					result_container.push_back(X * X);
+				}
+				i += 2;
+			}
+			else if (dq[i] == 'X' && dq[i + 1] == '+' && dq[i + 2] == 'Y' || dq[i] == 'R' && dq[i + 1] == '+' && dq[i + 2] == 'Y' || dq[i] == 'R' && dq[i + 1] == '+' && dq[i + 2] == 'F')
 			{
 				for (int column = 0; column < numbr_of_column; column++)
 				{
