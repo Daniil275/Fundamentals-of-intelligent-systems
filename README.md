@@ -1,5 +1,4 @@
-## Title
-### _Welcome to my repository!_
+## _Welcome to my repository!_
 #### _Here you can view code my labaratory work September of the 21st year._
 #### _In for the most part, it was created to track my progress, but if you find anything useful here, I will be glad🤗_
 ## Stack
