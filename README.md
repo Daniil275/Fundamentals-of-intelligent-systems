@@ -4,7 +4,7 @@
 ## Stack
 - Language: Python🐍, Java☕, C++.
 - Development approach: (main)OOP & procedural.
-## List labaratory works:
+## List of labaratory works:
 - [X] 1 - Representation of numerical information and working in different binary encodings.
 - [ ] 2 - Transformation of logical functions presented in different forms.
 - [ ] 3 - Minimizing logical functions.
