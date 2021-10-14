@@ -4,22 +4,39 @@
 using namespace std;
 #define endl cout << "\n";
 
+
 class Logic_function
 {
 public:
 
-	static void print_array(const bool(&Array)[5][16])
+	void print_array(const bool(&Array)[5][16])//, int bit_depths, int number_of_columns
 	{
-		for (int i = 0; i < 5; i++)
+		for (int i = 0; i < bit_depth + 1; i++)
 		{
-			cout << "X" << i << ": ";
+			if (i == bit_depth) cout << "Fi: ";
+			else cout << "X" << i + 1  << ": ";
 			
-			for (int j = 0; j < 16; j++)
+			
+			for (int j = 0; j < numbr_of_column; j++)
 			{
 				cout << Array[i][j];
 			}
 			endl
 		}
+	}
+
+	void print_array_minimization(const string(&Array)[8][3])
+	{
+		for (int i = 0; i < 8; i++)
+		{
+			for (int j = 0; j < 3; j++)
+			{
+				cout << Array[i][j];
+			}
+			endl
+		}
+		endl
+		
 	}
 
 	static void print_deque(const deque<char>& dq)
@@ -118,12 +135,12 @@ public:
 			}
 			container.clear();
 		}
-		Logic_function::print_array(spreadsheet_truth);
+		print_array(spreadsheet_truth);
 		endl
 			SDNF_and_SKNF();
 	}
 
-	int analysis_input_logical_form(deque<char>& logical_fucntion)//work here
+	void analysis_input_logical_form(deque<char>& logical_fucntion)// что если написать парсер который будет минимизировать входную логичускую функцию
 	{
 		int X = 0, Y = 0, Z = 0, num_i=0;
 		deque<char> preparing_function;
@@ -138,6 +155,11 @@ public:
 		preparing_function.clear();
 		numbr_of_column = 8;
 		bit_depth = 3;
+
+		//минимизации
+
+
+
 
 		for (int i = 0; i < logical_fucntion.size(); i++)
 		{
@@ -261,13 +283,143 @@ public:
 
 		}
 
-		Logic_function::print_array(spreadsheet_truth);
+		print_array(spreadsheet_truth);
+		endl
+		minimization_method_Cvain_Mak_Klaski();
+
 		endl
 			SDNF_and_SKNF();
 		endl
 			cout << "Index = " << num_i;
 		endl
-		return 0;
+	}
+
+	void minimization_method_Cvain_Mak_Klaski() // X+Y+Z#
+	{
+		
+		int no_one_true[1][4], one_in_true[3][4], two_in_true[3][4], tree_in_true[1][4], trigger_for_c =false, trigger_for_s = false;
+		string firstX[8][3];
+
+		for (int i = 0; i < 3; i++)
+		{
+			for (int j = 0; j < 4; j++)
+			{
+				if (i < 1)
+				{
+					no_one_true[i][j] = 0;
+					tree_in_true[i][j] = 0;
+				}
+				one_in_true[i][j] = 0;
+				two_in_true[i][j] = 0;
+			}
+		}
+		
+
+		int number_of_input = 0;
+		int s = 0, c = 0;
+		for (int i = 0; i < numbr_of_column; i++)
+		{
+			number_of_input = 0;
+			if (spreadsheet_truth[3][i])
+			{
+				
+				for(int j = 0; j < bit_depth ;j++)
+				{ 
+					if (spreadsheet_truth[j][i]) number_of_input++;
+					
+				}
+				trigger_for_c = false;
+				trigger_for_s = false;
+
+				for (int j = 0; j < this->bit_depth; j++)
+				{
+					
+						if (number_of_input == 0)
+						{
+							no_one_true[0][j+1] = spreadsheet_truth[j][i];
+							no_one_true[0][0] = number_of_input;
+						}
+						else if (number_of_input == 1)
+						{
+							one_in_true[s][j+1] = spreadsheet_truth[j][i];
+							trigger_for_s = true;
+							one_in_true[s][0] = number_of_input;
+						}
+						else if (number_of_input == 2)
+						{
+							two_in_true[c][j+1] = spreadsheet_truth[j][i];
+							trigger_for_c = true;
+							two_in_true[c][0] = number_of_input;
+						}
+						else if (number_of_input == 3)
+						{
+							tree_in_true[0][j+1] = spreadsheet_truth[j][i];
+							tree_in_true[0][0] = number_of_input;
+						}
+					
+				}
+				if (trigger_for_s) s++;
+				if (trigger_for_c) c++;
+			}
+		}
+
+		/// <summary>
+		///all nice work
+		/// </summary>
+		
+		/*print_array_minimization(one_in_true);
+		endl 
+		print_array_minimization(two_in_true);
+		endl
+		*/
+			//using x___  _x___
+			int mut = 0, mut1 = 0, str = 0;//сранвивем 2 массива определяем __X_ и т.д надо подумать
+
+			for (int i = 0; i < 3; i++)
+			{
+				mut = 0;
+				mut1 = 0;
+				for (int j = 1; j < 3; j++)  //пропускаем число вхождений
+				{
+					
+
+					if (one_in_true[i][j] == 1 && two_in_true[i][j] == 1 || one_in_true[i][j] == 0 && two_in_true[i][j] == 0) mut++;
+					if (tree_in_true[i][j] == 1 && two_in_true[i][j] == 1 || tree_in_true[i][j] == 0 && two_in_true[i][j] == 0) mut1++;
+
+				}
+
+				for (int j = 0; j < 3; j++)  //пропускаем число вхождений
+				{
+					if (mut == 1)
+					{
+						if (one_in_true[i][j + 1]) firstX[str][j] = '1';
+						else firstX[str][j] = '0';
+					}
+					if (mut == 1 && (one_in_true[i][j + 1] == 0 && two_in_true[i][j + 1] == 1 || one_in_true[i][j] == 1 && two_in_true[i][j + 1] == 0))
+					{
+						firstX[str][j] = 'X';
+					}
+				   
+					if (mut1 == 2)
+					{
+						if (one_in_true[i][j + 1]) firstX[str][j] = '1';
+						else firstX[str][j] = '0';
+					}
+					if (mut == 1 && (tree_in_true[i][j + 1] == 0 && two_in_true[i][j + 1] == 1 || tree_in_true[i][j] == 1 && two_in_true[i][j + 1] == 0))
+					{
+						firstX[str+1][j] = 'X';
+					}
+					
+					
+				}
+				str++;
+			}
+		
+			print_array_minimization(firstX);
+			
+			
+
+		
 	}
 
 	void SDNF_and_SKNF()
@@ -359,7 +511,7 @@ public:
 				}
 				i += 2;
 			}
-			else if (dq[i] == 'X' && dq[i + 1] == '+' && dq[i + 2] == 'Y' || dq[i] == 'R' && dq[i + 1] == '+' && dq[i + 2] == 'Y' || dq[i] == 'R' && dq[i + 1] == '+' && dq[i + 2] == 'F')
+			else if (dq[i] == 'X' && dq[i + 1] == '+' && dq[i + 2] == 'Y' || dq[i] == 'R' && dq[i + 1] == '+' && dq[i + 2] == 'Y' || dq[i] == 'R' && dq[i + 1] == '+' && dq[i + 2] == 'F'|| dq[i] == 'X' && dq[i + 1] == '+' && dq[i + 2] == 'F')
 			{
 				for (int column = 0; column < numbr_of_column; column++)
 				{
@@ -371,7 +523,7 @@ public:
 					result_container.push_back(X + Y);
 				}
 			}
-			else if (dq[i] == 'X' && dq[i + 1] == '+' && dq[i + 2] == 'Z' || dq[i] == 'R' && dq[i + 1] == '+' && dq[i + 2] == 'Z' || dq[i] == 'R' && dq[i + 1] == '+' && dq[i + 2] == 'L')
+			else if (dq[i] == 'X' && dq[i + 1] == '+' && dq[i + 2] == 'Z' || dq[i] == 'R' && dq[i + 1] == '+' && dq[i + 2] == 'Z' || dq[i] == 'R' && dq[i + 1] == '+' && dq[i + 2] == 'L' || dq[i] == 'X' && dq[i + 1] == '+' && dq[i + 2] == 'L')
 			{
 				for (int column = 0; column < numbr_of_column; column++)
 				{
@@ -382,7 +534,7 @@ public:
 					result_container.push_back(X + Z);
 				}
 			}
-			else if (dq[i] == 'X' && dq[i + 1] == '*' && dq[i + 2] == 'Y' || dq[i] == 'R' && dq[i + 1] == '*' && dq[i + 2] == 'Y' || dq[i] == 'R' && dq[i + 1] == '*' && dq[i + 2] == 'F')
+			else if (dq[i] == 'X' && dq[i + 1] == '*' && dq[i + 2] == 'Y' || dq[i] == 'R' && dq[i + 1] == '*' && dq[i + 2] == 'Y' || dq[i] == 'R' && dq[i + 1] == '*' && dq[i + 2] == 'F' || dq[i] == 'X' && dq[i + 1] == '*' && dq[i + 2] == 'F')
 			{
 				for (int column = 0; column < numbr_of_column; column++)
 				{
@@ -393,7 +545,7 @@ public:
 					result_container.push_back(X * Y);
 				}
 			}
-			else if (dq[i] == 'X' && dq[i + 1] == '*' && dq[i + 2] == 'Z' || dq[i] == 'R' && dq[i + 1] == '*' && dq[i + 2] == 'Z' || dq[i] == 'R' && dq[i + 1] == '*' && dq[i + 2] == 'L')
+			else if (dq[i] == 'X' && dq[i + 1] == '*' && dq[i + 2] == 'Z' || dq[i] == 'R' && dq[i + 1] == '*' && dq[i + 2] == 'Z' || dq[i] == 'R' && dq[i + 1] == '*' && dq[i + 2] == 'L'|| dq[i] == 'X' && dq[i + 1] == '*' && dq[i + 2] == 'L')
 			{
 				for (int column = 0; column < numbr_of_column; column++)
 				{
@@ -479,6 +631,8 @@ private:
 	int number_of_terms_SKNF = 0;
 	string SDNF_rez = "";
 	string SKNF_rez = "";
+	string TDNF_rez = "";
+	string TKNF_rez = "";
 };
 
 void main()
