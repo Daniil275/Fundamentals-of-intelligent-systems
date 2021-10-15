@@ -9,7 +9,7 @@ class Logic_function
 {
 public:
 
-	void print_array(const bool(&Array)[5][16])//, int bit_depths, int number_of_columns
+	void print_array(const bool(&Array)[5][16])
 	{
 		for (int i = 0; i < bit_depth + 1; i++)
 		{
@@ -25,9 +25,9 @@ public:
 		}
 	}
 
-	void print_array_minimization(const string(&Array)[8][3])
+	void print_array_minimization(const string(&Array)[15][3])
 	{
-		for (int i = 0; i < 8; i++)
+		for (int i = 0; i < 15; i++)
 		{
 			for (int j = 0; j < 3; j++)
 			{
@@ -37,6 +37,32 @@ public:
 		}
 		endl
 		
+	}
+
+	void print_array_check(const int(&Array)[3][4])
+	{
+		for (int i = 0; i < 3; i++)
+		{
+			for (int j = 0; j < 4; j++)
+			{
+				cout << Array[i][j];
+			}
+			endl
+		}
+		endl
+	}
+
+	void print_array_check1(const int(&Array)[1][4])
+	{
+		for (int i = 0; i < 1; i++)
+		{
+			for (int j = 0; j < 4; j++)
+			{
+				cout << Array[i][j];
+			}
+			endl
+		}
+		endl
 	}
 
 	static void print_deque(const deque<char>& dq)
@@ -294,11 +320,13 @@ public:
 		endl
 	}
 
-	void minimization_method_Cvain_Mak_Klaski() // X+Y+Z#
+	void minimization_method_Cvain_Mak_Klaski() // !(X+Y)+!Z#
 	{
 		
-		int no_one_true[1][4], one_in_true[3][4], two_in_true[3][4], tree_in_true[1][4], trigger_for_c =false, trigger_for_s = false;
-		string firstX[8][3];
+		int no_one_true[1][4], one_in_true[3][4], two_in_true[3][4], tree_in_true[1][4], trigger_for_c = false, trigger_for_s = false;
+		string firstX[15][3];
+		bool array_truth[10][10];
+		bool stringUp = false, stringUp1 = false, stringUp2 = false;
 
 		for (int i = 0; i < 3; i++)
 		{
@@ -313,8 +341,15 @@ public:
 				two_in_true[i][j] = 0;
 			}
 		}
-		
 
+		for (int i = 0; i < 15; i++)
+		{
+			for (int j = 0; j < 3; j++)
+			{
+				firstX[i][j] = "";
+			}
+		}
+		
 		int number_of_input = 0;
 		int s = 0, c = 0;
 		for (int i = 0; i < numbr_of_column; i++)
@@ -337,7 +372,7 @@ public:
 						if (number_of_input == 0)
 						{
 							no_one_true[0][j+1] = spreadsheet_truth[j][i];
-							no_one_true[0][0] = number_of_input;
+							no_one_true[0][0] = number_of_input+9;
 						}
 						else if (number_of_input == 1)
 						{
@@ -363,63 +398,216 @@ public:
 			}
 		}
 
-		/// <summary>
-		///all nice work
-		/// </summary>
-		
-		/*print_array_minimization(one_in_true);
-		endl 
-		print_array_minimization(two_in_true);
-		endl
-		*/
-			//using x___  _x___
-			int mut = 0, mut1 = 0, str = 0;//сранвивем 2 массива определяем __X_ и т.д надо подумать
+		print_array_check1(no_one_true);
+		print_array_check(one_in_true);
+		print_array_check(two_in_true);
+		print_array_check1(tree_in_true);
+		int mut = 0, mut1 = 0, mut2 = 0, str = 0;
 
-			for (int i = 0; i < 3; i++)
+		
+			mut = 0;
+			mut1 = 0;
+			mut2 = 0;
+
+			stringUp = false;
+			stringUp1 = false;
+			stringUp2 = false;
+
+			for (int j = 1; j < 4; j++)  //пропускаем число вхождений
+			{
+
+				if ((no_one_true[0][j] == 0 && one_in_true[0][j] == 1 || no_one_true[0][j] == 1 && one_in_true[0][j] == 0) && one_in_true[0][0] == 1 && no_one_true[0][0] == 9) mut++;
+				if ((no_one_true[0][j] == 0 && one_in_true[1][j] == 1 || no_one_true[0][j] == 1 && one_in_true[1][j] == 0) && one_in_true[1][0] == 1 && no_one_true[0][0] == 9) mut1++;
+				if ((no_one_true[0][j] == 0 && one_in_true[2][j] == 1 || no_one_true[0][j] == 1 && one_in_true[2][j] == 0) && one_in_true[2][0] == 1 && no_one_true[0][0] == 9) mut2++;
+			}
+
+			for (int q = 0; q < 3; q++)  //пропускаем число вхождений
+			{
+				if (mut == 1)
+				{
+					if (no_one_true[0][q + 1]) firstX[str][q] += '1';
+					else firstX[str][q] += '0';
+					stringUp = true;
+				}
+
+				if (mut == 1 && (no_one_true[0][q + 1] == 0 && one_in_true[0][q + 1] == 1 || no_one_true[0][q + 1] == 1 && one_in_true[0][q + 1] == 0))
+				{
+					firstX[str][q] += 'X';
+				}
+
+				if (mut1 == 1)
+				{
+					if (no_one_true[0][q + 1]) firstX[str + 1][q] = '1';
+					else firstX[str + 1][q] += '0';
+					stringUp1 = true;
+				}
+
+				if (mut1 == 1 && (no_one_true[0][q + 1] == 1 && one_in_true[1][q + 1] == 0 || no_one_true[0][q + 1] == 0 && one_in_true[1][q + 1] == 1))
+				{
+					firstX[str + 1][q] += 'X';
+				}
+
+				if (mut2 == 1)
+				{
+					if (no_one_true[0][q + 1]) firstX[str + 2][q] = '1';
+					else firstX[str + 2][q] += '0';
+					stringUp2 = true;
+				}
+
+				if (mut2 == 1 && (no_one_true[0][q + 1] == 0 && one_in_true[2][q + 1] == 1 || no_one_true[0][q + 1] == 1 && one_in_true[2][q + 1] == 0))
+				{
+					firstX[str + 2][q] += 'X';
+				}
+
+			}
+
+			if (stringUp || stringUp1 || stringUp2)
+			{
+				str += (int)stringUp + (int)stringUp1 + (int)stringUp2;
+			}
+		
+
+			//using x___  _x___
+			//сранвивем 2 массива определяем __X_ и т.д надо подумать
+		    str++;
+			for (int i = 0; i < 3; i++) //сравниваю слеива.тбся ли только смежные т.е 1-1 2-2 но не промежуточные надо пофиксить
 			{
 				mut = 0;
 				mut1 = 0;
-				for (int j = 1; j < 3; j++)  //пропускаем число вхождений
+				mut2 = 0;
+
+				stringUp = false;
+				stringUp1 = false;
+				stringUp2 = false;
+
+				for (int j = 1; j < 4; j++)  //пропускаем число вхождений
 				{
-					
 
-					if (one_in_true[i][j] == 1 && two_in_true[i][j] == 1 || one_in_true[i][j] == 0 && two_in_true[i][j] == 0) mut++;
-					if (tree_in_true[i][j] == 1 && two_in_true[i][j] == 1 || tree_in_true[i][j] == 0 && two_in_true[i][j] == 0) mut1++;
-
+					if ((one_in_true[i][j] == 0 && two_in_true[0][j] == 1 || one_in_true[i][j] == 1 && two_in_true[0][j] == 0) && one_in_true[0][0] == 1 && two_in_true[0][0] == 2) mut++;
+					if ((one_in_true[i][j] == 0 && two_in_true[1][j] == 1 || one_in_true[i][j] == 1 && two_in_true[1][j] == 0) && one_in_true[1][0] == 1 && two_in_true[1][0] == 2) mut1++;
+					if ((one_in_true[i][j] == 0 && two_in_true[2][j] == 1 || one_in_true[i][j] == 1 && two_in_true[2][j] == 0) && one_in_true[2][0] == 1 && two_in_true[2][0] == 2) mut2++;
 				}
 
-				for (int j = 0; j < 3; j++)  //пропускаем число вхождений
+				for (int q = 0; q < 3; q++)  //пропускаем число вхождений
 				{
 					if (mut == 1)
 					{
-						if (one_in_true[i][j + 1]) firstX[str][j] = '1';
-						else firstX[str][j] = '0';
+						if (one_in_true[i][q + 1]) firstX[str][q] = '1';
+						else firstX[str][q] = '0';
+						stringUp = true;
 					}
-					if (mut == 1 && (one_in_true[i][j + 1] == 0 && two_in_true[i][j + 1] == 1 || one_in_true[i][j] == 1 && two_in_true[i][j + 1] == 0))
+
+					if (mut == 1 && (one_in_true[i][q + 1] == 0 && two_in_true[0][q + 1] == 1 || mut == 1 && one_in_true[i][q + 1] == 1 && two_in_true[0][q + 1] == 0))
 					{
-						firstX[str][j] = 'X';
+						firstX[str][q] = 'X';
 					}
 				   
-					if (mut1 == 2)
+					if (mut1 == 1)
 					{
-						if (one_in_true[i][j + 1]) firstX[str][j] = '1';
-						else firstX[str][j] = '0';
-					}
-					if (mut == 1 && (tree_in_true[i][j + 1] == 0 && two_in_true[i][j + 1] == 1 || tree_in_true[i][j] == 1 && two_in_true[i][j + 1] == 0))
-					{
-						firstX[str+1][j] = 'X';
+						if (one_in_true[i][q + 1]) firstX[str + 1][q] = '1';
+						else firstX[str + 1][q] = '0';
+						stringUp1 = true;
 					}
 					
+					if (mut1 == 1 && (one_in_true[i][q + 1] == 1 && two_in_true[1][q + 1] == 0 || one_in_true[i][q + 1] == 0 && two_in_true[1][q + 1] == 1))
+					{
+						firstX[str+1][q] = 'X';
+					}
+					
+					if (mut2 == 1)
+					{
+						if (one_in_true[i][q + 1]) firstX[str + 2][q] = '1';
+						else firstX[str + 2][q] = '0';
+						stringUp2 = true;
+					}
+
+					if (mut2 == 1 && (one_in_true[i][q + 1] == 0 && two_in_true[2][q + 1] == 1 || one_in_true[i][q + 1] == 1 && two_in_true[2][q + 1] == 0))
+					{
+						firstX[str + 2][q] = 'X';
+					}
 					
 				}
-				str++;
+				if (stringUp || stringUp1 || stringUp2)
+				{
+					str+= (int)stringUp + (int)stringUp1 + (int)stringUp2;
+				}
 			}
-		
-			print_array_minimization(firstX);
-			
-			
+			// with 3 mass
+			    str++;
+				mut = 0;
+				mut1 = 0;
+				mut2 = 0;
 
+				stringUp = false;
+				stringUp1 = false;
+				stringUp2 = false;
+
+				for (int j = 1; j < 4; j++)  //пропускаем число вхождений
+				{
+
+					if (((two_in_true[0][j] == 0 && tree_in_true[0][j] == 1 || two_in_true[0][j] == 1 && tree_in_true[0][j] == 0) && two_in_true[0][0] == 2 && tree_in_true[0][0] == 3)) mut++;
+					if (((two_in_true[1][j] == 0 && tree_in_true[0][j] == 1 || two_in_true[1][j] == 1 && tree_in_true[0][j] == 0) && two_in_true[1][0] == 2 && tree_in_true[0][0] == 3)) mut1++;
+					if (((two_in_true[2][j] == 0 && tree_in_true[0][j] == 1 || two_in_true[2][j] == 1 && tree_in_true[0][j] == 0) && two_in_true[2][0] == 2 && tree_in_true[0][0] == 3)) mut2++;
+				}
+
+				for (int q = 0; q < 3; q++)  //пропускаем число вхождений
+				{
+					if (mut == 1)
+					{
+						if (two_in_true[0][q + 1]) firstX[str][q] = '1';
+						else firstX[str][q] = '0';
+						stringUp = true;
+					}
+
+					if (mut == 1 && (two_in_true[0][q + 1] == 0 && tree_in_true[0][q + 1] == 1 || two_in_true[0][q + 1] == 1 && tree_in_true[0][q + 1] == 0))
+					{
+						firstX[str][q] = 'X';
+					}
+
+					if (mut1 == 1)
+					{
+						if (two_in_true[1][q + 1]) firstX[str + 1][q] = '1';
+						else firstX[str + 1][q] = '0';
+						stringUp1 = true;
+					}
+
+					if (mut1 == 1 && (two_in_true[1][q + 1] == 0 && tree_in_true[0][q + 1] == 1 || two_in_true[1][q + 1] == 1 && tree_in_true[0][q + 1] == 0))
+					{
+						firstX[str + 1][q] = 'X';
+					}
+
+					if (mut2 == 1)
+					{
+						if (two_in_true[2][q + 1]) firstX[str + 2][q] = '1';
+						else firstX[str + 2][q] = '0';
+						stringUp2 = true;
+					}
+
+					if (mut2 == 1 && (two_in_true[2][q + 1] == 0 && tree_in_true[0][q + 1] == 1 || two_in_true[2][q + 1] == 1 && tree_in_true[0][q + 1] == 0))
+					{
+						firstX[str + 2][q] = 'X';
+					}
+
+				}
+
+				//таблица 
+				bool cover_number = false;
+				/*int j = 0;
+				for (int i = 0; i < 10; i++)
+				{			
+						cover_number = false;
+						for (int q = 0 ; q < 3; q++)
+						{
+							if (one_in_true[i][q + 1] == 1 && firstX[i][q] == "1" || one_in_true[i][q + 1] == 0 && firstX[i][q] == "0" || firstX[i][j] == "X") cover_number = true;
+						}
+						cover_number = false;
+						if (cover_number) array_truth[i][j] = true;	
+
+				}
+				*/
 		
+			print_array_minimization(firstX); //отлично, вроде работает, теперь таблица покрытия
+
 	}
 
 	void SDNF_and_SKNF()
@@ -666,41 +854,55 @@ void main()
 		case 1:
 		{
 			checker = false;
-			int num = 0;
-			if (second_task)
-			{
-				checker = true;
-				cout << "Input i function: ";
-				cin >> num;
-			}
-			else
-			{
-				function.clear();
-				int num, size = 0;
-				cout << "Input size function: ";
-				cin >> size;
-				cout << "Input function: ";
-				for (int i = 0; i < size; i++)
+			
+				int num = 0;
+				if (second_task)
 				{
+					checker = true;
+					cout << "Input i function: ";
 					cin >> num;
-					function.push_back(num);
 				}
-			}
-			exmpl.analysis_input(function, checker, num);
+				else
+				{
+					function.clear();
+					int num, size = 0;
+					cout << "Input size function: ";
+					cin >> size;
+					cout << "Input function: ";
+
+					for (int i = 0; i < size; i++)
+					{
+						cin >> num;
+						function.push_back(num);
+					}
+
+				}
+				exmpl.analysis_input(function, checker, num);
+			
 			break;
 		}
 		case 3:
 		{
-			analyzing_function.clear();
-			char symbol = 0;
-			cout << "Input function, for stopping input tape (#): ";
-			for (int i = 0; i < 100; i++)
-			{
-				cin >> symbol;
-				if (symbol == '#') break;
-				analyzing_function.push_back(symbol);
+			try {
+				analyzing_function.clear();
+				char symbol = 0;
+				int number_of_breckets = 0;
+				cout << "Input function, for stopping input tape (#): ";
+				for (int i = 0; i < 100; i++)
+				{
+					cin >> symbol;
+					if (symbol == '#') break;
+					if (symbol == '(') number_of_breckets++;
+					else if (symbol == ')') number_of_breckets--;
+					analyzing_function.push_back(symbol);
+				}
+				if (number_of_breckets != 0) throw 1;
+				exmpl.analysis_input_logical_form(analyzing_function);
 			}
-			exmpl.analysis_input_logical_form(analyzing_function);
+			catch (int i)
+			{
+				if (i == 1) cout << "Uncorrect unput!\n";
+			}
 			break;
 		}
 
