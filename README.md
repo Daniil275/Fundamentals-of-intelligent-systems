@@ -6,7 +6,7 @@
 - Development approach: (main)OOP & procedural.
 ## List of labaratory works:
 - [X] 1 - Representation of numerical information and working in different binary encodings.
-- [ ] 2 - Transformation of logical functions presented in different forms.
+- [X] 2 - Transformation of logical functions presented in different forms.
 - [ ] 3 - Minimizing logical functions.
 - [ ] 4 - Synthesis of combinational schemes.
 - [ ] 5 - Synthesis of digital circuits in memory.
