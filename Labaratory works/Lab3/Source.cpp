@@ -259,7 +259,7 @@ public:
 			else preparing_function.push_back(logical_fucntion[i]);
 		}
 
-		//print_deque(preparing_function);
+		print_deque(preparing_function);
 
 		for (int i = 0; i < default_strings_size; i++)
 		{
@@ -312,6 +312,7 @@ public:
 
 		endl
 			SDNF_and_SKNF();
+		    calculation_method(SDNF_rez, SKNF_rez);
 		endl
 			cout << "Index = " << num_i;
 		endl
@@ -612,9 +613,287 @@ public:
 
 	}
 
-	void calculation_method()
+	void calculation_method(string SDNF_rezult, string SKNF_rezult)
 	{
+		//!(X + Y) + !Z#
+		bool trigger_X_in = false, trigger_Y_in = false, trigger_Z_in = false;
+		bool trigger_anti_X_in = false, trigger_anti_Y_in = false, trigger_anti_Z_in = false;
 
+		int trigger_reverse_X = 0, trigger_reverse_Y = 0, trigger_reverse_Z = 0;
+		int trigger_anti_X = 0, trigger_anti_Y = 0, trigger_anti_Z = 0;
+		deque<char> result_minimization;
+		for (int i = 0; i < SDNF_rezult.length(); i++)
+		{
+			if (SDNF_rezult[i] == 'X' && SDNF_rezult[i+1] == '1' || SDNF_rezult[i] == 'X' && SDNF_rezult[i + 1] == '2' || SDNF_rezult[i] == 'X' && SDNF_rezult[i + 1] == '3' || SDNF_rezult[i] == '+' || SDNF_rezult[i] == '*' || SDNF_rezult[i] == '(' || SDNF_rezult[i] == ')')
+			{
+				if (SDNF_rezult[i] == 'X' && SDNF_rezult[i + 1] == '1')
+				{
+					trigger_reverse_X = i;
+					result_minimization.push_back(SDNF_rezult[i]);
+					result_minimization.push_back(SDNF_rezult[i + 1]);
+					trigger_X_in = true;
+					i++;
+				}
+				else if (SDNF_rezult[i] == 'X' && SDNF_rezult[i + 1] == '2')
+				{
+					trigger_reverse_Y = i;
+					result_minimization.push_back(SDNF_rezult[i]);
+					result_minimization.push_back(SDNF_rezult[i + 1]);
+					trigger_Y_in = true;
+					i++;
+				}
+				else if(SDNF_rezult[i] == 'X' && SDNF_rezult[i + 1] == '3')
+				{
+					trigger_reverse_Z = i;
+					result_minimization.push_back(SDNF_rezult[i]);
+					result_minimization.push_back(SDNF_rezult[i + 1]);
+					trigger_Z_in = true;
+					i++;
+				}
+				else
+				{
+					result_minimization.push_back(SDNF_rezult[i]);
+					continue;
+				}
+			}
+
+			
+			if (SDNF_rezult[i] == ' ')
+			{
+				result_minimization.push_back(SDNF_rezult[i]);
+				continue;
+			}
+
+				if (SDNF_rezult[i] == '!' && SDNF_rezult[i + 1] == 'X' && SDNF_rezult[i + 2] == '1')
+				{
+					result_minimization.push_back(SDNF_rezult[i]);
+					result_minimization.push_back(SDNF_rezult[i + 1]);
+					result_minimization.push_back(SDNF_rezult[i + 2]);
+					trigger_anti_X = i;
+					i+=2;
+					trigger_anti_X_in = true;
+				}
+				else if (SDNF_rezult[i] == '!' && SDNF_rezult[i + 1] == 'X' && SDNF_rezult[i + 2] == '2')
+				{
+					result_minimization.push_back(SDNF_rezult[i]);
+					result_minimization.push_back(SDNF_rezult[i + 1]);
+					result_minimization.push_back(SDNF_rezult[i + 2]);
+					trigger_anti_Y = i;
+					i += 2;
+					trigger_anti_Y_in = true;
+				}
+				else if (SDNF_rezult[i] == '!' && SDNF_rezult[i + 1] == 'X' && SDNF_rezult[i + 2] == '3')
+				{
+					result_minimization.push_back(SDNF_rezult[i]);
+					result_minimization.push_back(SDNF_rezult[i + 1]);
+					result_minimization.push_back(SDNF_rezult[i + 2]);
+					trigger_anti_Z = i;
+					i += 2;
+					trigger_anti_Z_in = true;
+				}
+
+				if (trigger_reverse_X !=0 && trigger_X_in && trigger_anti_X_in) //стираем инвериторавние
+				{
+					result_minimization[trigger_anti_X] = 'O';
+					result_minimization[trigger_anti_X + 1] = 'O';
+					result_minimization[trigger_anti_X + 2] = 'O';
+					result_minimization[trigger_reverse_X] = 'O';
+					result_minimization[trigger_reverse_X + 1] = 'O';
+
+				}
+				else if (trigger_reverse_Y != 0 && trigger_Y_in && trigger_anti_Y_in)
+				{
+					result_minimization[trigger_anti_Y] = 'O';
+					result_minimization[trigger_anti_Y + 1] = 'O';
+					result_minimization[trigger_anti_Y + 2] = 'O';
+					result_minimization[trigger_reverse_Y] = 'O';
+					result_minimization[trigger_reverse_Y + 1] = 'O';
+				}
+				else if (trigger_reverse_Z != 0 && trigger_Z_in && trigger_anti_Z_in)
+				{
+					result_minimization[trigger_anti_Z] = 'O';
+					result_minimization[trigger_anti_Z + 1] = 'O';
+					result_minimization[trigger_anti_Z + 2] = 'O';
+					result_minimization[trigger_reverse_Z] = 'O';
+					result_minimization[trigger_reverse_Z + 1] = 'O';
+					
+				}
+			}
+		//print_deque(result_minimization);
+
+		for (int i = 0; i < result_minimization.size(); i++)//deleting 0
+		{
+			if (result_minimization[i] == 'O' || result_minimization[i] == '*' && !(result_minimization[i + 2] == '!' || result_minimization[i + 2] == 'X') )
+			{
+				result_minimization.erase(result_minimization.begin() + i);
+				i--;
+			}
+		}
+
+		for (int i = 0; i < result_minimization.size(); i++)//deleting " "
+		{
+			if (i == result_minimization.size() - 1) break;
+			if (result_minimization[i] == ' ' && result_minimization[i + 1] == ' ' || result_minimization[i] == ' ' && result_minimization[i + 1] == ')' || result_minimization[i] == '(' && result_minimization[i + 1] == ' ')
+			{
+				result_minimization.erase(result_minimization.begin() + i);
+				i--;
+			}
+		}
+
+		//print_deque(result_minimization);
+		trigger_reverse_X = 0, trigger_reverse_Y = 0, trigger_reverse_Z = 0;
+		trigger_anti_X = 0, trigger_anti_Y = 0, trigger_anti_Z = 0;
+
+		for (int i = 0; i < result_minimization.size(); i++)//склеиваем одинаковые импликанты
+		{
+			if (result_minimization[i] == 'X' && result_minimization[i + 1] == '1') trigger_reverse_X++;
+			else if (result_minimization[i] == 'X' && result_minimization[i + 1] == '2') trigger_reverse_Y++;
+			else if (result_minimization[i] == 'X' && result_minimization[i + 1] == '3') trigger_reverse_Z++;
+			else if (result_minimization[i] == '!' && result_minimization[i + 1] == 'X' && result_minimization[i + 2] == '1') trigger_anti_X++;
+			else if (result_minimization[i] == '!' && result_minimization[i + 1] == 'X' && result_minimization[i + 2] == '2') trigger_anti_Y++;
+			else if (result_minimization[i] == '!' && result_minimization[i + 1] == 'X' && result_minimization[i + 2] == '3') trigger_anti_Z++;
+		}
+
+		function_processing(trigger_reverse_X, trigger_reverse_Y, trigger_reverse_Z, trigger_anti_X, trigger_anti_Y, trigger_anti_Z, result_minimization);
+		
+		cout << "MDNF: " << MDNF << "\n";
+	}
+
+	void function_processing(int num1, int num2, int num3, int num4, int num5, int num6, deque<char> result_minimization)
+	{
+		//!(X + Y) + !Z#
+		bool first_X = false, first_Y = false, first_Z = false;
+		bool anti_first_X = false, anti_first_Y = false, anti_first_Z = false;
+		for (int i = 0; i < result_minimization.size(); i++)//склеиваем одинаковые импликанты
+		{
+			
+			if (result_minimization[i] == '+' || result_minimization[i] == '*' || result_minimization[i] == '(' || result_minimization[i] == ')' || result_minimization[i] == ' ')
+			{
+				continue;
+			}
+			
+			else if (first_X && result_minimization[i] == 'X' && result_minimization[i + 1] == '1')
+			{
+				result_minimization[i] = 'O';
+				result_minimization[i + 1] = 'O';
+			}
+
+			else if (anti_first_X && result_minimization[i] == '!' && result_minimization[i + 1] == 'X' && result_minimization[i + 2] == '1')
+			{
+				result_minimization[i] = 'O';
+				result_minimization[i + 1] = 'O';
+				result_minimization[i + 2] = 'O';
+
+			}
+
+			else if (first_Y && result_minimization[i] == 'X' && result_minimization[i + 1] == '2')
+			{
+				result_minimization[i] = 'O';
+				result_minimization[i + 1] = 'O';
+			}
+
+			else if (anti_first_Y && result_minimization[i] == '!' && result_minimization[i + 1] == 'X' && result_minimization[i + 2] == '2')
+			{
+				result_minimization[i] = 'O';
+				result_minimization[i + 1] = 'O';
+				result_minimization[i + 2] = 'O';
+
+			}
+
+			else if (first_Z && result_minimization[i] == 'X' && result_minimization[i + 1] == '3')
+			{
+				result_minimization[i] = 'O';
+				result_minimization[i + 1] = 'O';
+			}
+
+			else if (anti_first_Z && result_minimization[i] == '!' && result_minimization[i + 1] == 'X' && result_minimization[i + 2] == '3')
+			{
+				result_minimization[i] = 'O';
+				result_minimization[i + 1] = 'O';
+				result_minimization[i + 2] = 'O';
+
+			}		
+			
+			if (result_minimization[i] == 'X' && result_minimization[i + 1] == '1')
+			{
+				
+				first_X = true;
+				continue;
+			}
+			else if (result_minimization[i] == 'X' && result_minimization[i + 1] == '2')
+			{
+				
+				first_Y = true;
+				continue;
+			}
+			else if (result_minimization[i] == 'X' && result_minimization[i + 1] == '3')
+			{
+				
+				first_Z = true;
+				continue;
+			}
+			else if (result_minimization[i] == '!' && result_minimization[i + 1] == 'X' && result_minimization[i + 2] == '1')
+			{
+				
+				anti_first_X = true;
+				continue;
+			}
+			else if (result_minimization[i] == '!' && result_minimization[i + 1] == 'X' && result_minimization[i + 2] == '2')
+			{
+				
+				anti_first_Y = true;
+				continue;
+			}
+			else if (result_minimization[i] == '!' && result_minimization[i + 1] == 'X' && result_minimization[i + 2] == '3')
+			{
+				
+				anti_first_Z = true;
+				continue;
+			}
+		}
+		//print_deque(result_minimization);
+		for (int i = 0; i < result_minimization.size(); i++)//deleting 0
+		{
+			if (result_minimization[i] == 'O' || result_minimization[i] == '*' && (!(result_minimization[i + 2] == '!' || result_minimization[i + 2] == 'X') || !(result_minimization[i - 2] == '!' || (result_minimization[i - 2] == '1' || result_minimization[i - 2] == '2' || result_minimization[i - 2] == '3'))))
+			{
+				result_minimization.erase(result_minimization.begin() + i);
+				i--;
+			}
+		}
+		///print_deque(result_minimization);
+		for (int i = 0; i < result_minimization.size(); i++)//deleting " "
+		{
+			if (i == result_minimization.size() - 1) break;
+			if (result_minimization[i] == ' ' && result_minimization[i + 1] == ' ' || result_minimization[i] == ' ' && result_minimization[i + 1] == ')')
+			{
+				result_minimization.erase(result_minimization.begin() + i);
+				i--;
+			}
+			if (result_minimization[i] == '(' && result_minimization[i + 1] == ' ')
+			{
+				result_minimization.erase(result_minimization.begin() + i + 1);
+				i--;
+			}
+			if (result_minimization[i] == '+' && result_minimization[i + 2] == '(' && result_minimization[i + 3] == ')')
+			{
+				result_minimization.erase(result_minimization.begin() + i);
+				i--;
+				result_minimization.erase(result_minimization.begin() + i + 2);
+				i-=2;
+				result_minimization.erase(result_minimization.begin() + i + 3);
+				i--;
+				result_minimization.erase(result_minimization.begin() + i + 4);
+				i--;
+				result_minimization.erase(result_minimization.begin() + i + 5);
+				i--;
+				
+			}
+		}
+		//print_deque(result_minimization);
+		for (int i = 0; i < result_minimization.size(); i++)
+		{
+			MDNF += result_minimization[i];
+		}
 	}
 
 	void SDNF_and_SKNF()
@@ -818,6 +1097,10 @@ public:
 
 	string get_SKNF_rez() { return SKNF_rez; }
 
+	string get_MDNF_rez() { return MDNF; }
+
+	string get_MKNF_rez() { return MKNF; }
+
 private:
 	
 	int bit_depth = 0;
@@ -828,6 +1111,8 @@ private:
 	string SKNF_rez = "";
 	string TDNF_rez = "";
 	string TKNF_rez = "";
+	string MDNF;
+	string MKNF;
 	static const int number_of_strings = 5;
 	static const int number_of_columns = 16;
 	bool spreadsheet_truth[number_of_strings][number_of_columns];
