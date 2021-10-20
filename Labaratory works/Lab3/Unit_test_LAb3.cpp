@@ -30,9 +30,9 @@ namespace UnitTestforAOISlab2
 		{
 			Logic_function exmpl;
 			bool SDNF = false, SKNF = false;
-			deque<int> input{ 0,1,3,7,8,9,11,15 };
-			string result_SDNF1 = " (!X1 * !X2 * !X3 * !X4)  +  (!X1 * !X2 * !X3 * X4)  +  (!X1 * !X2 * X3 * X4)  +  (!X1 * X2 * X3 * X4)  +  (X1 * !X2 * !X3 * !X4)  +  (X1 * !X2 * !X3 * X4)  +  (X1 * !X2 * X3 * X4)  +  (X1 * X2 * X3 * X4) ";
-			string result_SKNF1 = " (X1 + X2 + !X3 + X4)  *  (X1 + !X2 + X3 + X4)  *  (X1 + !X2 + X3 + !X4)  *  (X1 + !X2 + !X3 + X4)  *  (!X1 + X2 + !X3 + X4)  *  (!X1 + !X2 + X3 + X4)  *  (!X1 + !X2 + X3 + !X4)  *  (!X1 + !X2 + !X3 + X4) ";
+			deque<int> input{ 0,1,3,7};
+			string result_SDNF1 = " (!X1 * !X2 * !X3)  +  (!X1 * !X2 * X3)  +  (!X1 * X2 * X3)  +  (X1 * X2 * X3) ";
+			string result_SKNF1 = " (X1 + !X2 + X3)  *  (!X1 + X2 + X3)  *  (!X1 + X2 + !X3)  *  (!X1 + !X2 + X3) ";
 			exmpl.analysis_input(input, false, 0);
 			if (exmpl.get_SDNF_rez() == result_SDNF1) SDNF = true;
 			if (exmpl.get_SKNF_rez() == result_SKNF1) SKNF = true;
@@ -42,9 +42,9 @@ namespace UnitTestforAOISlab2
 		{
 			Logic_function exmpl;
 			bool SDNF = false, SKNF = false;
-			deque<int> input{ 0,2,3,8,10,11,12,14,15 };
-			string result_SDNF1 = " (!X1 * !X2 * !X3 * !X4)  +  (!X1 * !X2 * X3 * !X4)  +  (!X1 * !X2 * X3 * X4)  +  (X1 * !X2 * !X3 * !X4)  +  (X1 * !X2 * X3 * !X4)  +  (X1 * !X2 * X3 * X4)  +  (X1 * X2 * !X3 * !X4)  +  (X1 * X2 * X3 * !X4)  +  (X1 * X2 * X3 * X4) ";
-			string result_SKNF1 = " (X1 + X2 + X3 + !X4)  *  (X1 + !X2 + X3 + X4)  *  (X1 + !X2 + X3 + !X4)  *  (X1 + !X2 + !X3 + X4)  *  (X1 + !X2 + !X3 + !X4)  *  (!X1 + X2 + X3 + !X4)  *  (!X1 + !X2 + X3 + !X4) ";
+			deque<int> input{ 0,2,3 };
+			string result_SDNF1 = " (!X1 * !X2 *)  +  (X1 * !X2 *)  +  (X1 * X2 *) ";
+			string result_SKNF1 = " (X1 + !X2 + ) ";
 			exmpl.analysis_input(input, false, 0);
 			if (exmpl.get_SDNF_rez() == result_SDNF1) SDNF = true;
 			if (exmpl.get_SKNF_rez() == result_SKNF1) SKNF = true;
