@@ -7,7 +7,6 @@ using namespace std;
 class Logic_function
 {
 public:
-
 	void print_array(const bool(&Array)[5][16])
 	{
 		for (int i = 0; i < bit_depth + 1; i++)
@@ -164,6 +163,8 @@ public:
 		print_array(spreadsheet_truth);
 		endl
 			SDNF_and_SKNF();
+		endl
+		calculation_method(SDNF_rez, SKNF_rez);
 	}
 
 	void analysis_input_logical_form(deque<char>& logical_fucntion)
@@ -615,7 +616,7 @@ public:
 
 	void calculation_method(string SDNF_rezult, string SKNF_rezult)
 	{
-		//!(X + Y) + !Z#
+		//!X+!Y*!(X+Y+Z)#
 		bool trigger_X_in = false, trigger_Y_in = false, trigger_Z_in = false;
 		bool trigger_anti_X_in = false, trigger_anti_Y_in = false, trigger_anti_Z_in = false;
 
@@ -699,6 +700,7 @@ public:
 					result_minimization[trigger_anti_X + 2] = 'O';
 					result_minimization[trigger_reverse_X] = 'O';
 					result_minimization[trigger_reverse_X + 1] = 'O';
+					trigger_X_in = trigger_anti_X_in = false;
 
 				}
 				else if (trigger_reverse_Y != 0 && trigger_Y_in && trigger_anti_Y_in)
@@ -708,6 +710,7 @@ public:
 					result_minimization[trigger_anti_Y + 2] = 'O';
 					result_minimization[trigger_reverse_Y] = 'O';
 					result_minimization[trigger_reverse_Y + 1] = 'O';
+					trigger_Y_in = trigger_anti_Y_in = false;
 				}
 				else if (trigger_reverse_Z != 0 && trigger_Z_in && trigger_anti_Z_in)
 				{
@@ -716,10 +719,11 @@ public:
 					result_minimization[trigger_anti_Z + 2] = 'O';
 					result_minimization[trigger_reverse_Z] = 'O';
 					result_minimization[trigger_reverse_Z + 1] = 'O';
+					trigger_Z_in = trigger_anti_Z_in = false;
 					
 				}
 			}
-		//print_deque(result_minimization);
+		print_deque(result_minimization);
 
 		for (int i = 0; i < result_minimization.size(); i++)//deleting 0
 		{
@@ -733,14 +737,19 @@ public:
 		for (int i = 0; i < result_minimization.size(); i++)//deleting " "
 		{
 			if (i == result_minimization.size() - 1) break;
-			if (result_minimization[i] == ' ' && result_minimization[i + 1] == ' ' || result_minimization[i] == ' ' && result_minimization[i + 1] == ')' || result_minimization[i] == '(' && result_minimization[i + 1] == ' ')
+			if (result_minimization[i] == ' ' && result_minimization[i + 1] == ' ' || result_minimization[i] == ' ' && result_minimization[i + 1] == ')')
 			{
 				result_minimization.erase(result_minimization.begin() + i);
 				i--;
 			}
+			if (result_minimization[i] == '(' && result_minimization[i + 1] == ' ')
+			{
+				result_minimization.erase(result_minimization.begin() + i + 1);
+				i--;
+			}
 		}
 
-		//print_deque(result_minimization);
+		print_deque(result_minimization);
 		trigger_reverse_X = 0, trigger_reverse_Y = 0, trigger_reverse_Z = 0;
 		trigger_anti_X = 0, trigger_anti_Y = 0, trigger_anti_Z = 0;
 
@@ -762,137 +771,228 @@ public:
 	void function_processing(int num1, int num2, int num3, int num4, int num5, int num6, deque<char> result_minimization)
 	{
 		//!(X + Y) + !Z#
-		bool first_X = false, first_Y = false, first_Z = false;
-		bool anti_first_X = false, anti_first_Y = false, anti_first_Z = false;
-		for (int i = 0; i < result_minimization.size(); i++)//склеиваем одинаковые импликанты
+
+		bool trigger_X_in = false, trigger_Y_in = false, trigger_Z_in = false;
+		bool trigger_anti_X_in = false, trigger_anti_Y_in = false, trigger_anti_Z_in = false;
+
+		int trigger_reverse_X = 0, trigger_reverse_Y = 0, trigger_reverse_Z = 0;
+		int trigger_anti_X = 0, trigger_anti_Y = 0, trigger_anti_Z = 0;
+		deque<char> result_minimization1;
+		for (int i = 0; i < result_minimization.size(); i++)
 		{
-			
-			if (result_minimization[i] == '+' || result_minimization[i] == '*' || result_minimization[i] == '(' || result_minimization[i] == ')' || result_minimization[i] == ' ')
+			if (result_minimization[i] == 'X' && result_minimization[i + 1] == '1' || result_minimization[i] == 'X' && result_minimization[i + 1] == '2' || result_minimization[i] == 'X' && result_minimization[i + 1] == '3' || result_minimization[i] == '+' || result_minimization[i] == '*' || result_minimization[i] == '(' || result_minimization[i] == ')')
 			{
+				if (result_minimization[i] == 'X' && result_minimization[i + 1] == '1')
+				{
+					trigger_reverse_X = i;
+					result_minimization1.push_back(result_minimization[i]);
+					result_minimization1.push_back(result_minimization[i + 1]);
+					trigger_X_in = true;
+					i++;
+				}
+				else if (result_minimization[i] == 'X' && result_minimization[i + 1] == '2')
+				{
+					trigger_reverse_Y = i;
+					result_minimization1.push_back(result_minimization[i]);
+					result_minimization1.push_back(result_minimization[i + 1]);
+					trigger_Y_in = true;
+					i++;
+				}
+				else if (result_minimization[i] == 'X' && result_minimization[i + 1] == '3')
+				{
+					trigger_reverse_Z = i;
+					result_minimization1.push_back(result_minimization[i]);
+					result_minimization1.push_back(result_minimization[i + 1]);
+					trigger_Z_in = true;
+					i++;
+				}
+				else
+				{
+					result_minimization1.push_back(result_minimization[i]);
+					continue;
+				}
+			}
+
+
+			if (result_minimization[i] == ' ')
+			{
+				result_minimization1.push_back(result_minimization[i]);
 				continue;
 			}
-			
-			else if (first_X && result_minimization[i] == 'X' && result_minimization[i + 1] == '1')
-			{
-				result_minimization[i] = 'O';
-				result_minimization[i + 1] = 'O';
-			}
 
-			else if (anti_first_X && result_minimization[i] == '!' && result_minimization[i + 1] == 'X' && result_minimization[i + 2] == '1')
+			if (result_minimization[i] == '!' && result_minimization[i + 1] == 'X' && result_minimization[i + 2] == '1')
 			{
-				result_minimization[i] = 'O';
-				result_minimization[i + 1] = 'O';
-				result_minimization[i + 2] = 'O';
-
-			}
-
-			else if (first_Y && result_minimization[i] == 'X' && result_minimization[i + 1] == '2')
-			{
-				result_minimization[i] = 'O';
-				result_minimization[i + 1] = 'O';
-			}
-
-			else if (anti_first_Y && result_minimization[i] == '!' && result_minimization[i + 1] == 'X' && result_minimization[i + 2] == '2')
-			{
-				result_minimization[i] = 'O';
-				result_minimization[i + 1] = 'O';
-				result_minimization[i + 2] = 'O';
-
-			}
-
-			else if (first_Z && result_minimization[i] == 'X' && result_minimization[i + 1] == '3')
-			{
-				result_minimization[i] = 'O';
-				result_minimization[i + 1] = 'O';
-			}
-
-			else if (anti_first_Z && result_minimization[i] == '!' && result_minimization[i + 1] == 'X' && result_minimization[i + 2] == '3')
-			{
-				result_minimization[i] = 'O';
-				result_minimization[i + 1] = 'O';
-				result_minimization[i + 2] = 'O';
-
-			}		
-			
-			if (result_minimization[i] == 'X' && result_minimization[i + 1] == '1')
-			{
-				
-				first_X = true;
-				continue;
-			}
-			else if (result_minimization[i] == 'X' && result_minimization[i + 1] == '2')
-			{
-				
-				first_Y = true;
-				continue;
-			}
-			else if (result_minimization[i] == 'X' && result_minimization[i + 1] == '3')
-			{
-				
-				first_Z = true;
-				continue;
-			}
-			else if (result_minimization[i] == '!' && result_minimization[i + 1] == 'X' && result_minimization[i + 2] == '1')
-			{
-				
-				anti_first_X = true;
-				continue;
+				result_minimization1.push_back(result_minimization[i]);
+				result_minimization1.push_back(result_minimization[i + 1]);
+				result_minimization1.push_back(result_minimization[i + 2]);
+				trigger_anti_X = i;
+				i += 2;
+				trigger_anti_X_in = true;
 			}
 			else if (result_minimization[i] == '!' && result_minimization[i + 1] == 'X' && result_minimization[i + 2] == '2')
 			{
-				
-				anti_first_Y = true;
-				continue;
+				result_minimization1.push_back(result_minimization[i]);
+				result_minimization1.push_back(result_minimization[i + 1]);
+				result_minimization1.push_back(result_minimization[i + 2]);
+				trigger_anti_Y = i;
+				i += 2;
+				trigger_anti_Y_in = true;
 			}
 			else if (result_minimization[i] == '!' && result_minimization[i + 1] == 'X' && result_minimization[i + 2] == '3')
 			{
-				
+				result_minimization1.push_back(result_minimization[i]);
+				result_minimization1.push_back(result_minimization[i + 1]);
+				result_minimization1.push_back(result_minimization[i + 2]);
+				trigger_anti_Z = i;
+				i += 2;
+				trigger_anti_Z_in = true;
+			}
+
+			if (trigger_reverse_X != 0 && trigger_X_in && trigger_anti_X_in) //стираем инвериторавние
+			{
+				result_minimization1[trigger_anti_X] = 'O';
+				result_minimization1[trigger_anti_X + 1] = 'O';
+				result_minimization1[trigger_anti_X + 2] = 'O';
+				result_minimization1[trigger_reverse_X] = 'O';
+				result_minimization1[trigger_reverse_X + 1] = 'O';
+				trigger_X_in = trigger_anti_X_in = false;
+
+			}
+			else if (trigger_reverse_Y != 0 && trigger_Y_in && trigger_anti_Y_in)
+			{
+				result_minimization1[trigger_anti_Y] = 'O';
+				result_minimization1[trigger_anti_Y + 1] = 'O';
+				result_minimization1[trigger_anti_Y + 2] = 'O';
+				result_minimization1[trigger_reverse_Y] = 'O';
+				result_minimization1[trigger_reverse_Y + 1] = 'O';
+				trigger_Y_in = trigger_anti_Y_in = false;
+			}
+			else if (trigger_reverse_Z != 0 && trigger_Z_in && trigger_anti_Z_in)
+			{
+				result_minimization1[trigger_anti_Z] = 'O';
+				result_minimization1[trigger_anti_Z + 1] = 'O';
+				result_minimization1[trigger_anti_Z + 2] = 'O';
+				result_minimization1[trigger_reverse_Z] = 'O';
+				result_minimization1[trigger_reverse_Z + 1] = 'O';
+				trigger_Z_in = trigger_anti_Z_in = false;
+
+			}
+		}
+		print_deque(result_minimization1);
+
+		bool first_X = false, first_Y = false, first_Z = false;
+		bool anti_first_X = false, anti_first_Y = false, anti_first_Z = false;
+		for (int i = 0; i < result_minimization1.size(); i++)//склеиваем одинаковые импликанты
+		{
+			
+			if (result_minimization1[i] == 'O' || result_minimization1[i] == '*' && (!(result_minimization1[i + 2] == '!' || result_minimization1[i + 2] == 'X') || !(result_minimization1[i - 2] == '!' || (result_minimization1[i - 2] == '1' || result_minimization1[i - 2] == '2' || result_minimization1[i - 2] == '3'))))
+			{
+				continue;
+			}
+			
+			else if (first_X && result_minimization1[i] == 'X' && result_minimization1[i + 1] == '1')
+			{
+				result_minimization1[i] = 'O';
+				result_minimization1[i + 1] = 'O';
+			}
+
+			else if (anti_first_X && result_minimization1[i] == '!' && result_minimization1[i + 1] == 'X' && result_minimization1[i + 2] == '1')
+			{
+				result_minimization1[i] = 'O';
+				result_minimization1[i + 1] = 'O';
+				result_minimization1[i + 2] = 'O';
+
+			}
+
+			else if (first_Y && result_minimization1[i] == 'X' && result_minimization1[i + 1] == '2')
+			{
+				result_minimization1[i] = 'O';
+				result_minimization1[i + 1] = 'O';
+			}
+
+			else if (anti_first_Y && result_minimization1[i] == '!' && result_minimization1[i + 1] == 'X' && result_minimization1[i + 2] == '2')
+			{
+				result_minimization1[i] = 'O';
+				result_minimization1[i + 1] = 'O';
+				result_minimization1[i + 2] = 'O';
+
+			}
+
+			else if (first_Z && result_minimization1[i] == 'X' && result_minimization1[i + 1] == '3')
+			{
+				result_minimization1[i] = 'O';
+				result_minimization1[i + 1] = 'O';
+			}
+
+			else if (anti_first_Z && result_minimization1[i] == '!' && result_minimization1[i + 1] == 'X' && result_minimization1[i + 2] == '3')
+			{
+				result_minimization1[i] = 'O';
+				result_minimization1[i + 1] = 'O';
+				result_minimization1[i + 2] = 'O';
+
+			}		
+			
+			if (result_minimization1[i] == 'X' && result_minimization1[i + 1] == '1')
+			{
+				first_X = true;
+				continue;
+			}
+			else if (result_minimization1[i] == 'X' && result_minimization1[i + 1] == '2')
+			{
+				first_Y = true;
+				continue;
+			}
+			else if (result_minimization1[i] == 'X' && result_minimization1[i + 1] == '3')
+			{
+				first_Z = true;
+				continue;
+			}
+			else if (result_minimization1[i] == '!' && result_minimization1[i + 1] == 'X' && result_minimization1[i + 2] == '1')
+			{
+				anti_first_X = true;
+				continue;
+			}
+			else if (result_minimization1[i] == '!' && result_minimization1[i + 1] == 'X' && result_minimization1[i + 2] == '2')
+			{
+				anti_first_Y = true;
+				continue;
+			}
+			else if (result_minimization1[i] == '!' && result_minimization1[i + 1] == 'X' && result_minimization1[i + 2] == '3')
+			{
 				anti_first_Z = true;
 				continue;
 			}
 		}
-		//print_deque(result_minimization);
-		for (int i = 0; i < result_minimization.size(); i++)//deleting 0
+		print_deque(result_minimization1);
+		for (int i = 0; i < result_minimization1.size(); i++)//deleting 0
 		{
-			if (result_minimization[i] == 'O' || result_minimization[i] == '*' && (!(result_minimization[i + 2] == '!' || result_minimization[i + 2] == 'X') || !(result_minimization[i - 2] == '!' || (result_minimization[i - 2] == '1' || result_minimization[i - 2] == '2' || result_minimization[i - 2] == '3'))))
+			if (result_minimization1[i] == 'O' || result_minimization1[i] == '*' && (!(result_minimization1[i + 2] == '!' || result_minimization1[i + 2] == 'X') || !(result_minimization1[i - 2] == '!' || (result_minimization1[i - 2] == '1' || result_minimization1[i - 2] == '2' || result_minimization1[i - 2] == '3'))))
 			{
-				result_minimization.erase(result_minimization.begin() + i);
+				result_minimization1.erase(result_minimization1.begin() + i);
 				i--;
 			}
 		}
-		///print_deque(result_minimization);
-		for (int i = 0; i < result_minimization.size(); i++)//deleting " "
+
+		print_deque(result_minimization1);
+		for (int i = 0; i < result_minimization1.size(); i++)//deleting " "
 		{
-			if (i == result_minimization.size() - 1) break;
-			if (result_minimization[i] == ' ' && result_minimization[i + 1] == ' ' || result_minimization[i] == ' ' && result_minimization[i + 1] == ')')
+			if (i == result_minimization1.size() - 1) break;
+			if (result_minimization1[i] == ' ' && result_minimization1[i + 1] == ' ' || result_minimization1[i] == ' ' && result_minimization1[i + 1] == ')')
 			{
-				result_minimization.erase(result_minimization.begin() + i);
+				result_minimization1.erase(result_minimization1.begin() + i);
 				i--;
 			}
-			if (result_minimization[i] == '(' && result_minimization[i + 1] == ' ')
+			if (result_minimization1[i] == '(' && result_minimization1[i + 1] == ' ')
 			{
-				result_minimization.erase(result_minimization.begin() + i + 1);
+				result_minimization1.erase(result_minimization1.begin() + i + 1);
 				i--;
 			}
-			if (result_minimization[i] == '+' && result_minimization[i + 2] == '(' && result_minimization[i + 3] == ')')
-			{
-				result_minimization.erase(result_minimization.begin() + i);
-				i--;
-				result_minimization.erase(result_minimization.begin() + i + 2);
-				i-=2;
-				result_minimization.erase(result_minimization.begin() + i + 3);
-				i--;
-				result_minimization.erase(result_minimization.begin() + i + 4);
-				i--;
-				result_minimization.erase(result_minimization.begin() + i + 5);
-				i--;
-				
-			}
+			
 		}
-		//print_deque(result_minimization);
-		for (int i = 0; i < result_minimization.size(); i++)
+		print_deque(result_minimization1);
+		for (int i = 0; i < result_minimization1.size(); i++)
 		{
-			MDNF += result_minimization[i];
+			MDNF += result_minimization1[i];
 		}
 	}
 
@@ -1102,7 +1202,6 @@ public:
 	string get_MKNF_rez() { return MKNF; }
 
 private:
-	
 	int bit_depth = 0;
 	int numbr_of_column = 0;
 	int number_of_terms_SDNF = 0;
@@ -1125,7 +1224,7 @@ void main()
 	int choose, max_number_input = 256, numbr_of_input = 100;
 	deque<int> function;
 	static const int null = 0;
-	static const int max_number_input_user = 15;
+	static const int max_number_input_user = 7;
 	bool reset = true, checker = false, second_task = false;
 	Logic_function exmpl;
 	while (reset)
@@ -1161,7 +1260,7 @@ void main()
 					checker = true;
 					cout << "Input i function: ";
 					cin >> num;
-					if (num >= max_number_input_user) throw 2;
+					if (num >= max_number_input) throw 2;
 
 				}
 				else
@@ -1170,14 +1269,14 @@ void main()
 					int num = 0, size = 0;
 					cout << "Input size function: ";
 					cin >> size;
-					if (!(size >= null && size <= max_number_input)) throw 2;
+					if (!(size >= null && size <= numbr_of_input)) throw 2;
 					cout << "Input function: ";
 
 					for (int i = 0; i < size; i++)
 					{
 						cin >> num;
 						function.push_back(num);
-						if (!(num >= null && num <= max_number_input)) throw 2;
+						if (!(num >= null && num <= max_number_input_user)) throw 2;
 					}
 
 				}
