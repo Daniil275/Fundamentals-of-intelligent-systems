@@ -317,10 +317,10 @@ namespace UnitTestforAOISlab2
 			Assert::IsTrue(SDNF && SKNF);
 		}
 
-		TEST_METHOD(TestMethod16) //task 3 
+		TEST_METHOD(TestMethod16) //calcultion method
 		{
 			Logic_function exmpl;
-			bool MDNF = false, MKNF = true;
+			bool MDNF = false, MKNF = false;
 			//"!(X+Y)+!Z#"
 			deque<char> input_char;
 			input_char.push_back('!');
@@ -332,18 +332,18 @@ namespace UnitTestforAOISlab2
 			input_char.push_back('+');
 			input_char.push_back('!');
 			input_char.push_back('Z');
-			string result_MDNF1 = " (!X1 * !X2) + () + (!X3) ";
-			//string result_MKNF1 = " (X1 + X2 + !X3)  *  (X1 + !X2 + X3)  *  (!X1 + !X2 + X3)  *  (!X1 + !X2 + !X3) ";
+			string result_MDNF1 = " (!X1 * !X2) + (!X3) ";
+			string result_MKNF1 = " (!X1) * (!X2 + !X3) ";
 			exmpl.analysis_input_logical_form(input_char);
-			if (exmpl.get_MDNF_rez() == result_MDNF1) MDNF = true;
-			//if (exmpl.get_SKNF_rez() == result_MKNF1) SKNF = true;
+			if (exmpl.get_TDNF_rez() == result_MDNF1) MDNF = true;
+			if (exmpl.get_TKNF_rez() == result_MKNF1) MKNF = true;
 			Assert::IsTrue(MDNF && MKNF);
 		}
 
-		TEST_METHOD(TestMethod17) //task 3 
+		TEST_METHOD(TestMethod17) //calcultion method
 		{
 			Logic_function exmpl;
-			bool MDNF = false, MKNF = true;
+			bool MDNF = false, MKNF = false;
 			//"!X+!Y*!(X+Y+Z)#"
 			deque<char> input_char;
 			input_char.push_back('!');
@@ -360,19 +360,19 @@ namespace UnitTestforAOISlab2
 			input_char.push_back('+');
 			input_char.push_back('Z');
 			input_char.push_back(')');
-			string result_MDNF1 = " () + () + (!X2) + () ";
-			//string result_MKNF1 = " (X1 + X2 + !X3)  *  (X1 + !X2 + X3)  *  (!X1 + !X2 + X3)  *  (!X1 + !X2 + !X3) ";
+			string result_MDNF1 = " (!X2)  ";
+			string result_MKNF1 = " (!X2)  ";
 			exmpl.analysis_input_logical_form(input_char);
-			if (exmpl.get_MDNF_rez() == result_MDNF1) MDNF = true;
-			//if (exmpl.get_SKNF_rez() == result_MKNF1) SKNF = true;
+			if (exmpl.get_TDNF_rez() == result_MDNF1) MDNF = true;
+			if (exmpl.get_TKNF_rez() == result_MKNF1) MKNF = true;
 			Assert::IsTrue(MDNF && MKNF);
 		}
 
-		TEST_METHOD(TestMethod18) //task 3 
+		TEST_METHOD(TestMethod18) //calcultion method
 		{
 			Logic_function exmpl;
-			bool MDNF = false, MKNF = true;
-			//"!((X+Y)*!(X*Z))"
+			bool MDNF = false, MKNF = false;
+			//"!((X+Y)*!(X*Z))#"
 			deque<char> input_char;
 			input_char.push_back('!');
 			input_char.push_back('(');
@@ -390,14 +390,14 @@ namespace UnitTestforAOISlab2
 			input_char.push_back(')');
 			input_char.push_back(')');
 			string result_MDNF1 = " (!X1 * !X2 * X3) ";
-			//string result_MKNF1 = " (X1 + X2 + !X3)  *  (X1 + !X2 + X3)  *  (!X1 + !X2 + X3)  *  (!X1 + !X2 + !X3) ";
+			string result_MKNF1 = " (X1 + X3) * (!X2) ";
 			exmpl.analysis_input_logical_form(input_char);
-			if (exmpl.get_MDNF_rez() == result_MDNF1) MDNF = true;
-			//if (exmpl.get_SKNF_rez() == result_MKNF1) SKNF = true;
+			if (exmpl.get_TDNF_rez() == result_MDNF1) MDNF = true;
+			if (exmpl.get_TKNF_rez() == result_MKNF1) MKNF = true;
 			Assert::IsTrue(MDNF && MKNF);
 		}
 
-		TEST_METHOD(TestMethod19) //task 3 
+		TEST_METHOD(TestMethod19) //calcultion method
 		{
 			Logic_function exmpl;
 			bool MDNF = false, MKNF = true;
@@ -412,32 +412,40 @@ namespace UnitTestforAOISlab2
 			input_char.push_back('Z');
 			input_char.push_back(')');
 			string result_MDNF1 = " (!X1 * !X2 * !X3) ";
-			//string result_MKNF1 = " (X1 + X2 + !X3)  *  (X1 + !X2 + X3)  *  (!X1 + !X2 + X3)  *  (!X1 + !X2 + !X3) ";
+			string result_MKNF1 = " (X1) * (!X2 + !X3) ";
 			exmpl.analysis_input_logical_form(input_char);
-			if (exmpl.get_MDNF_rez() == result_MDNF1) MDNF = true;
-			//if (exmpl.get_SKNF_rez() == result_MKNF1) SKNF = true;
+			if (exmpl.get_TDNF_rez() == result_MDNF1) MDNF = true;
+			if (exmpl.get_TKNF_rez() == result_MKNF1) MKNF = true;
 			Assert::IsTrue(MDNF && MKNF);
 		}
 
-		TEST_METHOD(TestMethod20) //task 3 
+		TEST_METHOD(TestMethod20) //calcultion method
 		{
 			Logic_function exmpl;
-			bool MDNF = false, MKNF = true;
-			//"!(X+Y+Z)"
+			bool MDNF = false, MKNF = false;
+			//"!(!(X*Z)*(X+!Y))"
 			deque<char> input_char;
 			input_char.push_back('!');
 			input_char.push_back('(');
+			input_char.push_back('!');
+			input_char.push_back('(');
 			input_char.push_back('X');
-			input_char.push_back('+');
-			input_char.push_back('Y');
-			input_char.push_back('+');
+			input_char.push_back('*');
 			input_char.push_back('Z');
 			input_char.push_back(')');
-			string result_MDNF1 = " (!X1 * !X2 * !X3) ";
-			//string result_MKNF1 = " (X1 + X2 + !X3)  *  (X1 + !X2 + X3)  *  (!X1 + !X2 + X3)  *  (!X1 + !X2 + !X3) ";
+			input_char.push_back('*');
+			input_char.push_back('(');
+			input_char.push_back('X');
+			input_char.push_back('+');
+			input_char.push_back('!');
+			input_char.push_back('Y');
+			input_char.push_back(')');
+			input_char.push_back(')');
+			string result_MDNF1 = " (X1 * X3)  ";
+			string result_MKNF1 = " (X1) * (X3)  ";
 			exmpl.analysis_input_logical_form(input_char);
-			if (exmpl.get_MDNF_rez() == result_MDNF1) MDNF = true;
-			//if (exmpl.get_SKNF_rez() == result_MKNF1) SKNF = true;
+			if (exmpl.get_TDNF_rez() == result_MDNF1) MDNF = true;
+			if (exmpl.get_TKNF_rez() == result_MKNF1) MKNF = true;
 			Assert::IsTrue(MDNF && MKNF);
 		}
 
