@@ -23,7 +23,7 @@ public:
 		}
 	}
 
-	void print_array_minimization(const string(&Array)[15][3])
+	void print_array_minimization(const char(&Array)[15][3])
 	{
 		for (int i = 0; i < 15; i++)
 		{
@@ -161,7 +161,7 @@ public:
 			}
 			container.clear();
 		}
-		print_array(spreadsheet_truth);
+		if (check_mass) print_array(spreadsheet_truth);
 		endl
 			SDNF_and_SKNF();
 		endl
@@ -169,6 +169,8 @@ public:
 		status_of_calls = true;
 		
 		calculation_method(SKNF_rez);
+		endl
+		minimization_method_Cvain_Mak_Klasski();
 
 	}
 
@@ -266,7 +268,7 @@ public:
 			else preparing_function.push_back(logical_fucntion[i]);
 		}
 
-		print_deque(preparing_function);
+		if(check) print_deque(preparing_function);
 
 		for (int i = 0; i < default_strings_size; i++)
 		{
@@ -313,15 +315,15 @@ public:
 
 		}
 
-		print_array(spreadsheet_truth);
-		endl
-			//minimization_method_Cvain_Mak_Klaski();
+		if (check_mass) print_array(spreadsheet_truth);
 
 			endl
 			SDNF_and_SKNF();
 		calculation_method(SDNF_rez);
 		status_of_calls = true;
 			calculation_method(SKNF_rez);
+		endl
+			minimization_method_Cvain_Mak_Klasski();
 		endl
 			cout << "Index = " << num_i;
 		endl
@@ -331,8 +333,7 @@ public:
 	{
 		const int static num_strings_for_no_one_true = 1, num_column_for_one_true = 3, num_columns = 4, num_column_for_firstX = 3, num_strings_for_firstX = 15;
 		int no_one_true[num_strings_for_no_one_true][num_columns], one_in_true[num_column_for_one_true][num_columns], two_in_true[num_column_for_one_true][num_columns], tree_in_true[num_strings_for_no_one_true][num_columns], trigger_for_c = false, trigger_for_s = false;
-		string firstX[num_strings_for_firstX][num_column_for_firstX];
-		//bool array_truth[10][10]
+		char firstX[num_strings_for_firstX][num_column_for_firstX];
 		bool stringUp = false, stringUp1 = false, stringUp2 = false;
 
 		for (int i = 0; i < num_column_for_one_true; i++)
@@ -353,7 +354,7 @@ public:
 		{
 			for (int j = 0; j < num_column_for_firstX; j++)
 			{
-				firstX[i][j] = "";
+				firstX[i][j] = ' ';
 			}
 		}
 
@@ -597,23 +598,9 @@ public:
 
 		}
 
-		//таблица 
-		bool cover_number = false;
-		/*int j = 0;
-		for (int i = 0; i < 10; i++)
-		{
-				cover_number = false;
-				for (int q = 0 ; q < 3; q++)
-				{
-					if (one_in_true[i][q + 1] == 1 && firstX[i][q] == "1" || one_in_true[i][q + 1] == 0 && firstX[i][q] == "0" || firstX[i][j] == "X") cover_number = true;
-				}
-				cover_number = false;
-				if (cover_number) array_truth[i][j] = true;
-
-		}
-		*/
-
-		print_array_minimization(firstX); //отлично, вроде работает, теперь таблица покрытия
+		endl
+			print_array_minimization(firstX);
+		//таблица покрытия
 
 	}
 
@@ -1328,7 +1315,8 @@ private:
 	static const int number_of_columns = 16;
 	bool spreadsheet_truth[number_of_strings][number_of_columns];
 	bool status_of_calls = false;
-	bool check = false;
+	bool check = true;
+	bool check_mass = true;
 
 };
 
