@@ -433,38 +433,38 @@ public:
 		{
 			if (mut == 1)
 			{
-				if (no_one_true[0][q + 1]) firstX[str][q] += '1';
-				else firstX[str][q] += '0';
+				if (no_one_true[0][q + 1]) firstX[str][q] = '1';
+				else firstX[str][q] = '0';
 				stringUp = true;
 			}
 
 			if (mut == 1 && (no_one_true[0][q + 1] == 0 && one_in_true[0][q + 1] == 1 || no_one_true[0][q + 1] == 1 && one_in_true[0][q + 1] == 0))
 			{
-				firstX[str][q] += 'X';
+				firstX[str][q] = 'X';
 			}
 
 			if (mut1 == 1)
 			{
 				if (no_one_true[0][q + 1]) firstX[str + 1][q] = '1';
-				else firstX[str + 1][q] += '0';
+				else firstX[str + 1][q] = '0';
 				stringUp1 = true;
 			}
 
 			if (mut1 == 1 && (no_one_true[0][q + 1] == 1 && one_in_true[1][q + 1] == 0 || no_one_true[0][q + 1] == 0 && one_in_true[1][q + 1] == 1))
 			{
-				firstX[str + 1][q] += 'X';
+				firstX[str + 1][q] = 'X';
 			}
 
 			if (mut2 == 1)
 			{
 				if (no_one_true[0][q + 1]) firstX[str + 2][q] = '1';
-				else firstX[str + 2][q] += '0';
+				else firstX[str + 2][q] = '0';
 				stringUp2 = true;
 			}
 
 			if (mut2 == 1 && (no_one_true[0][q + 1] == 0 && one_in_true[2][q + 1] == 1 || no_one_true[0][q + 1] == 1 && one_in_true[2][q + 1] == 0))
 			{
-				firstX[str + 2][q] += 'X';
+				firstX[str + 2][q] = 'X';
 			}
 
 		}
