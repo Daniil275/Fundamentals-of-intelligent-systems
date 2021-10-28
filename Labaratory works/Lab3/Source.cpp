@@ -710,7 +710,7 @@ public:
 
 		print_array_check_mass(cover_table_for_implicants); 
 		//отлично остался анализ данных 
-		int it_is_core, int number_string_in_firstX=0;
+		int it_is_core, number_string_in_firstX = 0;
 		char result_parse[20];
 		int string_new = 0;
 		for (int i = 0; i < 7; i++)
