@@ -178,12 +178,14 @@ public:
 		endl
 			SDNF_and_SKNF();
 		endl
+			cout << "Calculation method:";
+		endl
 			calculation_method(SDNF_rez);
 		status_of_calls = true;
 		
 		calculation_method(SKNF_rez);
 		endl
-		minimization_method_Cvain_Mak_Klasski();
+		Quine_McCluskey_method();
 
 	}
 
@@ -334,23 +336,27 @@ public:
 			SDNF_and_SKNF();
 		calculation_method(SDNF_rez);
 		status_of_calls = true;
+		cout << "Calculation method:";
+		endl
 			calculation_method(SKNF_rez);
 		endl
-			minimization_method_Cvain_Mak_Klasski();
+			
+		
+			Quine_McCluskey_method();
 		endl
 			cout << "Index = " << num_i;
 		endl
 	}
 
-	void minimization_method_Cvain_Mak_Klasski()
+	void Quine_McCluskey_method()
 	{
 		const int static num_strings_for_no_one_true = 1, num_column_for_one_true = 3, num_columns = 4, num_column_for_firstX = 3, num_strings_for_firstX = 15;
-		TDNF_rez = "";
-		TKNF_rez = "";
-		int no_one_true[num_strings_for_no_one_true][num_columns], one_in_true[num_column_for_one_true][num_columns], two_in_true[num_column_for_one_true][num_columns], tree_in_true[num_strings_for_no_one_true][num_columns], trigger_for_c = false, trigger_for_s = false;                                                                                                      
+		
+		int no_one_true[num_strings_for_no_one_true][num_columns], one_in_true[num_column_for_one_true][num_columns], two_in_true[num_column_for_one_true][num_columns], tree_in_true[num_strings_for_no_one_true][num_columns], trigger_for_c = false, trigger_for_s = false;                                                                                                                                                                             string A = TDNF, B = TKNF;
 		char firstX[num_strings_for_firstX][num_column_for_firstX];
 		bool stringUp = false, stringUp1 = false, stringUp2 = false;
-
+		TDNF = "";
+		TKNF = "";
 		for (int i = 0; i < num_column_for_one_true; i++)
 		{
 			for (int j = 0; j < num_columns; j++)
@@ -421,10 +427,10 @@ public:
 			}
 		}
 
-		print_array_check1(no_one_true);
-		print_array_check(one_in_true);
-		print_array_check(two_in_true);
-		print_array_check1(tree_in_true);
+		//print_array_check1(no_one_true);
+		//print_array_check(one_in_true);
+		//print_array_check(two_in_true);
+		//print_array_check1(tree_in_true);
 		int mut = 0, mut1 = 0, mut2 = 0, str = 0;
 
 
@@ -489,8 +495,8 @@ public:
 			str += (int)stringUp + (int)stringUp1 + (int)stringUp2;
 		}
 		
-		//using x___  _x___
-		//сранвивем 2 массива определяем __X_ и т.д надо подумать
+		
+		//сранвивем 2 массива определяем __X_ и т.д 
 		str++;
 		for (int i = 0; i < num_column_for_one_true; i++) 
 		{
@@ -502,7 +508,7 @@ public:
 			stringUp1 = false;
 			stringUp2 = false;
 
-			for (int j = 1; j < num_columns; j++)  //пропускаем число вхождений
+			for (int j = 1; j < num_columns; j++) 
 			{
 
 				if ((one_in_true[i][j] == 0 && two_in_true[0][j] == 1 || one_in_true[i][j] == 1 && two_in_true[0][j] == 0) && one_in_true[0][0] == 1 && two_in_true[0][0] == 2) mut++;
@@ -510,7 +516,7 @@ public:
 				if ((one_in_true[i][j] == 0 && two_in_true[2][j] == 1 || one_in_true[i][j] == 1 && two_in_true[2][j] == 0) && one_in_true[2][0] == 1 && two_in_true[2][0] == 2) mut2++;
 			}
 
-			for (int q = 0; q < num_column_for_one_true; q++)  //пропускаем число вхождений
+			for (int q = 0; q < num_column_for_one_true; q++) 
 			{
 				if (mut == 1)
 				{
@@ -564,7 +570,7 @@ public:
 		stringUp1 = false;
 		stringUp2 = false;
 
-		for (int j = 1; j < num_columns; j++)  //пропускаем число вхождений
+		for (int j = 1; j < num_columns; j++)  
 		{
 
 			if (((two_in_true[0][j] == 0 && tree_in_true[0][j] == 1 || two_in_true[0][j] == 1 && tree_in_true[0][j] == 0) && two_in_true[0][0] == 2 && tree_in_true[0][0] == 3)) mut++;
@@ -572,7 +578,7 @@ public:
 			if (((two_in_true[2][j] == 0 && tree_in_true[0][j] == 1 || two_in_true[2][j] == 1 && tree_in_true[0][j] == 0) && two_in_true[2][0] == 2 && tree_in_true[0][0] == 3)) mut2++;
 		}
 
-		for (int q = 0; q < num_column_for_one_true; q++)  //пропускаем число вхождений
+		for (int q = 0; q < num_column_for_one_true; q++)  
 		{
 			if (mut == 1)
 			{
@@ -612,7 +618,7 @@ public:
 
 		}
 		
-			int cover_table_for_implicants[8][8]; //!(X+Y)+!Z#
+			int cover_table_for_implicants[8][8]; 
 		for (int i = 0; i < 8; i++)
 		{
 			for (int j = 0; j < 8; j++)
@@ -620,8 +626,8 @@ public:
 				cover_table_for_implicants[i][j] = 0;
 			}
 		}
-			print_array_minimization(firstX);
-		int sum_for_no_one = 0, sum_for_one = 0, sum_for_one1 = 0, sum_for_one2 = 0, sum_for_two=0, sum_for_two1=0, sum_for_two2 = 0, sum_for_tree =0;
+		
+		int sum_for_no_one = 0, sum_for_one = 0, sum_for_one1 = 0, sum_for_one2 = 0, sum_for_two = 0, sum_for_two1 = 0, sum_for_two2 = 0, sum_for_tree = 0;                                                                                                                                                                                                                                                                                                                                                                             TDNF = A, TKNF = B;
 
 		for (int i = 0; i < 8; i++)
 		{
@@ -708,10 +714,15 @@ public:
 
 		}
 
-		print_array_check_mass(cover_table_for_implicants); 
-		//отлично остался анализ данных 
+		//print_array_check_mass(cover_table_for_implicants); 
+		
 		int it_is_core, number_string_in_firstX = 0;
 		char result_parse[20];
+		for (size_t i = 0; i < 20; i++)
+		{
+			result_parse[i] = ' ';
+
+		}
 		int string_new = 0;
 		for (int i = 0; i < 7; i++)
 		{
@@ -743,10 +754,15 @@ public:
 
 
 		}
-		for (int i = 0; i < 20; i++)
-		{
-			cout << cover_table_for_implicants[i];
-		}
+		
+		cout << "Quine McCluskey method:";
+		endl
+		cout << "TDNF: ";
+		cout << TDNF;
+		endl 
+		cout << "TDNF: ";
+		cout << TKNF;
+	
 
 	}
 
@@ -909,12 +925,12 @@ public:
 			else if (result_minimization[i] == '!' && result_minimization[i + 1] == 'X' && result_minimization[i + 2] == '3') trigger_anti_Z++;
 		}
 
-		function_processing(trigger_reverse_X, trigger_reverse_Y, trigger_reverse_Z, trigger_anti_X, trigger_anti_Y, trigger_anti_Z, result_minimization);
+		function_processing(result_minimization);
 		if(status_of_calls) cout << "TKNF: " << TKNF << "\n";
 		else cout << "TDNF: " << TDNF << "\n";
 	}
 
-	void function_processing(int num1, int num2, int num3, int num4, int num5, int num6, deque<char> result_minimization)
+	void function_processing(deque<char> result_minimization)
 	{
 		//!(X + Y) + !Z#
 
@@ -1472,8 +1488,6 @@ private:
 	int number_of_terms_SKNF = 0;
 	string SDNF_rez = "";
 	string SKNF_rez = "";
-	string TDNF_rez = "";
-	string TKNF_rez = "";
 	string TDNF = "";
 	string TKNF = "";
 	static const int number_of_strings = 5;
