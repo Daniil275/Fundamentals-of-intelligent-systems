@@ -63,6 +63,19 @@ public:
 		endl
 	}
 
+	void print_array_check_mass(const int(&Array)[8][8])
+	{
+		for (int i = 0; i < 8; i++)
+		{
+			for (int j = 0; j < 8; j++)
+			{
+				cout << Array[i][j];
+			}
+			endl
+		}
+		endl
+	}
+
 	static void print_deque(const deque<char>& dq)
 	{
 		for (auto i : dq)
@@ -329,10 +342,12 @@ public:
 		endl
 	}
 
-	void minimization_method_Cvain_Mak_Klasski() // !(X+Y)+!Z#   //in develop
+	void minimization_method_Cvain_Mak_Klasski()
 	{
 		const int static num_strings_for_no_one_true = 1, num_column_for_one_true = 3, num_columns = 4, num_column_for_firstX = 3, num_strings_for_firstX = 15;
-		int no_one_true[num_strings_for_no_one_true][num_columns], one_in_true[num_column_for_one_true][num_columns], two_in_true[num_column_for_one_true][num_columns], tree_in_true[num_strings_for_no_one_true][num_columns], trigger_for_c = false, trigger_for_s = false;
+		TDNF_rez = "";
+		TKNF_rez = "";
+		int no_one_true[num_strings_for_no_one_true][num_columns], one_in_true[num_column_for_one_true][num_columns], two_in_true[num_column_for_one_true][num_columns], tree_in_true[num_strings_for_no_one_true][num_columns], trigger_for_c = false, trigger_for_s = false;                                                                                                      
 		char firstX[num_strings_for_firstX][num_column_for_firstX];
 		bool stringUp = false, stringUp1 = false, stringUp2 = false;
 
@@ -473,12 +488,11 @@ public:
 		{
 			str += (int)stringUp + (int)stringUp1 + (int)stringUp2;
 		}
-
-
+		
 		//using x___  _x___
 		//сранвивем 2 массива определяем __X_ и т.д надо подумать
 		str++;
-		for (int i = 0; i < num_column_for_one_true; i++) //сравниваю слеива.тбся ли только смежные т.е 1-1 2-2 но не промежуточные надо пофиксить
+		for (int i = 0; i < num_column_for_one_true; i++) 
 		{
 			mut = 0;
 			mut1 = 0;
@@ -597,10 +611,142 @@ public:
 			}
 
 		}
-
-		endl
+		
+			int cover_table_for_implicants[8][8]; //!(X+Y)+!Z#
+		for (int i = 0; i < 8; i++)
+		{
+			for (int j = 0; j < 8; j++)
+			{
+				cover_table_for_implicants[i][j] = 0;
+			}
+		}
 			print_array_minimization(firstX);
-		//таблица покрытия
+		int sum_for_no_one = 0, sum_for_one = 0, sum_for_one1 = 0, sum_for_one2 = 0, sum_for_two=0, sum_for_two1=0, sum_for_two2 = 0, sum_for_tree =0;
+
+		for (int i = 0; i < 8; i++)
+		{
+			
+			sum_for_no_one = 0, sum_for_one = 0, sum_for_one1 = 0, sum_for_one2 = 0, sum_for_two = 0, sum_for_two1 = 0, sum_for_two2 = 0, sum_for_tree = 0;
+			for (int j = 0; j < 3; j++)
+			{
+				if (firstX[i][j] == '0' && no_one_true[0][0] == 9 && no_one_true[0][j + 1] == 0)
+				{
+					sum_for_no_one++;
+				}
+				/// <summary>
+				/// /
+				/// </summary>
+				if (firstX[i][j] == '0' && one_in_true[0][0] == 1 && one_in_true[0][j + 1] == 0)
+				{
+					sum_for_one++;
+				}
+				else if (firstX[i][j] == '1' && one_in_true[0][0] == 1 && one_in_true[0][j + 1] == 1)
+				{
+					sum_for_one++;
+				}
+				if (firstX[i][j] == '0' && one_in_true[1][0] == 1 && one_in_true[1][j + 1] == 0)
+				{
+					sum_for_one1++;
+				}
+				else if (firstX[i][j] == '1' && one_in_true[1][0] == 1 && one_in_true[1][j + 1] == 1)
+				{
+					sum_for_one1++;
+				}
+				if (firstX[i][j] == '0' && one_in_true[2][0] == 1 && one_in_true[2][j + 1] == 0)
+				{
+					sum_for_one2++;
+				}
+				else if (firstX[i][j] == '1' && one_in_true[2][0] == 1 && one_in_true[2][j + 1] == 1)
+				{
+					sum_for_one2++;
+				}
+				//////
+				if (firstX[i][j] == '0' && two_in_true[0][0] == 2 && two_in_true[0][j + 1] == 0)
+				{
+					sum_for_two++;
+				}
+				else if (firstX[i][j] == '1' && two_in_true[0][0] == 2 && two_in_true[0][j + 1] == 1)
+				{
+					sum_for_two++;
+				}
+				if (firstX[i][j] == '0' && two_in_true[1][0] == 2 && two_in_true[1][j + 1] == 0)
+				{
+					sum_for_two1++;
+				}
+				else if (firstX[i][j] == '1' && two_in_true[1][0] == 2 && two_in_true[1][j + 1] == 1)
+				{
+					sum_for_two1++;
+				}
+				if (firstX[i][j] == '0' && two_in_true[2][0] == 2 && two_in_true[2][j + 1] == 0)
+				{
+					sum_for_two2++;
+				}
+				else if (firstX[i][j] == '1' && two_in_true[2][0] == 2 && two_in_true[2][j + 1] == 1)
+				{
+					sum_for_two2++;
+				}
+				///////
+				if (firstX[i][j] == '0' && tree_in_true[0][0] == 3 && tree_in_true[0][j + 1] == 0)
+				{
+					sum_for_tree++;
+				}
+				else if (firstX[i][j] == '1' && tree_in_true[0][0] == 3 && tree_in_true[0][j + 1] == 1)
+				{
+					sum_for_tree++;
+				}
+
+			}
+
+			if (sum_for_no_one == 2)  cover_table_for_implicants[i][0] = 1;
+			if (sum_for_one == 2)  cover_table_for_implicants[i][1] = 1;
+			if (sum_for_one1 == 2)  cover_table_for_implicants[i][2] = 1;
+			if (sum_for_one2 == 2)  cover_table_for_implicants[i][3] = 1;
+			if (sum_for_two == 2)  cover_table_for_implicants[i][4] = 1;
+			if (sum_for_two1 == 2)  cover_table_for_implicants[i][5] = 1;
+			if (sum_for_two2 == 2)  cover_table_for_implicants[i][6] = 1;
+			if (sum_for_tree == 2)  cover_table_for_implicants[i][7] = 1;
+
+		}
+
+		print_array_check_mass(cover_table_for_implicants); 
+		//отлично остался анализ данных 
+		int it_is_core, int number_string_in_firstX=0;
+		char result_parse[20];
+		int string_new = 0;
+		for (int i = 0; i < 7; i++)
+		{
+			it_is_core = 0;
+			for (int j = 0; j < 7; j++)
+			{
+				if (cover_table_for_implicants[j][i] == 1)
+				{
+					number_string_in_firstX = j;
+					it_is_core++;
+				}
+			}
+
+			if (it_is_core == 1)
+			{
+				result_parse[string_new] = firstX[number_string_in_firstX][0];
+				result_parse[string_new + 1] = firstX[number_string_in_firstX][1];
+				result_parse[string_new + 2] = firstX[number_string_in_firstX][2];
+				string_new += 3;
+				for (int j = 0; j < 7; j++)
+				{
+					if (cover_table_for_implicants[number_string_in_firstX][j] == 1)
+					{
+						cover_table_for_implicants[number_string_in_firstX][j] = 2;
+					}
+
+				}
+			}
+
+
+		}
+		for (int i = 0; i < 20; i++)
+		{
+			cout << cover_table_for_implicants[i];
+		}
 
 	}
 
@@ -611,7 +757,7 @@ public:
 
 	void calculation_method(string SDNF_rezult)
 	{
-		//!X+!Y*!(X+Y+Z)#
+		
 		bool trigger_X_in = false, trigger_Y_in = false, trigger_Z_in = false;
 		bool trigger_anti_X_in = false, trigger_anti_Y_in = false, trigger_anti_Z_in = false;
 
@@ -882,17 +1028,39 @@ public:
 
 		bool first_X = false, first_Y = false, first_Z = false;
 		bool anti_first_X = false, anti_first_Y = false, anti_first_Z = false;
-		for (int i = 0; i < result_minimization1.size(); i++)//склеиваем одинаковые импликанты
+		for (int i = 0; i < result_minimization1.size(); i++)//склеиваем одинаковые импликанты !(X+Y)+!Z#
 		{
+
+			if ( first_X && result_minimization1[i] == 'X' && result_minimization1[i + 1] == '1')
+			{
+				result_minimization1[i] = 'O';
+				result_minimization1[i + 1] = 'O';
+			}
+
 			
 
-			if (first_X && result_minimization1[i] == 'X' && result_minimization1[i + 1] == '1')
+			else if ( anti_first_X && result_minimization1[i] == '!' && result_minimization1[i + 1] == 'X' && result_minimization1[i + 2] == '1' )
 			{
 				result_minimization1[i] = 'O';
 				result_minimization1[i + 1] = 'O';
+				result_minimization1[i + 2] = 'O';
+
+			}
+			
+			
+			/// <summary>
+			/// /////////////
+			
+			else if ( first_Y && result_minimization1[i] == 'X' && result_minimization1[i + 1] == '2' )
+			{
+				result_minimization1[i] = 'O';
+				result_minimization1[i + 1] = 'O';
+
 			}
 
-			else if (anti_first_X && result_minimization1[i] == '!' && result_minimization1[i + 1] == 'X' && result_minimization1[i + 2] == '1')
+			
+			
+			else if ( anti_first_Y && result_minimization1[i] == '!' && result_minimization1[i + 1] == 'X' && result_minimization1[i + 2] == '2' )
 			{
 				result_minimization1[i] = 'O';
 				result_minimization1[i + 1] = 'O';
@@ -900,33 +1068,31 @@ public:
 
 			}
 
-			else if (first_Y && result_minimization1[i] == 'X' && result_minimization1[i + 1] == '2')
+			
+			/// <summary>
+			/// ///////
+			/// </summary>
+			/// 
+			else if ( first_Z && result_minimization1[i] == 'X' && result_minimization1[i + 1] == '3' )
 			{
 				result_minimization1[i] = 'O';
 				result_minimization1[i + 1] = 'O';
-			}
-
-			else if (anti_first_Y && result_minimization1[i] == '!' && result_minimization1[i + 1] == 'X' && result_minimization1[i + 2] == '2')
-			{
-				result_minimization1[i] = 'O';
-				result_minimization1[i + 1] = 'O';
-				result_minimization1[i + 2] = 'O';
 
 			}
+			
+			
 
-			else if (first_Z && result_minimization1[i] == 'X' && result_minimization1[i + 1] == '3')
-			{
-				result_minimization1[i] = 'O';
-				result_minimization1[i + 1] = 'O';
-			}
-
-			else if (anti_first_Z && result_minimization1[i] == '!' && result_minimization1[i + 1] == 'X' && result_minimization1[i + 2] == '3')
+			else if ( anti_first_Z && result_minimization1[i] == '!' && result_minimization1[i + 1] == 'X' && result_minimization1[i + 2] == '3' )
 			{
 				result_minimization1[i] = 'O';
 				result_minimization1[i + 1] = 'O';
 				result_minimization1[i + 2] = 'O';
 
 			}
+
+			/// <summary>
+			/// //
+			
 
 			if (result_minimization1[i] == 'X' && result_minimization1[i + 1] == '1')
 			{
@@ -975,7 +1141,7 @@ public:
 			}
 			
 		}
-
+		
 		if (check) print_deque(result_minimization1);
 		for (int i = 0; i < result_minimization1.size(); i++)//deleting " "
 		{
@@ -1039,7 +1205,6 @@ public:
 				i += 5;
 
 			}
-			//if (i == result_minimization1.size() - 6) break;
 
 			if (!(status_of_calls) && (i < result_minimization1.size() - 6) && (result_minimization1[i] == '(' && result_minimization1[i + 1] == ')' && result_minimization1[i + 3] == '+' && (result_minimization1[i + 6] == 'X' || result_minimization1[i + 6] == '!' || result_minimization1[i + 6] == ')')))
 			{
@@ -1315,7 +1480,7 @@ private:
 	static const int number_of_columns = 16;
 	bool spreadsheet_truth[number_of_strings][number_of_columns];
 	bool status_of_calls = false;
-	bool check = true;
+	bool check = false;
 	bool check_mass = true;
 
 };
