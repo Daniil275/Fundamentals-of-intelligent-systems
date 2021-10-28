@@ -322,46 +322,29 @@ namespace UnitTestforAOISlab2
 			Logic_function exmpl;
 			bool MDNF = false, MKNF = false;
 			//"!(X+Y)+!Z#"
-			deque<char> input_char;
-			input_char.push_back('!');
-			input_char.push_back('(');
-			input_char.push_back('X');
-			input_char.push_back('+');
-			input_char.push_back('Y');
-			input_char.push_back(')');
-			input_char.push_back('+');
-			input_char.push_back('!');
-			input_char.push_back('Z');
-			string result_MDNF1 = " (!X1 * !X2) + (!X3) ";
-			string result_MKNF1 = " (!X1) * (!X2 + !X3) ";
-			exmpl.analysis_input_logical_form(input_char);
+			deque<int> input;
+			exmpl.analysis_input(input, true, 46);
+			string result_MDNF1 = " (!X3) + (X1)  ";
+			string result_MKNF1 = " (X1) * (!X3)  ";
 			if (exmpl.get_TDNF_rez() == result_MDNF1) MDNF = true;
 			if (exmpl.get_TKNF_rez() == result_MKNF1) MKNF = true;
 			Assert::IsTrue(MDNF && MKNF);
 		}
 
-		TEST_METHOD(TestMethod17) //calcultion method
+		TEST_METHOD(TestMethod17) //calcultion method 
 		{
 			Logic_function exmpl;
 			bool MDNF = false, MKNF = false;
-			//"!X+!Y*!(X+Y+Z)#"
+			//"X+!Y+Z#"
 			deque<char> input_char;
-			input_char.push_back('!');
 			input_char.push_back('X');
 			input_char.push_back('+');
 			input_char.push_back('!');
-			input_char.push_back('Y');
-			input_char.push_back('*');
-			input_char.push_back('!');
-			input_char.push_back('(');
-			input_char.push_back('X');
-			input_char.push_back('+');
 			input_char.push_back('Y');
 			input_char.push_back('+');
 			input_char.push_back('Z');
-			input_char.push_back(')');
-			string result_MDNF1 = " (!X2)  ";
-			string result_MKNF1 = " (!X2)  ";
+			string result_MDNF1 = " (!X2) + (X1)  ";
+			string result_MKNF1 = " (X1 + !X2)  ";
 			exmpl.analysis_input_logical_form(input_char);
 			if (exmpl.get_TDNF_rez() == result_MDNF1) MDNF = true;
 			if (exmpl.get_TKNF_rez() == result_MKNF1) MKNF = true;
@@ -401,18 +384,20 @@ namespace UnitTestforAOISlab2
 		{
 			Logic_function exmpl;
 			bool MDNF = false, MKNF = true;
-			//"!(X+Y+Z)"
+			//"((X+Y)+!Z)"
 			deque<char> input_char;
-			input_char.push_back('!');
+			input_char.push_back('(');
 			input_char.push_back('(');
 			input_char.push_back('X');
 			input_char.push_back('+');
 			input_char.push_back('Y');
+			input_char.push_back(')');
 			input_char.push_back('+');
+			input_char.push_back('!');
 			input_char.push_back('Z');
 			input_char.push_back(')');
-			string result_MDNF1 = " (!X1 * !X2 * !X3) ";
-			string result_MKNF1 = " (X1) * (!X2 + !X3) ";
+			string result_MDNF1 = " (!X1 * !X3) + (X2) ";
+			string result_MKNF1 = " (X1 + X2 + !X3) ";
 			exmpl.analysis_input_logical_form(input_char);
 			if (exmpl.get_TDNF_rez() == result_MDNF1) MDNF = true;
 			if (exmpl.get_TKNF_rez() == result_MKNF1) MKNF = true;
