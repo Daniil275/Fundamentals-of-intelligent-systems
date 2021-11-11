@@ -334,6 +334,19 @@ namespace UnitTestforAOISlab2
 			if (exmpl.get_TDNF_rez() == result_MDNF1) MDNF = true;
 			if (exmpl.get_TKNF_rez() == result_MKNF1) MKNF = true;
 			Assert::IsTrue(MDNF && MKNF);
+			MDNF = false, MKNF = false;
+
+			string SDNF{ " (!X1 * !X2 * !X3)  +  (!X1 * !X2 * X3)  +  (!X1 * X2 * !X3)" };
+			exmpl.WeichCarno_for_SDNF(SDNF, 3);
+			if (exmpl.get_TDNF_rez() == result_MDNF1) MDNF = true;
+			if (exmpl.get_TKNF_rez() == result_MKNF1) MKNF = true;
+			Assert::IsTrue(MDNF && MKNF);
+			MDNF = false, MKNF = false;
+			string SKNF{ "(X1 + !X2 + !X3)  *  (!X1 + X2 + X3)  *  (!X1 + X2 + !X3)  *  (!X1 + !X2 + X3)  *  (!X1 + !X2 + !X3)" };
+			exmpl.WeichCarno_for_SKNF(SKNF, 3);
+			if (exmpl.get_TDNF_rez() == result_MDNF1) MDNF = true;
+			if (exmpl.get_TKNF_rez() == result_MKNF1) MKNF = true;
+			Assert::IsTrue(MDNF && MKNF);
 		}
 
 		TEST_METHOD(TestMethod17) //calcultion method 
@@ -356,6 +369,19 @@ namespace UnitTestforAOISlab2
 			Assert::IsTrue(MDNF && MKNF);
 			MDNF = false, MKNF = false;
 			exmpl.Quine_McCluskey_method();
+			if (exmpl.get_TDNF_rez() == result_MDNF1) MDNF = true;
+			if (exmpl.get_TKNF_rez() == result_MKNF1) MKNF = true;
+			Assert::IsTrue(MDNF && MKNF);
+			MDNF = false, MKNF = false;
+
+			string SDNF{ " (!X1 * !X2 * !X3)  +  (!X1 * !X2 * X3)  +  (X1 * !X2 * !X3)  +  (X1 * !X2 * X3)  +  (X1 * X2 * !X3)  +  (X1 * X2 * X3)" };
+			exmpl.WeichCarno_for_SDNF(SDNF, 3);
+			if (exmpl.get_TDNF_rez() == result_MDNF1) MDNF = true;
+			if (exmpl.get_TKNF_rez() == result_MKNF1) MKNF = true;
+			Assert::IsTrue(MDNF && MKNF);
+			MDNF = false, MKNF = false;
+			string SKNF{ "(X1 + !X2 + X3)  *  (X1 + !X2 + !X3)" };
+			exmpl.WeichCarno_for_SKNF(SKNF, 3);
 			if (exmpl.get_TDNF_rez() == result_MDNF1) MDNF = true;
 			if (exmpl.get_TKNF_rez() == result_MKNF1) MKNF = true;
 			Assert::IsTrue(MDNF && MKNF);
@@ -393,13 +419,26 @@ namespace UnitTestforAOISlab2
 			if (exmpl.get_TDNF_rez() == result_MDNF1) MDNF = true;
 			if (exmpl.get_TKNF_rez() == result_MKNF1) MKNF = true;
 			Assert::IsTrue(MDNF && MKNF);
+			MDNF = false, MKNF = false;
+
+			string SDNF{ " (!X1 * !X2 * X3)" };
+			exmpl.WeichCarno_for_SDNF(SDNF, 3);
+			if (exmpl.get_TDNF_rez() == result_MDNF1) MDNF = true;
+			if (exmpl.get_TKNF_rez() == result_MKNF1) MKNF = true;
+			Assert::IsTrue(MDNF && MKNF);
+			MDNF = false, MKNF = false;
+			string SKNF{ "(X1 + X2 + X3)  *  (X1 + !X2 + X3)  *  (X1 + !X2 + !X3)  *  (!X1 + X2 + X3)  *  (!X1 + X2 + !X3)  *  (!X1 + !X2 + X3)  *  (!X1 + !X2 + !X3)" };
+			exmpl.WeichCarno_for_SKNF(SKNF, 3);
+			if (exmpl.get_TDNF_rez() == result_MDNF1) MDNF = true;
+			if (exmpl.get_TKNF_rez() == result_MKNF1) MKNF = true;
+			Assert::IsTrue(MDNF && MKNF);
 		}
 
 		TEST_METHOD(TestMethod19) //calcultion method
 		{
 			Logic_function exmpl;
 			bool MDNF = false, MKNF = true;
-			//"((X+Y)+!Z)"
+			//"((X+Y)+!Z)#"
 			deque<char> input_char;
 			input_char.push_back('(');
 			input_char.push_back('(');
@@ -422,13 +461,27 @@ namespace UnitTestforAOISlab2
 			if (exmpl.get_TDNF_rez() == result_MDNF1) MDNF = true;
 			if (exmpl.get_TKNF_rez() == result_MKNF1) MKNF = true;
 			Assert::IsTrue(MDNF && MKNF);
+
+			MDNF = false, MKNF = false;
+
+			string SDNF{ "(!X1 * !X2 * !X3)  +  (!X1 * X2 * !X3)  +  (!X1 * X2 * X3)  +  (X1 * !X2 * !X3)  +  (X1 * !X2 * X3)  +  (X1 * X2 * !X3)  +  (X1 * X2 * X3)" };
+			exmpl.WeichCarno_for_SDNF(SDNF, 3);
+			if (exmpl.get_TDNF_rez() == result_MDNF1) MDNF = true;
+			if (exmpl.get_TKNF_rez() == result_MKNF1) MKNF = true;
+			Assert::IsTrue(MDNF && MKNF);
+			MDNF = false, MKNF = false;
+			string SKNF{ "(X1 + X2 + !X3)" };
+			exmpl.WeichCarno_for_SKNF(SKNF, 3);
+			if (exmpl.get_TDNF_rez() == result_MDNF1) MDNF = true;
+			if (exmpl.get_TKNF_rez() == result_MKNF1) MKNF = true;
+			Assert::IsTrue(MDNF && MKNF);
 		}
 
 		TEST_METHOD(TestMethod20) //calcultion method
 		{
 			Logic_function exmpl;
 			bool MDNF = false, MKNF = false;
-			//"!(!(X*Z)*(X+!Y))"
+			//"!(!(X*Z)*(X+!Y))#"
 			deque<char> input_char;
 			input_char.push_back('!');
 			input_char.push_back('(');
@@ -457,9 +510,19 @@ namespace UnitTestforAOISlab2
 			if (exmpl.get_TDNF_rez() == result_MDNF1) MDNF = true;
 			if (exmpl.get_TKNF_rez() == result_MKNF1) MKNF = true;
 			Assert::IsTrue(MDNF && MKNF);
+			MDNF = false, MKNF = false;
+
+			string SDNF{"(X1 * !X2 * X3) + (X1 * X2 * X3)"};
+			exmpl.WeichCarno_for_SDNF(SDNF,3);
+			if (exmpl.get_TDNF_rez() == result_MDNF1) MDNF = true;
+			if (exmpl.get_TKNF_rez() == result_MKNF1) MKNF = true;
+			Assert::IsTrue(MDNF && MKNF);
+			MDNF = false, MKNF = false;
+			string SKNF{ "(X1 + X2 + X3)  *  (X1 + X2 + !X3)  *  (X1 + !X2 + X3)  *  (X1 + !X2 + !X3)  *  (!X1 + X2 + X3)  *  (!X1 + !X2 + X3)" };
+			exmpl.WeichCarno_for_SKNF(SKNF,3);
+			if (exmpl.get_TDNF_rez() == result_MDNF1) MDNF = true;
+			if (exmpl.get_TKNF_rez() == result_MKNF1) MKNF = true;
+			Assert::IsTrue(MDNF && MKNF);
 		}
-
-		
-
 	};
 }
