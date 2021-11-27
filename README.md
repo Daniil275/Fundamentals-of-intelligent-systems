@@ -9,7 +9,7 @@
 - [X] 2 - Transformation of logical functions presented in different forms.
 - [X] 3 - Minimizing logical functions.
 - [X] 4 - Synthesis of combinational schemes.
-- [ ] 5 - Synthesis of digital circuits in memory.
+- [X] 5 - Synthesis of digital circuits in memory.
 - [X] 6 - Modeling hash-tables.
-- [ ] 7 - Modeling of an associative processor using sequential (recurrent) algorithms.
-- [ ] 8 - Modeling of associative memory with a system of addressing by bit columns and by words.
+- [X] 7 - Modeling of an associative processor using sequential (recurrent) algorithms.
+- [X] 8 - Modeling of associative memory with a system of addressing by bit columns and by words.
